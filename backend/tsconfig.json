@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // Możesz zmienić na ES2023, jeśli używasz Node.js 20+
+    "module": "NodeNext", // "CommonJS" dla starszych projektów
+    "moduleResolution": "nodenext",
+    "strict": true, // Włącza wszystkie ścisłe reguły TypeScript
+    "noImplicitAny": true, // Wymaga jawnego określania typów
+    "strictNullChecks": true, // Zapobiega używaniu null/undefined bez sprawdzenia
+    "strictFunctionTypes": true, // Wymusza ścisłe sprawdzanie typów funkcji
+    "strictPropertyInitialization": true, // Wymaga inicjalizacji zmiennych w klasach
+    "noImplicitThis": true, // Wymusza jawne określanie kontekstu this
+    "alwaysStrict": true, // Wymusza tryb "use strict" w JavaScript
+    "forceConsistentCasingInFileNames": true, // Wymusza spójne wielkości liter w plikach
+    "esModuleInterop": true, // Ułatwia importy modułów CommonJS
+    "skipLibCheck": true, // Pomija sprawdzanie typów w bibliotekach
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
