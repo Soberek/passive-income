@@ -1,3 +1,6 @@
+const goals = ["Stworzyć formularz generowania dokumentu informacji z realizacji zadania"];
+
+// funkcja renderHome, która renderuje stronę główną
 export function renderHome() {
   const content = document.getElementById("content")!;
 
@@ -6,5 +9,25 @@ export function renderHome() {
     console.error("Element content not found");
     return;
   }
-  content.innerHTML = `<h1>Home pzdr</h1>`;
+
+  content.appendChild(createOrderedList(goals));
+}
+
+function createListItem(text: string, index: number = 0) {
+  const li = document.createElement("li");
+  li.className = "home-list-item";
+  li.innerText = `${++index}. ${text}`;
+
+  return li;
+}
+
+function createOrderedList(arrayOfListItems: string[]) {
+  const ol = document.createElement("ol");
+  ol.type = "1";
+
+  arrayOfListItems.forEach((element, index) => {
+    const li = createListItem(element, index);
+    ol.appendChild(li);
+  });
+  return ol;
 }
