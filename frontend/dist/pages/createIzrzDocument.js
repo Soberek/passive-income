@@ -7,6 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+//
+import { addressList } from "../adresy.js";
 export function createIzrzDocument() {
     const content = document.getElementById("content");
     // jak nie ma elementu content to wyrzucamy błąd
@@ -24,13 +26,6 @@ export function createIzrzDocument() {
     initializeForm();
 }
 // Tablica z adresami
-const adresyArray = [
-    "ul. Kowalska 10, Warszawa",
-    "ul. Długa 5, Kraków",
-    "ul. Piękna 20, Wrocław",
-    "ul. Leśna 3, Gdańsk",
-    "ul. Morska 8, Sopot",
-];
 // Tablica z opisami
 const opisyArray = [
     "Inspekcja sanitarna lokalu Inspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokalu Inspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokalu",
@@ -202,10 +197,10 @@ function initializeForm() {
     var _a, _b;
     (_a = document.getElementById("generate")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", generateDocument);
     const selectAdres = document.getElementById("adres");
-    adresyArray.forEach((adres) => {
+    addressList.forEach((address) => {
         const option = document.createElement("option");
-        option.value = adres;
-        option.textContent = adres;
+        option.value = address;
+        option.textContent = address;
         selectAdres.appendChild(option);
     });
     const selectOpis = document.getElementById("opis_select");
