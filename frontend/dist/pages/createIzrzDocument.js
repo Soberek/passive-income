@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 //
 import { addressList } from "../adresy.js";
+import { descriptionList } from "../descriptions.js";
 export function createIzrzDocument() {
     const content = document.getElementById("content");
     // jak nie ma elementu content to wyrzucamy błąd
@@ -27,12 +28,6 @@ export function createIzrzDocument() {
 }
 // Tablica z adresami
 // Tablica z opisami
-const opisyArray = [
-    "Inspekcja sanitarna lokalu Inspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokalu Inspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokalu",
-    "Kontrola jakości żywności",
-    "Badanie wody w basenie",
-    "Nadzór nad placem zabaw",
-];
 function generateVariables() {
     return `    
       <div id="variables"">
@@ -205,10 +200,10 @@ function initializeForm() {
     });
     const selectOpis = document.getElementById("opis_select");
     const textareaOpis = document.getElementById("opis_zadania");
-    opisyArray.forEach((opis) => {
+    descriptionList.forEach((element) => {
         const option = document.createElement("option");
-        option.value = opis;
-        option.textContent = opis;
+        option.value = element.description;
+        option.textContent = element.program_name;
         selectOpis.appendChild(option);
     });
     selectOpis.addEventListener("change", () => {
