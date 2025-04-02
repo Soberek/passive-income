@@ -1,4 +1,7 @@
 //
+import { addressList } from "../adresy.js";
+import { descriptionList } from "../descriptions.js";
+
 declare global {
   interface Window {
     docxtemplater: any;
@@ -30,21 +33,8 @@ export function createIzrzDocument() {
 }
 
 // Tablica z adresami
-const adresyArray: string[] = [
-  "ul. Kowalska 10, Warszawa",
-  "ul. Długa 5, Kraków",
-  "ul. Piękna 20, Wrocław",
-  "ul. Leśna 3, Gdańsk",
-  "ul. Morska 8, Sopot",
-];
 
 // Tablica z opisami
-const opisyArray: string[] = [
-  "Inspekcja sanitarna lokalu Inspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokalu Inspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokaluInspekcja sanitarna lokalu",
-  "Kontrola jakości żywności",
-  "Badanie wody w basenie",
-  "Nadzór nad placem zabaw",
-];
 
 function generateVariables() {
   return `    
@@ -238,19 +228,21 @@ function initializeForm() {
   document.getElementById("generate")?.addEventListener("click", generateDocument);
 
   const selectAdres = document.getElementById("adres") as HTMLSelectElement;
-  adresyArray.forEach((adres) => {
+
+  addressList.forEach((address) => {
     const option = document.createElement("option");
-    option.value = adres;
-    option.textContent = adres;
+    option.value = address;
+    option.textContent = address;
     selectAdres.appendChild(option);
   });
 
   const selectOpis = document.getElementById("opis_select") as HTMLSelectElement;
   const textareaOpis = document.getElementById("opis_zadania") as HTMLTextAreaElement;
-  opisyArray.forEach((opis) => {
+
+  descriptionList.forEach((element) => {
     const option = document.createElement("option");
-    option.value = opis;
-    option.textContent = opis;
+    option.value = element.description;
+    option.textContent = element.program_name;
     selectOpis.appendChild(option);
   });
 
