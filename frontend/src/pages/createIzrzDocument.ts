@@ -216,12 +216,15 @@ function showVariableNames() {
   ];
 
   const variablesList = document.getElementById("variable_names");
+  const documentFragment = document.createDocumentFragment();
 
   variables.forEach((variable) => {
     const item = document.createElement("li");
     item.textContent = `{${variable}}`;
-    variablesList?.appendChild(item);
+    documentFragment.appendChild(item);
   });
+
+  variablesList?.appendChild(documentFragment);
 }
 
 function initializeForm() {
