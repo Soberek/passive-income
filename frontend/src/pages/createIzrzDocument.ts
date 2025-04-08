@@ -44,6 +44,13 @@ function generateVariables() {
       </div>`;
 }
 function createInput(type: string, id: string, label: string) {
+  const label2 = document.createElement("label");
+  const input2 = document.createElement("input");
+  label2.textContent = label;
+  input2.type = type;
+  input2.setAttribute("id", id);
+  label2.appendChild(input2);
+
   return `<label>${label}: <input type="${type}" id="${id}" /></label><br />`;
 }
 

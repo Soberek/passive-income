@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ESNext", // Możesz zmienić na ES2023, jeśli używasz Node.js 20+
-    "module": "NodeNext", // "CommonJS" dla starszych projektów
-    "moduleResolution": "nodenext",
+    "module": "CommonJS", // "CommonJS" dla starszych projektów
+    "moduleResolution": "node", // Używa rozwiązywania modułów Node.js
     "strict": true, // Włącza wszystkie ścisłe reguły TypeScript
     "noImplicitAny": true, // Wymaga jawnego określania typów
     "strictNullChecks": true, // Zapobiega używaniu null/undefined bez sprawdzenia
@@ -13,9 +13,7 @@
     "forceConsistentCasingInFileNames": true, // Wymusza spójne wielkości liter w plikach
     "esModuleInterop": true, // Ułatwia importy modułów CommonJS
     "skipLibCheck": true, // Pomija sprawdzanie typów w bibliotekach
-    "outDir": "dist",
-    "rootDir": "src"
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+    "outDir": "./dist",
+    "rootDir": "./src"
+  }
 }
