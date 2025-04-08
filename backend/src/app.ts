@@ -3,13 +3,16 @@ import indexRouter from "./routes/index";
 import sqliteDbService from "./services/sqliteDbService";
 
 const app = express();
-const PORT = 3003;
-const dbPath = "../sqliteDb.db"; // Path to your SQLite database file
+const PORT = 3004;
+const dbPath = "./sqliteDb.db"; // Path to your SQLite database file
 
 // Database connection
-const dbService = new sqliteDbService({ dbPath });
-// dbService.insertSchool({ name: "Test School", address: "123 Test St", phone: "123-456-7890" }); // Example usage of the database service
-console.log(dbService.getAll("schools")); // Example usage of the database service
+try {
+  const dbService = new sqliteDbService({ dbPath });
+  console.log(dbService.getAll("schools")); // Example usage of the database service
+} catch (error) {
+  console.error("Error initializing database service:", error);
+}
 
 // Middlewares
 app.use(express.static("public")); // Serve static files from the public directory
@@ -17,6 +20,12 @@ app.use(express.json());
 
 // Routes
 app.use("/", indexRouter);
+
+app.get("/api/schools", (req: Request, res: Response) => {
+  const dbService = new sqliteDbService({ dbPath });
+  const schools = dbService.getAll("schools");
+  res.json(schools);
+});
 
 // Start server
 app.listen(PORT, () => {
