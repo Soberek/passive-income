@@ -4,11 +4,14 @@ import sqliteDbService from "./services/sqliteDbService";
 
 const app = express();
 const PORT = 3004;
-const dbPath = "./sqliteDb.db"; // Path to your SQLite database file
 
 // Database connection
 // Initialize the SQLite database service singleton instance
-const dbService = sqliteDbService.getInstance();
+const DB_PATH = "./sqliteDb.db";
+
+// Create a new instance of the sqliteDbService class
+
+const dbService = new sqliteDbService({ dbPath: DB_PATH });
 
 // Middlewares
 app.use(express.static("public")); // Serve static files from the public directory

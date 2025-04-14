@@ -16,9 +16,6 @@ const schools: School[] = [
 ];
 
 class sqliteDbService {
-  prepare(arg0: string) {
-    throw new Error("Method not implemented.");
-  }
   private db: betterSqlite3.Database;
   public static instance: sqliteDbService;
 
