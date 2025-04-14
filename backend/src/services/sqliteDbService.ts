@@ -51,6 +51,16 @@ class sqliteDbService {
     }
   }
 
+  prepare(sql: string) {
+    try {
+      const stmt = this.db.prepare(sql);
+      return stmt;
+    } catch (error) {
+      console.error("Error preparing SQL statement:", error);
+      return null;
+    }
+  }
+
   // zwraca wszystkie rekordy z tabeli o podanej nazwie
   // getTable
   getTable(tableName: string): School[] | [] {

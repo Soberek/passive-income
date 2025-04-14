@@ -31,9 +31,13 @@ class InstitutionsService {
 
   getAllInstitutions(): Institution[] {
     const stmt = this.dbService.prepare("SELECT * FROM institutions");
+    if (!stmt) {
+      console.error("Error preparing SQL statement");
+      return [];
+    }
+
     return stmt.all() as Institution[];
   }
 }
 
-const dbInstanceSingleton = sqliteDbService.getInstance();
-const insti = new InstitutionsService(dbInstanceSingleton);
+export default InstitutionsService;

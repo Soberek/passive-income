@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import indexRouter from "./routes/index";
 import sqliteDbService from "./services/sqliteDbService";
+import InstitutionsService from "./services/institutionsService";
 
 const app = express();
 const PORT = 3004;
@@ -12,6 +13,7 @@ const DB_PATH = "./sqliteDb.db";
 // Create a new instance of the sqliteDbService class
 
 const dbService = new sqliteDbService({ dbPath: DB_PATH });
+const institutionsService = new InstitutionsService(dbService);
 
 // Middlewares
 app.use(express.static("public")); // Serve static files from the public directory
