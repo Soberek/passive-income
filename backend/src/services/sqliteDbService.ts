@@ -44,7 +44,7 @@ class sqliteDbService {
     }
   }
 
-  getAll(tableName: string): any[] {
+  getAll(tableName: string): School[] | [] {
     try {
       const stmt = this.db.prepare(`SELECT * FROM ${tableName}`);
       return stmt.all();
@@ -65,13 +65,25 @@ class sqliteDbService {
     }
   }
 
+  deleteSchool(id: number) {
+    try {
+      const stmt = this.db.prepare("DELETE FROM schools WHERE id = ?");
+      const info = stmt.run(id);
+      if (info.changes > 0) {
+        console.log(`Deleted school with id ${id}`);
+      }
+    } catch (error) {
+      console.error("Error deleting school:", error);
+    }
+  }
+
   insertSchoolsIfNotExists() {
     try {
       const existingSchools = this.getAll("schools");
       const existingSchoolNames = new Set(existingSchools.map((school) => school.id));
 
       schools.forEach((school) => {
-        if (!existingSchoolNames.has(school.name)) {
+        if (!existingSchoolNames.has(school.id)) {
           this.insertSchool(school);
         }
       });

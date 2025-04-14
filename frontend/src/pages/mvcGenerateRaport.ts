@@ -23,7 +23,7 @@ class GenerateRaportView {
     const generateButton = document.getElementById("generateRaportButton");
     if (generateButton) {
       generateButton.addEventListener("click", () => {
-        this.generateRaport();
+        // this.generateRaport();
       });
     }
   }

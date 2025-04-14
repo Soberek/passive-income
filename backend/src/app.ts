@@ -5,10 +5,10 @@ import sqliteDbService from "./services/sqliteDbService";
 const app = express();
 const PORT = 3004;
 const dbPath = "./sqliteDb.db"; // Path to your SQLite database file
+const dbService = new sqliteDbService({ dbPath });
 
 // Database connection
 try {
-  const dbService = new sqliteDbService({ dbPath });
   console.log(dbService.getAll("schools")); // Example usage of the database service
 } catch (error) {
   console.error("Error initializing database service:", error);
@@ -22,9 +22,19 @@ app.use(express.json());
 app.use("/", indexRouter);
 
 app.get("/api/schools", (req: Request, res: Response) => {
-  const dbService = new sqliteDbService({ dbPath });
   const schools = dbService.getAll("schools");
   res.json(schools);
+});
+
+app.post("/api/schools", (req: Request, res: Response) => {
+  const { id, name, address, phone } = req.body;
+  const newSchool = { id, name, address, phone };
+  const result = dbService.insertSchool(newSchool);
+  if (result) {
+    res.status(201).json({ message: "School added successfully", id: result });
+  } else {
+    res.status(500).json({ message: "Error adding school" });
+  }
 });
 
 // Start server
