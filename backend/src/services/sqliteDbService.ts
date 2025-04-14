@@ -15,21 +15,31 @@ const schools: School[] = [
   { id: 5, name: "School E", address: "202 Maple St", phone: "555-6789" },
 ];
 
-interface Izrz {
-  program_id: number;
-  school_id: number;
-}
-
 class sqliteDbService {
+  prepare(arg0: string) {
+    throw new Error("Method not implemented.");
+  }
   private db: betterSqlite3.Database;
+  public static instance: sqliteDbService;
 
   // The constructor takes an object with a dbPath property, which is the path to the SQLite database file.
+  // constructor is a special method for creating and initializing an object created with a class.
   constructor(params: { dbPath: string }) {
     this.db = betterSqlite3(params.dbPath);
     this.init();
-    this.insertSchoolsIfNotExists();
   }
 
+  // zwraca instancję sqliteDbService
+  // singleton pattern zeby nie tworzyc nowej instancji za kazdym razem
+  // bede przekazywal do kazdego service czy kontrolera
+  public static getInstance(): sqliteDbService {
+    if (!sqliteDbService.instance) {
+      sqliteDbService.instance = new sqliteDbService({ dbPath: "./sqliteDb.db" });
+    }
+    return sqliteDbService.instance;
+  }
+
+  // tworzenie tabeli w bazie danych, jezeli nie istnieje
   init() {
     try {
       this.db.exec(`
@@ -44,51 +54,15 @@ class sqliteDbService {
     }
   }
 
-  getAll(tableName: string): School[] | [] {
+  // zwraca wszystkie rekordy z tabeli o podanej nazwie
+  // getTable
+  getTable(tableName: string): School[] | [] {
     try {
       const stmt = this.db.prepare(`SELECT * FROM ${tableName}`);
-      return stmt.all();
+      return stmt.all() as School[] | [];
     } catch (error) {
       console.error(`Error fetching all records from ${tableName}:`, error);
       return [];
-    }
-  }
-
-  insertSchool(school: School) {
-    try {
-      const stmt = this.db.prepare(`INSERT INTO schools (id, name, address, phone) VALUES (?, ?, ?, ?)`);
-      const info = stmt.run(school.id, school.name, school.address, school.phone);
-      return info.lastInsertRowid;
-    } catch (error) {
-      console.error("Error inserting school:", error);
-      return null;
-    }
-  }
-
-  deleteSchool(id: number) {
-    try {
-      const stmt = this.db.prepare("DELETE FROM schools WHERE id = ?");
-      const info = stmt.run(id);
-      if (info.changes > 0) {
-        console.log(`Deleted school with id ${id}`);
-      }
-    } catch (error) {
-      console.error("Error deleting school:", error);
-    }
-  }
-
-  insertSchoolsIfNotExists() {
-    try {
-      const existingSchools = this.getAll("schools");
-      const existingSchoolNames = new Set(existingSchools.map((school) => school.id));
-
-      schools.forEach((school) => {
-        if (!existingSchoolNames.has(school.id)) {
-          this.insertSchool(school);
-        }
-      });
-    } catch (error) {
-      console.error("Error inserting schools:", error);
     }
   }
 }
