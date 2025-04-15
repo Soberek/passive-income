@@ -25,8 +25,8 @@ interface Institution {
 class InstitutionsService {
   private dbService: sqliteDbService;
 
-  constructor(dbService: sqliteDbService) {
-    this.dbService = dbService;
+  constructor() {
+    this.dbService = sqliteDbService.getInstance();
   }
 
   getAllInstitutions(): Institution[] {
