@@ -13,12 +13,23 @@ const schools = [
 ];
 class sqliteDbService {
     db;
+    static instance;
     // The constructor takes an object with a dbPath property, which is the path to the SQLite database file.
+    // constructor is a special method for creating and initializing an object created with a class.
     constructor(params) {
         this.db = (0, better_sqlite3_1.default)(params.dbPath);
         this.init();
-        this.insertSchoolsIfNotExists();
     }
+    // zwraca instancję sqliteDbService
+    // singleton pattern zeby nie tworzyc nowej instancji za kazdym razem
+    // bede przekazywal do kazdego service czy kontrolera
+    static getInstance() {
+        if (!sqliteDbService.instance) {
+            sqliteDbService.instance = new sqliteDbService({ dbPath: "./sqliteDb.db" });
+        }
+        return sqliteDbService.instance;
+    }
+    // tworzenie tabeli w bazie danych, jezeli nie istnieje
     init() {
         try {
             this.db.exec(`
@@ -33,7 +44,19 @@ class sqliteDbService {
             console.error("Error initializing database:", error);
         }
     }
-    getAll(tableName) {
+    prepare(sql) {
+        try {
+            const stmt = this.db.prepare(sql);
+            return stmt;
+        }
+        catch (error) {
+            console.error("Error preparing SQL statement:", error);
+            return null;
+        }
+    }
+    // zwraca wszystkie rekordy z tabeli o podanej nazwie
+    // getTable
+    getTable(tableName) {
         try {
             const stmt = this.db.prepare(`SELECT * FROM ${tableName}`);
             return stmt.all();
@@ -41,31 +64,6 @@ class sqliteDbService {
         catch (error) {
             console.error(`Error fetching all records from ${tableName}:`, error);
             return [];
-        }
-    }
-    insertSchool(school) {
-        try {
-            const stmt = this.db.prepare(`INSERT INTO schools (id, name, address, phone) VALUES (?, ?, ?, ?)`);
-            const info = stmt.run(school.id, school.name, school.address, school.phone);
-            return info.lastInsertRowid;
-        }
-        catch (error) {
-            console.error("Error inserting school:", error);
-            return null;
-        }
-    }
-    insertSchoolsIfNotExists() {
-        try {
-            const existingSchools = this.getAll("schools");
-            const existingSchoolNames = new Set(existingSchools.map((school) => school.id));
-            schools.forEach((school) => {
-                if (!existingSchoolNames.has(school.name)) {
-                    this.insertSchool(school);
-                }
-            });
-        }
-        catch (error) {
-            console.error("Error inserting schools:", error);
         }
     }
 }

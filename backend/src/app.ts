@@ -1,7 +1,5 @@
 import express, { Request, Response } from "express";
 import indexRouter from "./routes/index";
-import sqliteDbService from "./services/sqliteDbService";
-import InstitutionsService from "./services/institutionsService";
 
 class ExpressApp {
   private app;
@@ -37,27 +35,22 @@ class ExpressApp {
     // The indexRouter is imported from the routes directory and is used to handle requests to the root URL ("/").
     this.app.use("/", indexRouter);
   }
+
   // Initialize error handling
   initErrorHandling() {
     // Middleware for handling errors
-    this.app.use((err: Error, req: Request, res: Response, next: () => void) => {
-      console.error(err.stack);
-      res.status(500).send("Something broke!");
-    });
+    this.app.use(
+      (err: Error, req: Request, res: Response, next: () => void) => {
+        console.error(err.stack);
+        res.status(500).send("Something broke!");
+      }
+    );
   }
   // Initialize database connection
-  initDatabase() {
-    // Initialize the SQLite database service singleton instance
-    const dbServiceInstance = sqliteDbService.getInstance();
-    // Initialize the InstitutionsService instance
-    const institutionsServiceInstance = new InstitutionsService();
-  }
 }
 
 // Initialize the Express application
 const expressApp = new ExpressApp();
 expressApp.run();
-// Initialize the SQLite database service singleton instance
-const dbServiceInstance = sqliteDbService.getInstance();
-// Initialize the InstitutionsService instance
-const institutionsServiceInstance = new InstitutionsService();
+expressApp.initRoutes();
+expressApp.initErrorHandling();
