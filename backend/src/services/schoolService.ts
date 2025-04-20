@@ -2,7 +2,7 @@ import sqliteDbService from "./sqliteDbService";
 
 interface School {
   id_institution: number;
-  direction: string;
+  director: string;
   // foreign key to institution
 }
 
