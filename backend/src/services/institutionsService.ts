@@ -44,7 +44,8 @@ class InstitutionsService {
       console.error("Error preparing SQL statement");
       return;
     }
-    stmt.run();
+    const info = stmt.run();
+    const idOfCreatedInstitution = info.lastInsertRowid;
   }
 
   getAllInstitutions(): Institution[] {
