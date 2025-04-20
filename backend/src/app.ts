@@ -22,7 +22,7 @@ import indexRouter from "./routes/index";
 // Step 6. Create a function to decode a token
 // and use it in your application
 
-class ExpressApp {
+export default class ExpressApp {
   private app;
   private PORT: number = 3005;
   constructor() {
@@ -67,11 +67,17 @@ class ExpressApp {
       }
     );
   }
+
+  onAppStop() {
+    this.app.addListener("SIGINT", () => {
+      console.log("Received SIGINT. Shutting down...");
+      // Perform any cleanup tasks here
+    });
+    this.app.addListener("SIGTERM", () => {
+      console.log("Received SIGTERM. Shutting down...");
+      // Perform any cleanup tasks here
+    });
+  }
+
   // Initialize database connection
 }
-
-// Initialize the Express application
-const expressApp = new ExpressApp();
-expressApp.run();
-expressApp.initRoutes();
-expressApp.initErrorHandling();

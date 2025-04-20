@@ -64,9 +64,15 @@ class ExpressApp {
             res.status(500).send("Something broke!");
         });
     }
+    onAppStop() {
+        this.app.addListener("SIGINT", () => {
+            console.log("Received SIGINT. Shutting down...");
+            // Perform any cleanup tasks here
+        });
+        this.app.addListener("SIGTERM", () => {
+            console.log("Received SIGTERM. Shutting down...");
+            // Perform any cleanup tasks here
+        });
+    }
 }
-// Initialize the Express application
-const expressApp = new ExpressApp();
-expressApp.run();
-expressApp.initRoutes();
-expressApp.initErrorHandling();
+exports.default = ExpressApp;
