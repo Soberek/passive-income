@@ -30,6 +30,7 @@ class ExpressApp {
   }
 
   // Initialize routes
+
   initRoutes() {
     // Define the routes for the application
     // The indexRouter is imported from the routes directory and is used to handle requests to the root URL ("/").
