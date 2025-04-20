@@ -1,6 +1,27 @@
 import express, { Request, Response } from "express";
 import indexRouter from "./routes/index";
 
+// JWT installation and usage
+// Step 1. Install the jsonwebtoken package
+// npm install jsonwebtoken
+// Step 2. Import the jsonwebtoken package
+// import jwt from "jsonwebtoken";
+// Step 3. Create a secret key
+// This key will be used to sign the token
+// jwt.sign(payload, secretKey, options);
+// Step 4. Create a function to generate a token
+// this function will take a payload and return a token to a user
+// client will store the token in local storage
+// and send it in the Authorization header in the request
+// the token will be used to authenticate the user
+// Step 5. Create a function to verify a token in the middleware
+// this function will take a token and verify it
+// if the token is valid, it will call the next middleware
+// if the token is not valid, it will return an error
+// if the token is valid, it will return the decoded payload
+// Step 6. Create a function to decode a token
+// and use it in your application
+
 class ExpressApp {
   private app;
   private PORT: number = 3005;
@@ -30,7 +51,6 @@ class ExpressApp {
   }
 
   // Initialize routes
-
   initRoutes() {
     // Define the routes for the application
     // The indexRouter is imported from the routes directory and is used to handle requests to the root URL ("/").
