@@ -12,7 +12,7 @@ class schoolController {
         this.schoolService = new schoolService_1.default();
         this.institutionsService = new institutionsService_1.InstitutionsService();
     }
-    getAllSchools(req, res) {
+    getAllSchools(_, res) {
         try {
             const schools = this.schoolService.getAllSchools();
             if (!schools) {
@@ -40,7 +40,11 @@ class schoolController {
                 res.status(500).json({ message: "Error creating institution" });
                 return;
             }
-            // 2. Step 2: Create school
+            // 2. Step 2: Create school, pass institutionId from the new institution
+            if (!director || director.trim() === "") {
+                res.status(400).json({ message: "Missing director field" });
+                return;
+            }
             const newSchool = this.schoolService.addSchool(newInstitution.newInstitutionId, director);
             if (!newSchool) {
                 res.status(500).json({ message: "Error creating school" });

@@ -11,7 +11,7 @@ export default class schoolController {
     this.institutionsService = new InstitutionsService();
   }
 
-  getAllSchools(req: Request, res: Response): void {
+  getAllSchools(_: Request, res: Response): void {
     try {
       const schools = this.schoolService.getAllSchools();
       if (!schools) {
@@ -61,7 +61,11 @@ export default class schoolController {
         return;
       }
 
-      // 2. Step 2: Create school
+      // 2. Step 2: Create school, pass institutionId from the new institution
+      if (!director || director.trim() === "") {
+        res.status(400).json({ message: "Missing director field" });
+        return;
+      }
 
       const newSchool = this.schoolService.addSchool(
         newInstitution.newInstitutionId,

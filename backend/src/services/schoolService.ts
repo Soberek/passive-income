@@ -50,7 +50,7 @@ class SchoolService {
   ): School["idSchool"] {
     // 1. add
     const stmt = this.dbService.prepare(`
-            INSERT INTO school (id_institution, direction) 
+            INSERT INTO school (id_institution, director) 
             VALUES (?, ?)
         `);
 
