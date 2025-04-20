@@ -7,7 +7,7 @@ import sqliteDbService from "./sqliteDbService";
 // Model for the Institution
 // This interface defines the structure of an institution object.
 export interface Institution {
-  idInstitution: number;
+  idInstitution: number | BigInt;
   name: string;
   address?: string;
   city?: string;
@@ -77,7 +77,7 @@ class InstitutionsService {
     municipality?: string
   ) {
     const stmt = this.dbService.prepare(
-      "INSERT INTO institutions (name, address, postal_code, city, phone, email, website) VALUES (?, ?, ?, ?, ?, ?, ?)"
+      "INSERT INTO institutions (name, address, postal_code, city, phone, email, website, municipality) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     );
     // Check if the statement was prepared successfully
     // and handle the error if it wasn't
@@ -93,12 +93,13 @@ class InstitutionsService {
       city,
       phone,
       email,
-      website
+      website,
+      municipality
     );
     // Check if the execution was successful
     if (result.changes > 0) {
       console.log("Institution added successfully");
-      return result.lastInsertRowid; // Return the ID of the newly inserted row
+      return { newInstitutionId: result.lastInsertRowid }; // Return the ID of the newly inserted row
     }
     // If the execution failed, log an error message
     console.error("Error adding institution");

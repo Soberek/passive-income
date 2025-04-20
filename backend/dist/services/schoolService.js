@@ -27,6 +27,15 @@ class SchoolService {
         const id = info.lastInsertRowid;
         console.log("Created school table with id: ", id);
     }
+    getAllSchools() {
+        const stmt = this.dbService.prepare("SELECT * FROM school");
+        if (!stmt) {
+            console.error("Error preparing SQL statement");
+            return [];
+        }
+        const rows = stmt.all();
+        return rows;
+    }
     addSchool(institutionId, director) {
         // 1. add
         const stmt = this.dbService.prepare(`

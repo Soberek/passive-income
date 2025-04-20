@@ -2,7 +2,7 @@ import sqliteDbService from "./sqliteDbService";
 import { Institution } from "./institutionsService";
 
 interface School {
-  idSchool: number;
+  idSchool: number | BigInt;
   director: string;
   // foreign key to institution
 }
@@ -31,6 +31,17 @@ class SchoolService {
     const info = stmt.run();
     const id = info.lastInsertRowid;
     console.log("Created school table with id: ", id);
+  }
+
+  getAllSchools(): School[] {
+    const stmt = this.dbService.prepare("SELECT * FROM school");
+
+    if (!stmt) {
+      console.error("Error preparing SQL statement");
+      return [];
+    }
+    const rows = stmt.all();
+    return rows as School[];
   }
 
   addSchool(institutionId: Institution["idInstitution"], director: string) {

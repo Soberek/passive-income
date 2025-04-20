@@ -47,7 +47,7 @@ class InstitutionsService {
         return stmt.all();
     }
     addInstitution(name, address, postal_code, city, phone, email, website, municipality) {
-        const stmt = this.dbService.prepare("INSERT INTO institutions (name, address, postal_code, city, phone, email, website) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        const stmt = this.dbService.prepare("INSERT INTO institutions (name, address, postal_code, city, phone, email, website, municipality) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         // Check if the statement was prepared successfully
         // and handle the error if it wasn't
         if (!stmt) {
@@ -55,11 +55,11 @@ class InstitutionsService {
             return null;
         }
         // Execute the statement with the provided parameters
-        const result = stmt.run(name, address, postal_code, city, phone, email, website);
+        const result = stmt.run(name, address, postal_code, city, phone, email, website, municipality);
         // Check if the execution was successful
         if (result.changes > 0) {
             console.log("Institution added successfully");
-            return result.lastInsertRowid; // Return the ID of the newly inserted row
+            return { newInstitutionId: result.lastInsertRowid }; // Return the ID of the newly inserted row
         }
         // If the execution failed, log an error message
         console.error("Error adding institution");
