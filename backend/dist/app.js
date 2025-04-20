@@ -69,10 +69,6 @@ class ExpressApp {
             console.log("Received SIGINT. Shutting down...");
             // Perform any cleanup tasks here
         });
-        this.app.addListener("SIGTERM", () => {
-            console.log("Received SIGTERM. Shutting down...");
-            // Perform any cleanup tasks here
-        });
     }
 }
 exports.default = ExpressApp;
