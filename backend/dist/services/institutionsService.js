@@ -13,10 +13,9 @@ class InstitutionsService {
     }
     createInstitutionTable() {
         const stmt = this.dbService.prepare(`
-      CREATE TABLE institution ( 
+      CREATE TABLE institutions ( 
         id_institution INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL, 
-        id_institution_type INTEGER NOT NULL, 
         address TEXT NOT NULL, 
         city TEXT NOT NULL, 
         postal_code TEXT NOT NULL,
@@ -24,7 +23,6 @@ class InstitutionsService {
         email TEXT, 
         website TEXT, 
         municipality TEXT,
-        FOREIGN KEY (id_institution_type) REFERENCES institution_type(id_institution_type) 
       );
     `);
         // Check if the statement was prepared successfully
@@ -32,7 +30,13 @@ class InstitutionsService {
             console.error("Error preparing SQL statement");
             return;
         }
-        stmt.run();
+        const info = stmt.run();
+        if (info.lastInsertRowid) {
+            console.log("Created institutions table with id: ", info.lastInsertRowid);
+        }
+        else {
+            console.error("Error creating institutions table");
+        }
     }
     getAllInstitutions() {
         const stmt = this.dbService.prepare("SELECT * FROM institutions");
@@ -42,7 +46,7 @@ class InstitutionsService {
         }
         return stmt.all();
     }
-    addInstitution(name, address, postal_code, city, phone, email, website) {
+    addInstitution(name, address, postal_code, city, phone, email, website, municipality) {
         const stmt = this.dbService.prepare("INSERT INTO institutions (name, address, postal_code, city, phone, email, website) VALUES (?, ?, ?, ?, ?, ?, ?)");
         // Check if the statement was prepared successfully
         // and handle the error if it wasn't

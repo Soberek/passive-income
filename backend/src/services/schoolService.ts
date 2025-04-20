@@ -1,14 +1,14 @@
 import sqliteDbService from "./sqliteDbService";
+import { Institution } from "./institutionsService";
 
 interface School {
-  id_institution: number;
+  idSchool: number;
   director: string;
   // foreign key to institution
 }
 
 class SchoolService {
   private dbService: sqliteDbService;
-
   constructor() {
     this.dbService = sqliteDbService.getInstance();
   }
@@ -16,8 +16,9 @@ class SchoolService {
   createSchoolTable() {
     const stmt = this.dbService.prepare(`
             CREATE TABLE school ( 
-                id_institution INTEGER PRIMARY KEY AUTOINCREMENT,
-                direction TEXT NOT NULL, 
+                id_school INTEGER PRIMARY KEY AUTOINCREMENT,
+                id_institution INTEGER NOT NULL,
+                director TEXT NOT NULL, 
                 FOREIGN KEY (id_institution) REFERENCES institutions(id_institution) ON DELETE CASCADE 
             );
         `);
@@ -27,6 +28,31 @@ class SchoolService {
       console.error("Error preparing SQL statement");
       return;
     }
-    stmt.run();
+    const info = stmt.run();
+    const id = info.lastInsertRowid;
+    console.log("Created school table with id: ", id);
+  }
+
+  addSchool(institutionId: Institution["idInstitution"], director: string) {
+    // 1. add
+    const stmt = this.dbService.prepare(`
+            INSERT INTO school (id_institution, direction) 
+            VALUES (?, ?)
+        `);
+
+    if (!stmt) {
+      console.error("Error preparing SQL statement");
+      return -1;
+    }
+
+    const info = stmt.run(institutionId, director);
+
+    if (!info) {
+      console.error("Error executing SQL statement");
+    } else {
+      console.log("Added school with id: ", info.lastInsertRowid);
+    }
   }
 }
+
+export default SchoolService;
