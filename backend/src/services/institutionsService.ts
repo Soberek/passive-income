@@ -15,6 +15,7 @@ interface Institution {
   municipality?: string;
 }
 
+// This class is responsible for managing institutions in the database.
 class InstitutionsService {
   private dbService: sqliteDbService;
 

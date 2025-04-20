@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InstitutionsService = void 0;
 const sqliteDbService_1 = __importDefault(require("./sqliteDbService"));
+// This class is responsible for managing institutions in the database.
 class InstitutionsService {
     dbService;
     constructor() {
