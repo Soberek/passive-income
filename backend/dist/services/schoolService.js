@@ -28,7 +28,8 @@ class SchoolService {
         console.log("Created school table with id: ", id);
     }
     getAllSchools() {
-        const stmt = this.dbService.prepare("SELECT * FROM school");
+        // get all schools
+        const stmt = this.dbService.prepare("SELECT * FROM school JOIN institutions ON school.id_institution = institutions.id_institution");
         if (!stmt) {
             console.error("Error preparing SQL statement");
             return [];
