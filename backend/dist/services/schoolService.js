@@ -49,10 +49,10 @@ class SchoolService {
         const info = stmt.run(institutionId, director);
         if (!info) {
             console.error("Error executing SQL statement");
+            return -1;
         }
-        else {
-            console.log("Added school with id: ", info.lastInsertRowid);
-        }
+        console.log("Added school with id: ", info.lastInsertRowid);
+        return info.lastInsertRowid;
     }
 }
 exports.default = SchoolService;

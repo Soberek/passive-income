@@ -44,7 +44,10 @@ class SchoolService {
     return rows as School[];
   }
 
-  addSchool(institutionId: Institution["idInstitution"], director: string) {
+  addSchool(
+    institutionId: Institution["idInstitution"],
+    director: string
+  ): School["idSchool"] {
     // 1. add
     const stmt = this.dbService.prepare(`
             INSERT INTO school (id_institution, direction) 
@@ -60,9 +63,11 @@ class SchoolService {
 
     if (!info) {
       console.error("Error executing SQL statement");
-    } else {
-      console.log("Added school with id: ", info.lastInsertRowid);
+      return -1;
     }
+
+    console.log("Added school with id: ", info.lastInsertRowid);
+    return info.lastInsertRowid;
   }
 }
 
