@@ -39,7 +39,7 @@ export default class ExpressApp {
     // Middleware for serving static files from the "public" directory
     this.app.use(express.static("public"));
     // Middleware for logging requests
-    this.app.use((req: Request, res: Response, next: () => void) => {
+    this.app.use((req: Request, _: Response, next: () => void) => {
       console.log(`${req.method} ${req.url}`);
       next();
     });
@@ -53,10 +53,10 @@ export default class ExpressApp {
 
   // Initialize routes
   initRoutes() {
-    // Define the routes for the application
     // The indexRouter is imported from the routes directory and is used to handle requests to the root URL ("/").
     this.app.use("/", indexRouter);
 
+    // The schoolRouter is imported from the routes directory and is used to handle requests to the "/api" URL.
     this.app.use("/api", schoolRouter);
   }
 
