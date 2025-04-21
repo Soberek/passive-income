@@ -71,6 +71,7 @@ export default class ExpressApp {
   onAppStop() {
     this.app.addListener("SIGINT", () => {
       console.log("Received SIGINT. Shutting down...");
+
       // Perform any cleanup tasks here
     });
   }
