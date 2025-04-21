@@ -36,6 +36,7 @@ export default class schoolController {
       res.status(200).json(schools);
       return;
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: "Error fetching schools", error });
       return;
     }
