@@ -7,8 +7,6 @@ export interface School {
   // foreign key to institution
 }
 
-type schoolParams = Partial<Omit<School, "id">>;
-
 const schools: School[] = [
   { id: 1 },
   { id: 2 },
@@ -71,7 +69,6 @@ class SchoolService {
     institutionId: Institution["id"],
     director: School["director"]
   ): School["id"] {
-    // 1. add
     const stmt = this.dbService.prepare(`
             INSERT INTO school (id_institution, director) 
             VALUES (?, ?)

@@ -55,7 +55,6 @@ class SchoolService {
         return rows;
     }
     addSchool(institutionId, director) {
-        // 1. add
         const stmt = this.dbService.prepare(`
             INSERT INTO school (id_institution, director) 
             VALUES (?, ?)
