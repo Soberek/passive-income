@@ -12,6 +12,15 @@ class schoolController {
         this.schoolService = new schoolService_1.default();
         this.institutionsService = new institutionsService_1.InstitutionsService();
     }
+    createSchoolTable() {
+        try {
+            this.schoolService.createSchoolTable();
+            console.log("School table created successfully");
+        }
+        catch (error) {
+            console.error("Error creating school table: ", error);
+        }
+    }
     getAllSchools(_, res) {
         try {
             const schools = this.schoolService.getAllSchools();

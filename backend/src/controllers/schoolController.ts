@@ -17,6 +17,15 @@ export default class schoolController {
     this.institutionsService = new InstitutionsService();
   }
 
+  createSchoolTable() {
+    try {
+      this.schoolService.createSchoolTable();
+      console.log("School table created successfully");
+    } catch (error) {
+      console.error("Error creating school table: ", error);
+    }
+  }
+
   getAllSchools(_: Request, res: Response): void {
     try {
       const schools = this.schoolService.getAllSchools();

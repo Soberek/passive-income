@@ -21,7 +21,6 @@ class SchoolService {
   private dbService: sqliteDbService;
   constructor() {
     this.dbService = sqliteDbService.getInstance();
-    this.createSchoolTable();
   }
 
   createSchoolTable() {
