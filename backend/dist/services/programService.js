@@ -10,7 +10,7 @@ class ProgramService {
         this.dbService = sqliteDbService_1.default.getInstance();
         this.createProgramTable();
     }
-    createProgramTable() {
+    createProgramTable = () => {
         const stmt = this.dbService.prepare(`
         CREATE TABLE IF NOT EXISTS program (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,7 +24,7 @@ class ProgramService {
             return;
         }
         stmt.run();
-    }
+    };
     getPrograms() {
         const stmt = this.dbService.prepare("SELECT * FROM program");
         if (!stmt) {

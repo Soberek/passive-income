@@ -26,7 +26,7 @@ class InstitutionsService {
     this.dbService = sqliteDbService.getInstance();
   }
 
-  createInstitutionTable() {
+  createInstitutionTable = () => {
     const stmt = this.dbService.prepare(`
       CREATE TABLE institutions ( 
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -54,9 +54,9 @@ class InstitutionsService {
     } else {
       console.error("Error creating institutions table");
     }
-  }
+  };
 
-  getAllInstitutions(): Institution[] {
+  getAllInstitutions = (): Institution[] => {
     const stmt = this.dbService.prepare("SELECT * FROM institutions");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -64,9 +64,9 @@ class InstitutionsService {
     }
 
     return stmt.all() as Institution[];
-  }
+  };
 
-  addInstitution(input: Omit<Institution, "id">) {
+  addInstitution = (input: Omit<Institution, "id">) => {
     const {
       name,
       address,
@@ -111,7 +111,7 @@ class InstitutionsService {
     // If the execution failed, log an error message
     console.error("Error adding institution");
     return null; // Return null to indicate failure
-  }
+  };
 }
 
 export { InstitutionsService };
