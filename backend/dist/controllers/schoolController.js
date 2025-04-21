@@ -12,7 +12,7 @@ class schoolController {
         this.schoolService = new schoolService_1.default();
         this.institutionsService = new institutionsService_1.InstitutionsService();
     }
-    createSchoolTable() {
+    createSchoolTable = () => {
         try {
             this.schoolService.createSchoolTable();
             console.log("School table created successfully");
@@ -20,8 +20,8 @@ class schoolController {
         catch (error) {
             console.error("Error creating school table: ", error);
         }
-    }
-    getAllSchools(_, res) {
+    };
+    getAllSchools = (_, res) => {
         try {
             const schools = this.schoolService.getAllSchools();
             if (!schools) {
@@ -36,8 +36,8 @@ class schoolController {
             res.status(500).json({ message: "Error fetching schools", error });
             return;
         }
-    }
-    createSchool(req, res) {
+    };
+    createSchool = (req, res) => {
         try {
             const { name, address, postalCode, city, phone, email, website, municipality, director, } = req.body;
             if (!name || !address || !postalCode || !city) {
@@ -81,7 +81,7 @@ class schoolController {
             res.status(500).json({ message: "Error creating school" });
             return;
         }
-    }
-    deleteSchool() { }
+    };
+    deleteSchool = () => { };
 }
 exports.default = schoolController;

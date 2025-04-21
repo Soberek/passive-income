@@ -17,16 +17,16 @@ export default class schoolController {
     this.institutionsService = new InstitutionsService();
   }
 
-  createSchoolTable() {
+  createSchoolTable = () => {
     try {
       this.schoolService.createSchoolTable();
       console.log("School table created successfully");
     } catch (error) {
       console.error("Error creating school table: ", error);
     }
-  }
+  };
 
-  getAllSchools(_: Request, res: Response): void {
+  getAllSchools = (_: Request, res: Response): void => {
     try {
       const schools = this.schoolService.getAllSchools();
       if (!schools) {
@@ -40,9 +40,9 @@ export default class schoolController {
       res.status(500).json({ message: "Error fetching schools", error });
       return;
     }
-  }
+  };
 
-  createSchool(req: Request, res: Response): void {
+  createSchool = (req: Request, res: Response): void => {
     try {
       const {
         name,
@@ -105,9 +105,9 @@ export default class schoolController {
       res.status(500).json({ message: "Error creating school" });
       return;
     }
-  }
+  };
 
-  deleteSchool() {}
+  deleteSchool = () => {};
 
   // Add more methods as needed
 }
