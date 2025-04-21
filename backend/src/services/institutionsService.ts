@@ -7,7 +7,7 @@ import sqliteDbService from "./sqliteDbService";
 // Model for the Institution
 // This interface defines the structure of an institution object.
 export interface Institution {
-  idInstitution: number | BigInt;
+  id: number | BigInt;
   name: string;
   address?: string;
   city?: string;

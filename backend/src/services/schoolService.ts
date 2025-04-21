@@ -58,8 +58,8 @@ class SchoolService {
   }
 
   addSchool(
-    institutionId: Institution["idInstitution"],
-    director: string
+    institutionId: Institution["id"],
+    director: School["director"]
   ): School["id"] {
     // 1. add
     const stmt = this.dbService.prepare(`

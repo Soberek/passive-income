@@ -1,7 +1,7 @@
 import sqliteDbService from "./sqliteDbService";
 
 interface Program {
-  idProgram: number;
+  id: number;
   name: string;
   description: string;
   programType: "programowy" | "nieprogramowy";

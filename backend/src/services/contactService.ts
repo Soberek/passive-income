@@ -2,7 +2,7 @@ import sqliteDbService from "./sqliteDbService";
 
 // Model for the Contact
 export interface Contact {
-  idContact: number;
+  id: number;
   firstName: string;
   lastName: string;
   email?: string;
