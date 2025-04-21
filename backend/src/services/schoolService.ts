@@ -2,10 +2,18 @@ import sqliteDbService from "./sqliteDbService";
 import { Institution } from "./institutionsService";
 
 interface School {
-  idSchool: number | BigInt;
-  director: string;
+  id: number | BigInt;
+  director?: string;
   // foreign key to institution
 }
+
+const schools: School[] = [
+  { id: 1 },
+  { id: 2 },
+  { id: 3 },
+  { id: 4 },
+  { id: 5 },
+];
 
 class SchoolService {
   private dbService: sqliteDbService;
@@ -50,7 +58,7 @@ class SchoolService {
   addSchool(
     institutionId: Institution["idInstitution"],
     director: string
-  ): School["idSchool"] {
+  ): School["id"] {
     // 1. add
     const stmt = this.dbService.prepare(`
             INSERT INTO school (id_institution, director) 

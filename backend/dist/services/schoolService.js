@@ -4,6 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sqliteDbService_1 = __importDefault(require("./sqliteDbService"));
+const schools = [
+    { id: 1 },
+    { id: 2 },
+    { id: 3 },
+    { id: 4 },
+    { id: 5 },
+];
 class SchoolService {
     dbService;
     constructor() {
