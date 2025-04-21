@@ -10,7 +10,7 @@ class ContactService {
         this.dbService = sqliteDbService_1.default.getInstance();
         this.createContactTable();
     }
-    createContactTable() {
+    createContactTable = () => {
         const stmt = this.dbService.prepare(`
       CREATE TABLE IF NOT EXISTS contacts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,16 +25,16 @@ class ContactService {
             return;
         }
         stmt.run();
-    }
-    getAllContacts() {
+    };
+    getAllContacts = () => {
         const stmt = this.dbService.prepare("SELECT * FROM contacts");
         if (!stmt) {
             console.error("Error preparing SQL statement");
             return [];
         }
         return stmt.all();
-    }
-    addNewContact(firstName, lastName, email, phone) {
+    };
+    addNewContact = (firstName, lastName, email, phone) => {
         const stmt = this.dbService.prepare("INSERT INTO contacts (firstName, lastName, email, phone) VALUES (?, ?, ?, ?)");
         // Check if the statement was prepared successfully
         // and handle the error if it wasn't
@@ -53,7 +53,7 @@ class ContactService {
             console.error("Error adding contact");
             return null;
         }
-    }
+    };
 }
 exports.default = ContactService;
 // Usage example

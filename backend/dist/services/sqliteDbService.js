@@ -19,17 +19,17 @@ class sqliteDbService {
     // zwraca instancję sqliteDbService
     // singleton pattern zeby nie tworzyc nowej instancji za kazdym razem
     // bede przekazywal do kazdego service czy kontrolera
-    static getInstance() {
+    static getInstance = () => {
         if (!sqliteDbService.instance) {
             sqliteDbService.instance = new sqliteDbService({
                 dbPath: "./sqliteDb.db",
             });
         }
         return sqliteDbService.instance;
-    }
+    };
     // tworzenie tabeli w bazie danych, jezeli nie istnieje
     init() { }
-    prepare(sql) {
+    prepare = (sql) => {
         try {
             const stmt = this.db.prepare(sql);
             return stmt;
@@ -38,10 +38,10 @@ class sqliteDbService {
             console.error("Error preparing SQL statement:", error);
             return null;
         }
-    }
+    };
     // zwraca wszystkie rekordy z tabeli o podanej nazwie
     // getTable
-    getTable(tableName) {
+    getTable = (tableName) => {
         try {
             const stmt = this.db.prepare(`SELECT * FROM ${tableName}`);
             return stmt.all();
@@ -50,6 +50,6 @@ class sqliteDbService {
             console.error(`Error fetching all records from ${tableName}:`, error);
             return [];
         }
-    }
+    };
 }
 exports.default = sqliteDbService;

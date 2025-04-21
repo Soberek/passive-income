@@ -16,7 +16,7 @@ class SchoolService {
     constructor() {
         this.dbService = sqliteDbService_1.default.getInstance();
     }
-    createSchoolTable() {
+    createSchoolTable = () => {
         try {
             const stmt = this.dbService.prepare(`
             CREATE TABLE school ( 
@@ -38,8 +38,8 @@ class SchoolService {
         catch (error) {
             console.error("Error creating school table: ", error);
         }
-    }
-    getAllSchools() {
+    };
+    getAllSchools = () => {
         // get all schools
         const stmt = this.dbService.prepare("SELECT * FROM school JOIN institutions ON school.id_institution = institutions.id");
         if (!stmt) {
@@ -53,8 +53,8 @@ class SchoolService {
         }
         console.log("Fetched all schools: ", rows);
         return rows;
-    }
-    addSchool(institutionId, director) {
+    };
+    addSchool = (institutionId, director) => {
         const stmt = this.dbService.prepare(`
             INSERT INTO school (id_institution, director) 
             VALUES (?, ?)
@@ -70,6 +70,6 @@ class SchoolService {
         }
         console.log("Added school with id: ", info.lastInsertRowid);
         return info.lastInsertRowid;
-    }
+    };
 }
 exports.default = SchoolService;

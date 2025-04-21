@@ -32,7 +32,7 @@ class ProgramService {
     stmt.run();
   };
 
-  getPrograms() {
+  getPrograms = () => {
     const stmt = this.dbService.prepare("SELECT * FROM program");
 
     if (!stmt) {
@@ -41,13 +41,13 @@ class ProgramService {
     }
 
     return stmt.all() as Program[];
-  }
+  };
 
-  addProgram(
+  addProgram = (
     name: string,
     description: string,
     programType: "programowy" | "nieprogramowy"
-  ) {
+  ) => {
     const stmt = this.dbService.prepare(
       "INSERT INTO program (name, description, programType) VALUES (?, ?, ?)"
     );
@@ -66,7 +66,7 @@ class ProgramService {
     }
 
     return result;
-  }
+  };
 }
 
 export default ProgramService;

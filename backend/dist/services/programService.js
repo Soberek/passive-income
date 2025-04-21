@@ -25,15 +25,15 @@ class ProgramService {
         }
         stmt.run();
     };
-    getPrograms() {
+    getPrograms = () => {
         const stmt = this.dbService.prepare("SELECT * FROM program");
         if (!stmt) {
             console.error("Error preparing stmt");
             return [];
         }
         return stmt.all();
-    }
-    addProgram(name, description, programType) {
+    };
+    addProgram = (name, description, programType) => {
         const stmt = this.dbService.prepare("INSERT INTO program (name, description, programType) VALUES (?, ?, ?)");
         // Check if the statement was prepared successfully
         if (!stmt) {
@@ -47,6 +47,6 @@ class ProgramService {
             return null;
         }
         return result;
-    }
+    };
 }
 exports.default = ProgramService;

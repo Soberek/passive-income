@@ -17,7 +17,7 @@ class ContactService {
     this.createContactTable();
   }
 
-  createContactTable() {
+  createContactTable = () => {
     const stmt = this.dbService.prepare(`
       CREATE TABLE IF NOT EXISTS contacts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -33,9 +33,9 @@ class ContactService {
       return;
     }
     stmt.run();
-  }
+  };
 
-  public getAllContacts(): Contact[] {
+  public getAllContacts = (): Contact[] => {
     const stmt = this.dbService.prepare("SELECT * FROM contacts");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -43,14 +43,14 @@ class ContactService {
     }
 
     return stmt.all() as Contact[];
-  }
+  };
 
-  public addNewContact(
+  public addNewContact = (
     firstName: string,
     lastName: string,
     email?: string,
     phone?: string
-  ) {
+  ) => {
     const stmt = this.dbService.prepare(
       "INSERT INTO contacts (firstName, lastName, email, phone) VALUES (?, ?, ?, ?)"
     );
@@ -71,7 +71,7 @@ class ContactService {
       console.error("Error adding contact");
       return null;
     }
-  }
+  };
 }
 export default ContactService;
 
