@@ -25,7 +25,7 @@ import schoolRouter from "./routes/schoolRouter";
 
 export default class ExpressApp {
   private app;
-  private PORT: number = 3005;
+  private PORT: number = 3000;
   constructor() {
     this.app = express();
     this.initMiddlewares();

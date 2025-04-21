@@ -28,7 +28,7 @@ const schoolRouter_1 = __importDefault(require("./routes/schoolRouter"));
 // and use it in your application
 class ExpressApp {
     app;
-    PORT = 3005;
+    PORT = 3000;
     constructor() {
         this.app = (0, express_1.default)();
         this.initMiddlewares();
