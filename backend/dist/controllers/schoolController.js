@@ -63,5 +63,6 @@ class schoolController {
             return;
         }
     }
+    deleteSchool() { }
 }
 exports.default = schoolController;

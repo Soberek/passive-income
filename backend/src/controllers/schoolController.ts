@@ -91,5 +91,7 @@ export default class schoolController {
     }
   }
 
+  deleteSchool() {}
+
   // Add more methods as needed
 }
