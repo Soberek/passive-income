@@ -47,7 +47,7 @@ class SchoolService {
     }
   }
 
-  getAllSchools(): School[] {
+  getAllSchools(): School[] | [] {
     // get all schools
     const stmt = this.dbService.prepare(
       "SELECT * FROM school JOIN institutions ON school.id_institution = institutions.id"
