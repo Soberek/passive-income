@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const index_1 = __importDefault(require("./routes/index"));
+const schoolRouter_1 = __importDefault(require("./routes/schoolRouter"));
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
 // npm install jsonwebtoken
@@ -55,6 +56,7 @@ class ExpressApp {
         // Define the routes for the application
         // The indexRouter is imported from the routes directory and is used to handle requests to the root URL ("/").
         this.app.use("/", index_1.default);
+        this.app.use("/api", schoolRouter_1.default);
     }
     // Initialize error handling
     initErrorHandling() {

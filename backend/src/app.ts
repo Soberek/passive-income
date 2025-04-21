@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import indexRouter from "./routes/index";
+import schoolRouter from "./routes/schoolRouter";
 
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
@@ -55,6 +56,8 @@ export default class ExpressApp {
     // Define the routes for the application
     // The indexRouter is imported from the routes directory and is used to handle requests to the root URL ("/").
     this.app.use("/", indexRouter);
+
+    this.app.use("/api", schoolRouter);
   }
 
   // Initialize error handling
