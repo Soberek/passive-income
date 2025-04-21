@@ -11,7 +11,9 @@ class sqliteDbService {
     // The constructor takes an object with a dbPath property, which is the path to the SQLite database file.
     // constructor is a special method for creating and initializing an object created with a class.
     constructor(params) {
-        this.db = (0, better_sqlite3_1.default)(params.dbPath);
+        this.db = (0, better_sqlite3_1.default)(params.dbPath, {
+            timeout: 5000,
+        });
         this.init();
     }
     // zwraca instancję sqliteDbService
