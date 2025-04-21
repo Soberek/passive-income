@@ -12,7 +12,7 @@ class SchoolService {
     createSchoolTable() {
         const stmt = this.dbService.prepare(`
             CREATE TABLE school ( 
-                id_school INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 id_institution INTEGER NOT NULL,
                 director TEXT NOT NULL, 
                 FOREIGN KEY (id_institution) REFERENCES institutions(id_institution) ON DELETE CASCADE 
@@ -29,7 +29,7 @@ class SchoolService {
     }
     getAllSchools() {
         // get all schools
-        const stmt = this.dbService.prepare("SELECT * FROM school JOIN institutions ON school.id_institution = institutions.id_institution");
+        const stmt = this.dbService.prepare("SELECT * FROM school JOIN institutions ON school.id_institution = institutions.id");
         if (!stmt) {
             console.error("Error preparing SQL statement");
             return [];
