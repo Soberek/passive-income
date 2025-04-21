@@ -58,6 +58,12 @@ class SchoolService {
       return [];
     }
     const rows = stmt.all();
+
+    if (rows.length === 0) {
+      console.error("No schools found");
+      return [];
+    }
+    console.log("Fetched all schools: ", rows);
     return rows as School[];
   }
 
