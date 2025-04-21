@@ -15,9 +15,11 @@ class SchoolService {
     dbService;
     constructor() {
         this.dbService = sqliteDbService_1.default.getInstance();
+        this.createSchoolTable();
     }
     createSchoolTable() {
-        const stmt = this.dbService.prepare(`
+        try {
+            const stmt = this.dbService.prepare(`
             CREATE TABLE school ( 
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 id_institution INTEGER NOT NULL,
@@ -25,14 +27,18 @@ class SchoolService {
                 FOREIGN KEY (id_institution) REFERENCES institutions(id_institution) ON DELETE CASCADE 
             );
         `);
-        // Check if the statement was prepared successfully
-        if (!stmt) {
-            console.error("Error preparing SQL statement");
-            return;
+            // Check if the statement was prepared successfully
+            if (!stmt) {
+                console.error("Error preparing SQL statement");
+                return;
+            }
+            const info = stmt.run();
+            const id = info.lastInsertRowid;
+            console.log("Created school table with id: ", id);
         }
-        const info = stmt.run();
-        const id = info.lastInsertRowid;
-        console.log("Created school table with id: ", id);
+        catch (error) {
+            console.error("Error creating school table: ", error);
+        }
     }
     getAllSchools() {
         // get all schools
