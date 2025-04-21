@@ -13,7 +13,7 @@ class ContactService {
     createContactTable() {
         const stmt = this.dbService.prepare(`
       CREATE TABLE IF NOT EXISTS contacts (
-        id_contact INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         first_name TEXT NOT NULL,
         last_name TEXT NOT NULL,
         email TEXT,

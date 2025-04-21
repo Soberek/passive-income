@@ -29,7 +29,7 @@ class InstitutionsService {
   createInstitutionTable() {
     const stmt = this.dbService.prepare(`
       CREATE TABLE institutions ( 
-        id_institution INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL, 
         address TEXT NOT NULL, 
         city TEXT NOT NULL, 
