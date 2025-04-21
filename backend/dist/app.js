@@ -61,7 +61,7 @@ class ExpressApp {
     // Initialize error handling
     initErrorHandling() {
         // Middleware for handling errors
-        this.app.use((err, req, res, next) => {
+        this.app.use((err, _, res, next) => {
             console.error(err.stack);
             res.status(500).send("Something broke!");
         });

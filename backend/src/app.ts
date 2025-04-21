@@ -63,12 +63,10 @@ export default class ExpressApp {
   // Initialize error handling
   initErrorHandling() {
     // Middleware for handling errors
-    this.app.use(
-      (err: Error, req: Request, res: Response, next: () => void) => {
-        console.error(err.stack);
-        res.status(500).send("Something broke!");
-      }
-    );
+    this.app.use((err: Error, _: Request, res: Response, next: () => void) => {
+      console.error(err.stack);
+      res.status(500).send("Something broke!");
+    });
   }
 
   onAppStop() {
