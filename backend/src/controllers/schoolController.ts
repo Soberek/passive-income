@@ -51,7 +51,7 @@ export default class schoolController {
       }
 
       // 1. Step 1: Create institution
-      const newInstitution = this.institutionsService.addInstitution(
+      const newInstitution = this.institutionsService.addInstitution({
         name,
         address,
         postalCode,
@@ -59,8 +59,8 @@ export default class schoolController {
         phone,
         email,
         website,
-        municipality
-      );
+        municipality,
+      });
 
       if (!newInstitution) {
         res.status(500).json({ message: "Error creating institution" });

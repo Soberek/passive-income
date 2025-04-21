@@ -46,7 +46,13 @@ class InstitutionsService {
         }
         return stmt.all();
     }
-    addInstitution(name, address, postal_code, city, phone, email, website, municipality) {
+    addInstitution(input) {
+        const { name, address, postalCode, city, phone, email, website, municipality, } = input;
+        // Check if the required fields are provided
+        if (!name || !address || !postalCode || !city) {
+            console.error("Missing required fields");
+            return null;
+        }
         const stmt = this.dbService.prepare("INSERT INTO institutions (name, address, postal_code, city, phone, email, website, municipality) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         // Check if the statement was prepared successfully
         // and handle the error if it wasn't
@@ -55,7 +61,7 @@ class InstitutionsService {
             return null;
         }
         // Execute the statement with the provided parameters
-        const result = stmt.run(name, address, postal_code, city, phone, email, website, municipality);
+        const result = stmt.run(name, address, postalCode, city, phone, email, website, municipality);
         // Check if the execution was successful
         if (result.changes > 0) {
             console.log("Institution added successfully");

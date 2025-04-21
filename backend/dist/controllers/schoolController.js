@@ -35,7 +35,16 @@ class schoolController {
                 return;
             }
             // 1. Step 1: Create institution
-            const newInstitution = this.institutionsService.addInstitution(name, address, postalCode, city, phone, email, website, municipality);
+            const newInstitution = this.institutionsService.addInstitution({
+                name,
+                address,
+                postalCode,
+                city,
+                phone,
+                email,
+                website,
+                municipality,
+            });
             if (!newInstitution) {
                 res.status(500).json({ message: "Error creating institution" });
                 return;

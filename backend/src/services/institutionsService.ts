@@ -66,16 +66,23 @@ class InstitutionsService {
     return stmt.all() as Institution[];
   }
 
-  addInstitution(
-    name: string,
-    address?: string,
-    postal_code?: string,
-    city?: string,
-    phone?: string,
-    email?: string,
-    website?: string,
-    municipality?: string
-  ) {
+  addInstitution(input: Omit<Institution, "id">) {
+    const {
+      name,
+      address,
+      postalCode,
+      city,
+      phone,
+      email,
+      website,
+      municipality,
+    } = input;
+
+    // Check if the required fields are provided
+    if (!name || !address || !postalCode || !city) {
+      console.error("Missing required fields");
+      return null;
+    }
     const stmt = this.dbService.prepare(
       "INSERT INTO institutions (name, address, postal_code, city, phone, email, website, municipality) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     );
@@ -89,7 +96,7 @@ class InstitutionsService {
     const result = stmt.run(
       name,
       address,
-      postal_code,
+      postalCode,
       city,
       phone,
       email,
