@@ -29,13 +29,13 @@ class schoolController {
     }
     createSchool(req, res) {
         try {
-            const { name, address, postal_code, city, phone, email, website, municipality, director, } = req.body;
-            if (!name || !address || !postal_code || !city) {
+            const { name, address, postalCode, city, phone, email, website, municipality, director, } = req.body;
+            if (!name || !address || !postalCode || !city) {
                 res.status(400).json({ message: "Missing required fields" });
                 return;
             }
             // 1. Step 1: Create institution
-            const newInstitution = this.institutionsService.addInstitution(name, address, postal_code, city, phone, email, website, municipality);
+            const newInstitution = this.institutionsService.addInstitution(name, address, postalCode, city, phone, email, website, municipality);
             if (!newInstitution) {
                 res.status(500).json({ message: "Error creating institution" });
                 return;

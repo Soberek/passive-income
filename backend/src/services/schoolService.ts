@@ -1,11 +1,13 @@
 import sqliteDbService from "./sqliteDbService";
 import { Institution } from "./institutionsService";
 
-interface School {
+export interface School {
   id: number | BigInt;
   director?: string;
   // foreign key to institution
 }
+
+type schoolParams = Partial<Omit<School, "id">>;
 
 const schools: School[] = [
   { id: 1 },

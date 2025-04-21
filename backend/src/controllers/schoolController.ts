@@ -1,7 +1,13 @@
 import { Request, Response } from "express";
-import { InstitutionsService } from "../services/institutionsService";
+import {
+  InstitutionsService,
+  Institution,
+} from "../services/institutionsService";
 import SchoolService from "../services/schoolService";
+import { School } from "../services/schoolService";
 
+interface SchoolInstitution extends Institution, School {}
+type schoolParams = Omit<SchoolInstitution, "id">;
 export default class schoolController {
   private schoolService: SchoolService;
   private institutionsService: InstitutionsService;
@@ -31,15 +37,15 @@ export default class schoolController {
       const {
         name,
         address,
-        postal_code,
+        postalCode,
         city,
         phone,
         email,
         website,
         municipality,
         director,
-      } = req.body;
-      if (!name || !address || !postal_code || !city) {
+      }: schoolParams = req.body;
+      if (!name || !address || !postalCode || !city) {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
@@ -48,7 +54,7 @@ export default class schoolController {
       const newInstitution = this.institutionsService.addInstitution(
         name,
         address,
-        postal_code,
+        postalCode,
         city,
         phone,
         email,
