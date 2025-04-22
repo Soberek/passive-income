@@ -7,7 +7,8 @@ import SchoolService from "../services/schoolService";
 import { School } from "../services/schoolService";
 
 interface SchoolInstitution extends Institution, School {}
-type schoolParams = Omit<SchoolInstitution, "id">;
+export type schoolParams = Omit<SchoolInstitution, "id">;
+
 export default class schoolController {
   private schoolService: SchoolService;
   private institutionsService: InstitutionsService;

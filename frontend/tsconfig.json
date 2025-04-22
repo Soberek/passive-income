@@ -14,7 +14,8 @@
     "skipLibCheck": true // Przyspiesza kompilację, pomijając sprawdzanie deklaracji bibliotek
   },
   "include": [
-    "src/**/*" // Kompiluj wszystko w folderze src
+    "src/**/*", // Kompiluj wszystko w folderze src
+    "../backend/src/defaultSchoolAddress.ts"
   ],
   "exclude": [
     "node_modules", // Pomiń node_modules
