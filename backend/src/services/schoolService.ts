@@ -28,7 +28,7 @@ class SchoolService {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 id_institution INTEGER NOT NULL,
                 director TEXT NOT NULL, 
-                FOREIGN KEY (id_institution) REFERENCES institutions(id_institution) ON DELETE CASCADE 
+                FOREIGN KEY (id_institution) REFERENCES institutions(id) ON DELETE CASCADE 
             );
         `);
 
