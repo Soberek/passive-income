@@ -36,6 +36,12 @@ function generateVariables() {
       </div>`;
 }
 function createInput(type, id, label) {
+    const label2 = document.createElement("label");
+    const input2 = document.createElement("input");
+    label2.textContent = label;
+    input2.type = type;
+    input2.setAttribute("id", id);
+    label2.appendChild(input2);
     return `<label>${label}: <input type="${type}" id="${id}" /></label><br />`;
 }
 function createTextarea(id, label, defaultValue = "") {
@@ -182,11 +188,13 @@ function showVariableNames() {
         "additional_info",
     ];
     const variablesList = document.getElementById("variable_names");
+    const documentFragment = document.createDocumentFragment();
     variables.forEach((variable) => {
         const item = document.createElement("li");
         item.textContent = `{${variable}}`;
-        variablesList === null || variablesList === void 0 ? void 0 : variablesList.appendChild(item);
+        documentFragment.appendChild(item);
     });
+    variablesList === null || variablesList === void 0 ? void 0 : variablesList.appendChild(documentFragment);
 }
 function initializeForm() {
     var _a, _b;

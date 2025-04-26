@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2015", // Docelowa wersja JS (ES6 działa w większości przeglądarek)
+    "target": "ES6", // Docelowa wersja JS (ES6 działa w większości przeglądarek)
     "module": "ESNext", // System modułów dla import/export w przeglądarce
     "outDir": "./dist", // Folder wyjściowy dla skompilowanego kodu
     "rootDir": "src", // Folder źródłowy
@@ -14,8 +14,7 @@
     "skipLibCheck": true // Przyspiesza kompilację, pomijając sprawdzanie deklaracji bibliotek
   },
   "include": [
-    "src/**/*", // Kompiluj wszystko w folderze src
-    "../backend/src/defaultSchoolAddress.ts"
+    "src/**/*" // Kompiluj wszystko w folderze src
   ],
   "exclude": [
     "node_modules", // Pomiń node_modules

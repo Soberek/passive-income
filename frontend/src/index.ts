@@ -1,4 +1,4 @@
-import { NavigationController } from "./pages/Navigation";
+import NavigationController from "./pages/Navigation.js";
 class App {
   private navigationController: NavigationController;
 

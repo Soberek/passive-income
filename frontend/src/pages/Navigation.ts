@@ -4,25 +4,52 @@ import { renderHome } from "./home";
 // import { renderTasks } from "./pages/tasks";
 import { createIzrzDocument } from "./createIzrzDocument";
 
-type Page = "home" | "tasks" | "document";
+import { SchoolController } from "./Schools/schoolsView";
+
+type Page = "home" | "tasks" | "document" | "schools";
+
+const pages: { name: Page; render: () => void }[] = [
+  {
+    name: "home",
+    render: renderHome,
+  },
+  {
+    name: "tasks",
+    render: () => {
+      console.log("Tasks page");
+    },
+  },
+  {
+    name: "document",
+    render: createIzrzDocument,
+  },
+  {
+    name: "schools",
+    render: () => new SchoolController().render(),
+  },
+];
 
 class NavigationView {
-  renderOnload(navigate: (page: Page) => void) {
+  renderNavigationOnload(navigate: (page: Page) => void) {
     document.addEventListener("DOMContentLoaded", () => {
       this.renderNavigation(navigate);
-      navigate("home");
+      navigate("home"); // Domyślnie renderuj stronę główną
     });
   }
 
+  // renderNavigation to metoda, która renderuje nawigację
+  // i dodaje do niej obsługę zdarzeń
   renderNavigation(navigate: (page: Page) => void) {
     const navigation = document.getElementById("navigation")!;
-    navigation.innerHTML = `
-        <ul>
-            <li><a href="#" id="nav-home">Home</a></li>
-            <li><a href="#" id="nav-tasks">Tasks</a></li>
-            <li><a href="#" id="nav-document">Document</a></li>
-        </ul>
-    `;
+
+    const navLinks = pages
+      .map(
+        (page) =>
+          `<li><a href="#" id="nav-${page.name}">${page.name.charAt(0).toUpperCase() + page.name.slice(1)}</a></li>`
+      )
+      .join("");
+
+    navigation.innerHTML = `<ul>${navLinks}</ul>`;
 
     // Dodanie obsługi nawigacji, prevent default natywnych linków
     navigation.querySelector("#nav-home")!.addEventListener("click", (event) => {
@@ -53,34 +80,29 @@ class NavigationModel {
       console.error("Element content not found");
       return;
     }
-    content.innerHTML = "";
 
-    switch (page) {
-      case "home":
-        renderHome();
-        break;
-      case "tasks":
-        //   renderTasks();
-        break;
-      case "document":
-        createIzrzDocument();
-        break;
+    content.innerHTML = ""; // Wyczyść zawartość kontenera przed renderowaniem nowej strony
+
+    const pageData = pages.find((p) => p.name === page);
+    if (pageData) {
+      pageData.render();
+    } else {
+      console.error(`No render function found for page: ${page}`);
     }
   }
 }
 
-export class NavigationController {
+export default class NavigationController {
   private view: NavigationView;
   private model: NavigationModel;
 
   constructor() {
     this.view = new NavigationView();
     this.model = new NavigationModel();
-    this.view.renderOnload((page) => this.model.navigate(page));
   }
 
   // Metoda do uruchomienia aplikacji
   run() {
-    this.view.renderNavigation((page) => this.model.navigate(page));
+    this.view.renderNavigationOnload((page) => this.model.navigate(page));
   }
 }
