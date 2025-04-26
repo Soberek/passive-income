@@ -6,7 +6,7 @@ import {
 import SchoolService from "../services/schoolService";
 import { School } from "../services/schoolService";
 
-interface SchoolInstitution extends Institution, School {}
+interface SchoolInstitution extends School, Institution {}
 export type schoolParams = Omit<SchoolInstitution, "id">;
 
 export default class schoolController {

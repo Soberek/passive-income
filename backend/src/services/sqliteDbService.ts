@@ -3,11 +3,11 @@ import betterSqlite3 from "better-sqlite3";
 
 class sqliteDbService {
   private db: betterSqlite3.Database;
-  public static instance: sqliteDbService;
+  private static instance: sqliteDbService;
 
   // The constructor takes an object with a dbPath property, which is the path to the SQLite database file.
   // constructor is a special method for creating and initializing an object created with a class.
-  constructor(params: { dbPath: string }) {
+  private constructor(params: { dbPath: string }) {
     this.db = betterSqlite3(params.dbPath, {
       timeout: 5000,
     });
