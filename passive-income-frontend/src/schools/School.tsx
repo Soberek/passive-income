@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { SchoolInstitution, schoolParams } from "../../../shared/types/index";
 import { SchoolList } from "./SchoolList";
+import { SchoolAddForm } from "./SchoolAddForm";
 
 export const School = () => {
   const [schools, setSchools] = useState<SchoolInstitution[]>([]);
@@ -47,7 +48,7 @@ export const School = () => {
     <div>
       <h1>School</h1>
       <p>Welcome to the School page!</p>
-
+      <SchoolAddForm handleSubmit={handleSubmit} />
       <SchoolList schools={schools} />
     </div>
   );
