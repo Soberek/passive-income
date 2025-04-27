@@ -38,6 +38,7 @@ class schoolController {
         }
     };
     createSchool = (req, res) => {
+        console.log("Creating school");
         try {
             const { name, address, postalCode, city, phone, email, website, municipality, director, } = req.body;
             if (!name || !address || !postalCode || !city) {

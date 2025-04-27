@@ -44,6 +44,7 @@ export default class schoolController {
   };
 
   createSchool = (req: Request, res: Response): void => {
+    console.log("Creating school");
     try {
       const {
         name,
