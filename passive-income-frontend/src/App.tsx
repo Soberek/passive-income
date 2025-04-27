@@ -38,9 +38,14 @@ function App() {
             "Content-Type": "application/json",
           },
         });
+        if (response.ok === false) {
+          throw new Error("Network response was not ok");
+        }
+
         console.log(response);
 
         const data = await response.json();
+        console.log("Data fetched:", data);
         setSchoolInstitutions(data);
       } catch (error) {
         console.error("Error fetching data:", error);
