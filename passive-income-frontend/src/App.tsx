@@ -61,7 +61,7 @@ function App() {
   return (
     <>
       <div>
-        <form>
+        <form onSubmit={handleSubmit}>
           <h1>Passive Income</h1>
           <h2>School and Institution</h2>
           <div>
