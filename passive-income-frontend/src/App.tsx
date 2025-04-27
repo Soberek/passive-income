@@ -14,7 +14,6 @@ interface SchoolInstitution {
 }
 
 function App() {
-  const [data, setData] = useState<any>(null);
   const [SchoolInstitutions, setSchoolInstitutions] = useState<SchoolInstitution[]>([]);
   const [SchoolInstitution, setSchoolInstitution] = useState<SchoolInstitution>({
     name: "",
@@ -38,7 +37,7 @@ function App() {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        setData(data);
+        setSchoolInstitutions(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -46,7 +45,7 @@ function App() {
 
     fetchData();
 
-    console.log("Data fetched:", data);
+    console.log("Data fetched:", SchoolInstitutions);
   }, []);
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -73,17 +72,88 @@ function App() {
     <>
       <div>
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const formData = new FormData(e.currentTarget);
-            console.log(formData);
-            handleSubmit;
-          }}
+          onSubmit={handleSubmit}
+          style={{ display: "flex", flexDirection: "column", gap: "10px", width: "300px", margin: "auto" }}
         >
-          {/* Add more fields as needed */}
+          <label>
+            Name:
+            <input
+              type="text"
+              value={SchoolInstitution.name}
+              onChange={(e) => setSchoolInstitution({ ...SchoolInstitution, name: e.target.value })}
+            />
+          </label>
+          <label>
+            Director:
+            <input
+              type="text"
+              value={SchoolInstitution.director}
+              onChange={(e) => setSchoolInstitution({ ...SchoolInstitution, director: e.target.value })}
+            />
+          </label>
+          <label>
+            Address:
+            <input
+              type="text"
+              value={SchoolInstitution.address}
+              onChange={(e) => setSchoolInstitution({ ...SchoolInstitution, address: e.target.value })}
+            />
+          </label>
+          <label>
+            City:
+            <input
+              type="text"
+              value={SchoolInstitution.city}
+              onChange={(e) => setSchoolInstitution({ ...SchoolInstitution, city: e.target.value })}
+            />
+          </label>
+          <label>
+            Postal Code:
+            <input
+              type="text"
+              value={SchoolInstitution.postalCode}
+              onChange={(e) => setSchoolInstitution({ ...SchoolInstitution, postalCode: e.target.value })}
+            />
+          </label>
+          <label>
+            Phone:
+            <input
+              type="text"
+              value={SchoolInstitution.phone}
+              onChange={(e) => setSchoolInstitution({ ...SchoolInstitution, phone: e.target.value })}
+            />
+          </label>
+          <label>
+            Email:
+            <input
+              type="email"
+              value={SchoolInstitution.email}
+              onChange={(e) => setSchoolInstitution({ ...SchoolInstitution, email: e.target.value })}
+            />
+          </label>
+          <label>
+            Website:
+            <input
+              type="url"
+              value={SchoolInstitution.website}
+              onChange={(e) => setSchoolInstitution({ ...SchoolInstitution, website: e.target.value })}
+            />
+          </label>
+          <label>
+            Municipality:
+            <input
+              type="text"
+              value={SchoolInstitution.municipality}
+              onChange={(e) => setSchoolInstitution({ ...SchoolInstitution, municipality: e.target.value })}
+            />
+          </label>
 
-          {/* Submit button */}
-          <button type="submit">Submit</button>
+          <button
+            type="submit"
+            style={{ padding: "10px", backgroundColor: "#007BFF", color: "#fff", border: "none", borderRadius: "5px" }}
+          >
+            Submit
+          </button>
         </form>
       </div>
     </>
