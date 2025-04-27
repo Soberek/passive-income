@@ -6,5 +6,5 @@
     "markdown": false,
     "scminput": false
   },
-  "gitdoc.enabled": false
+  "gitdoc.enabled": true
 }
