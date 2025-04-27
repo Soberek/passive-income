@@ -54,6 +54,11 @@ export default class ExpressApp {
       next();
     });
 
+    // Middleware for handling CORS (Cross-Origin Resource Sharing)
+    // This middleware allows requests from a specific origin (in this case, http://localhost:5174)
+    // It's prevents cross-origin issues when the frontend and backend are running on different ports.
+    // CORS is a security feature implemented by web browsers to prevent malicious websites from making requests to other domains.
+    // By default, browsers block cross-origin requests unless the server explicitly allows them.
     this.app.use(
       cors({
         origin: "http://localhost:5174", // replace with your frontend URL
