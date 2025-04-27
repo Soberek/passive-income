@@ -1,13 +1,5 @@
 import sqliteDbService from "./sqliteDbService";
-
-// Model for the Contact
-export interface Contact {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email?: string;
-  phone?: string;
-}
+import { Contact } from "../../../shared/types";
 
 class ContactService {
   private dbService: sqliteDbService;

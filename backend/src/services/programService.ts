@@ -1,11 +1,5 @@
+import { Program } from "../../../shared/types";
 import sqliteDbService from "./sqliteDbService";
-
-interface Program {
-  id: number;
-  name: string;
-  description: string;
-  programType: "programowy" | "nieprogramowy";
-}
 
 class ProgramService {
   private dbService: sqliteDbService;

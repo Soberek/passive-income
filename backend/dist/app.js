@@ -27,16 +27,6 @@ const cors_1 = __importDefault(require("cors"));
 // if the token is valid, it will return the decoded payload
 // Step 6. Create a function to decode a token
 // and use it in your application
-// how to config cors
-// Step 1. Install the cors package
-// npm install cors
-// Step 2. Import the cors package
-// import cors from "cors";
-// Step 3. Use the cors middleware in your application
-// corsOptions = {
-//   origin: "http://localhost:3000", // replace with your frontend URL
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   preflightContinue: false,
 class ExpressApp {
     app;
     PORT = 3000;

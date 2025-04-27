@@ -6,17 +6,7 @@ import sqliteDbService from "./sqliteDbService";
 
 // Model for the Institution
 // This interface defines the structure of an institution object.
-export interface Institution {
-  id: number | BigInt;
-  name: string;
-  address?: string;
-  city?: string;
-  postalCode?: string;
-  phone?: string;
-  email?: string;
-  website?: string;
-  municipality?: string;
-}
+import { Institution } from "../../../shared/types";
 
 // This class is responsible for managing institutions in the database.
 class InstitutionsService {

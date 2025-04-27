@@ -1,13 +1,8 @@
 import { Request, Response } from "express";
-import {
-  InstitutionsService,
-  Institution,
-} from "../services/institutionsService";
+import { InstitutionsService } from "../services/institutionsService";
 import SchoolService from "../services/schoolService";
-import { School } from "../services/schoolService";
 
-interface SchoolInstitution extends School, Institution {}
-export type schoolParams = Omit<SchoolInstitution, "id">;
+import { schoolParams } from "../../../shared/types";
 
 export default class schoolController {
   private schoolService: SchoolService;

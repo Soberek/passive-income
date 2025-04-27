@@ -2,8 +2,7 @@ import ContactService from "../services/contactService";
 
 import { Request, Response } from "express";
 
-import { Contact } from "../services/contactService";
-
+import { Contact } from "../../../shared/types";
 class ContactController {
   private contactService: ContactService;
 

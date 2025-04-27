@@ -1,19 +1,6 @@
 import sqliteDbService from "./sqliteDbService";
 import { Institution } from "./institutionsService";
-
-export interface School {
-  id: number | BigInt;
-  director?: string;
-  // foreign key to institution
-}
-
-const schools: School[] = [
-  { id: 1 },
-  { id: 2 },
-  { id: 3 },
-  { id: 4 },
-  { id: 5 },
-];
+import { School } from "../../../shared/types";
 
 class SchoolService {
   private dbService: sqliteDbService;
