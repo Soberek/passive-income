@@ -28,6 +28,7 @@ export default class schoolController {
   };
 
   getAllSchools = (_: Request, res: Response): void => {
+    console.log("Fetching all schools");
     try {
       const schools = this.schoolService.getAllSchools();
       if (!schools) {

@@ -22,6 +22,7 @@ class schoolController {
         }
     };
     getAllSchools = (_, res) => {
+        console.log("Fetching all schools");
         try {
             const schools = this.schoolService.getAllSchools();
             if (!schools) {
