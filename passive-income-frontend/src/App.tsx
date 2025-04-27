@@ -32,7 +32,13 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${URL}/api/school`);
+        const response = await fetch(`${URL}/api/school`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response);
 
         const data = await response.json();
         setSchoolInstitutions(data);
