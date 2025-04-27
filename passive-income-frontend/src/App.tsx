@@ -33,9 +33,7 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await fetch(`${URL}/api/school`);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+
         const data = await response.json();
         setSchoolInstitutions(data);
       } catch (error) {
