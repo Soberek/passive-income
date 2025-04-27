@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
-import { schoolParams } from "../../../shared/types";
+import { schoolParams } from "../../../../shared/types";
+import "./formStyle.css";
 
 export const SchoolAddForm = ({
   handleSubmit,
@@ -19,16 +20,7 @@ export const SchoolAddForm = ({
   });
 
   return (
-    <form
-      onSubmit={(e) => handleSubmit(e, schoolInstitution)}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        width: "300px",
-        margin: "auto",
-      }}
-    >
+    <form onSubmit={(e) => handleSubmit(e, schoolInstitution)} className="form-container">
       <label>
         Name:
         <input
@@ -37,6 +29,7 @@ export const SchoolAddForm = ({
           onChange={(e) => setSchoolInstitution({ ...schoolInstitution, name: e.target.value })}
         />
       </label>
+
       <label>
         Director:
         <input
@@ -45,6 +38,7 @@ export const SchoolAddForm = ({
           onChange={(e) => setSchoolInstitution({ ...schoolInstitution, director: e.target.value })}
         />
       </label>
+
       <label>
         Address:
         <input
@@ -53,6 +47,7 @@ export const SchoolAddForm = ({
           onChange={(e) => setSchoolInstitution({ ...schoolInstitution, address: e.target.value })}
         />
       </label>
+
       <label>
         City:
         <input
@@ -61,6 +56,7 @@ export const SchoolAddForm = ({
           onChange={(e) => setSchoolInstitution({ ...schoolInstitution, city: e.target.value })}
         />
       </label>
+
       <label>
         Postal Code:
         <input
@@ -69,6 +65,7 @@ export const SchoolAddForm = ({
           onChange={(e) => setSchoolInstitution({ ...schoolInstitution, postalCode: e.target.value })}
         />
       </label>
+
       <label>
         Phone:
         <input
@@ -77,6 +74,7 @@ export const SchoolAddForm = ({
           onChange={(e) => setSchoolInstitution({ ...schoolInstitution, phone: e.target.value })}
         />
       </label>
+
       <label>
         Email:
         <input
@@ -85,6 +83,7 @@ export const SchoolAddForm = ({
           onChange={(e) => setSchoolInstitution({ ...schoolInstitution, email: e.target.value })}
         />
       </label>
+
       <label>
         Website:
         <input
@@ -93,6 +92,7 @@ export const SchoolAddForm = ({
           onChange={(e) => setSchoolInstitution({ ...schoolInstitution, website: e.target.value })}
         />
       </label>
+
       <label>
         Municipality:
         <input
@@ -102,12 +102,7 @@ export const SchoolAddForm = ({
         />
       </label>
 
-      <button
-        type="submit"
-        style={{ padding: "10px", backgroundColor: "#007BFF", color: "#fff", border: "none", borderRadius: "5px" }}
-      >
-        Submit
-      </button>
+      <button type="submit">Dodaj</button>
     </form>
   );
 };

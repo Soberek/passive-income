@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { SchoolInstitution, schoolParams } from "../../../shared/types/index";
 import { SchoolList } from "./SchoolList";
-import { SchoolAddForm } from "./SchoolAddForm";
+import { SchoolAddForm } from "./SchoolAddForm/SchoolAddForm";
 
 export const School = () => {
   const [schools, setSchools] = useState<SchoolInstitution[]>([]);
   const URL = "http://127.0.0.1:3000";
 
-  useEffect(() => {
+  useEffect((): void => {
     const fetchSchools = async () => {
       try {
         const response = await fetch(`${URL}/api/school`);
@@ -46,8 +46,7 @@ export const School = () => {
 
   return (
     <div>
-      <h1>School</h1>
-      <p>Welcome to the School page!</p>
+      <h1>Szkoły</h1>
       <SchoolAddForm handleSubmit={handleSubmit} />
       <SchoolList schools={schools} />
     </div>

@@ -1,5 +1,5 @@
 import sqliteDbService from "./sqliteDbService";
-import { Institution } from "./institutionsService";
+import { Institution } from "../../../shared/types";
 import { School } from "../../../shared/types";
 
 class SchoolService {
@@ -50,6 +50,25 @@ class SchoolService {
     }
     console.log("Fetched all schools: ", rows);
     return rows as School[];
+  };
+
+  getSchoolById = (id: number): School | null => {
+    const stmt = this.dbService.prepare(
+      "SELECT * FROM school JOIN institutions ON school.id_institution = institutions.id WHERE school.id = ?"
+    );
+
+    if (!stmt) {
+      console.error("Error preparing SQL statement");
+      return null;
+    }
+    const row = stmt.get(id);
+
+    if (!row) {
+      console.error("No school found with id: ", id);
+      return null;
+    }
+    console.log("Fetched school with id: ", id, row);
+    return row as School;
   };
 
   addSchool = (
