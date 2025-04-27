@@ -17,5 +17,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node --experimental-strip-types --watch backend/dist/index.js && "
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "cors": "^2.8.5"
   }
 }

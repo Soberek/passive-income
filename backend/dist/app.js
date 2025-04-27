@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const index_1 = __importDefault(require("./routes/index"));
 const schoolRouter_1 = __importDefault(require("./routes/schoolRouter"));
+const cors_1 = __importDefault(require("cors"));
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
 // npm install jsonwebtoken
@@ -26,6 +27,16 @@ const schoolRouter_1 = __importDefault(require("./routes/schoolRouter"));
 // if the token is valid, it will return the decoded payload
 // Step 6. Create a function to decode a token
 // and use it in your application
+// how to config cors
+// Step 1. Install the cors package
+// npm install cors
+// Step 2. Import the cors package
+// import cors from "cors";
+// Step 3. Use the cors middleware in your application
+// corsOptions = {
+//   origin: "http://localhost:3000", // replace with your frontend URL
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   preflightContinue: false,
 class ExpressApp {
     app;
     PORT = 3000;
@@ -45,6 +56,12 @@ class ExpressApp {
             console.log(`${req.method} ${req.url}`);
             next();
         });
+        this.app.use((0, cors_1.default)({
+            origin: "http://localhost:5174", // replace with your frontend URL
+            methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+            preflightContinue: false,
+            optionsSuccessStatus: 204,
+        }));
     }
     run() {
         this.app.listen(this.PORT, () => {
