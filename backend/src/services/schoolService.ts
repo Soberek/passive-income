@@ -95,6 +95,30 @@ class SchoolService {
     console.log("Added school with id: ", info.lastInsertRowid);
     return info.lastInsertRowid;
   };
+
+  deleteSchool = (id: number): boolean => {
+    const stmt = this.dbService.prepare("DELETE FROM school WHERE id = ?");
+
+    if (!stmt) {
+      console.error("Error preparing SQL statement");
+      return false;
+    }
+
+    const info = stmt.run(id);
+
+    if (!info) {
+      console.error("Error executing SQL statement");
+      return false;
+    }
+
+    if (info.changes === 0) {
+      console.error("No school found with id: ", id);
+      return false;
+    }
+
+    console.log("Deleted school with id: ", id);
+    return true;
+  };
 }
 
 export default SchoolService;

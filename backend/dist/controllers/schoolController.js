@@ -84,6 +84,47 @@ class schoolController {
             return;
         }
     };
-    deleteSchool = () => { };
+    deleteSchool = (req, res) => {
+        console.log("Deleting school");
+        try {
+            const { id } = req.params;
+            if (!id) {
+                res.status(400).json({ message: "Missing school ID" });
+                return;
+            }
+            const deletedSchool = this.schoolService.deleteSchool(parseInt(id));
+            if (!deletedSchool) {
+                res.status(404).json({ message: "School not found" });
+                return;
+            }
+            res.status(200).json({ message: "School deleted successfully" });
+            return;
+        }
+        catch (error) {
+            res.status(500).json({ message: "Error deleting school" });
+            return;
+        }
+    };
+    getSchoolById = (req, res) => {
+        console.log("Fetching school by ID");
+        try {
+            const { id } = req.params;
+            if (!id) {
+                res.status(400).json({ message: "Missing school ID" });
+                return;
+            }
+            const school = this.schoolService.getSchoolById(parseInt(id));
+            if (!school) {
+                res.status(404).json({ message: "School not found" });
+                return;
+            }
+            res.status(200).json(school);
+            return;
+        }
+        catch (error) {
+            res.status(500).json({ message: "Error fetching school" });
+            return;
+        }
+    };
 }
 exports.default = schoolController;

@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { schoolParams } from "../../../../shared/types";
-import "./formStyle.css";
+import "./SchoolAddForm.css";
 
 export const SchoolAddForm = ({
   handleSubmit,
