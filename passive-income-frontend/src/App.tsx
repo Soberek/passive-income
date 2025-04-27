@@ -61,7 +61,14 @@ function App() {
   return (
     <>
       <div>
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            console.log(formData);
+            handleSubmit;
+          }}
+        >
           <h1>Passive Income</h1>
           <h2>School and Institution</h2>
           <div>
