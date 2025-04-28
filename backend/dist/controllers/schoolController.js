@@ -85,9 +85,9 @@ class schoolController {
         }
     };
     deleteSchool = (req, res) => {
-        console.log("Deleting school");
+        const { id } = req.params;
+        console.log("Deleting school with ID: ", id);
         try {
-            const { id } = req.params;
             if (!id) {
                 res.status(400).json({ message: "Missing school ID" });
                 return;
@@ -101,7 +101,8 @@ class schoolController {
             return;
         }
         catch (error) {
-            res.status(500).json({ message: "Error deleting school" });
+            console.log(error);
+            res.status(500).json({ message: "Error deleting school", error });
             return;
         }
     };

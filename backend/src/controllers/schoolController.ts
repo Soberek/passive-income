@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { InstitutionsService } from "../services/institutionsService";
 import SchoolService from "../services/schoolService";
 
-import { schoolParams } from "../../../shared/types";
+import { schoolParams } from "../../../shared/types/index";
 
 export default class schoolController {
   private schoolService: SchoolService;
@@ -106,9 +106,9 @@ export default class schoolController {
   };
 
   deleteSchool = (req: Request, res: Response): void => {
-    console.log("Deleting school");
+    const { id } = req.params;
+    console.log("Deleting school with ID: ", id);
     try {
-      const { id } = req.params;
       if (!id) {
         res.status(400).json({ message: "Missing school ID" });
         return;
@@ -121,7 +121,8 @@ export default class schoolController {
       res.status(200).json({ message: "School deleted successfully" });
       return;
     } catch (error) {
-      res.status(500).json({ message: "Error deleting school" });
+      console.log(error);
+      res.status(500).json({ message: "Error deleting school", error });
       return;
     }
   };

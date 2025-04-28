@@ -5,7 +5,7 @@ import ContactController from "../controllers/contactController";
 const contactRouter = Router();
 const contactController = new ContactController();
 
-contactRouter.get("/", contactController.getContacts);
-contactRouter.post("/", contactController.addContact);
+contactRouter.get("/contact", contactController.getContacts);
+contactRouter.post("/contact", contactController.addContact);
 
 export default contactRouter;

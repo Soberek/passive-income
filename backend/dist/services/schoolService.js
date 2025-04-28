@@ -34,7 +34,22 @@ class SchoolService {
     };
     getAllSchools = () => {
         // get all schools
-        const stmt = this.dbService.prepare("SELECT * FROM school JOIN institutions ON school.id_institution = institutions.id");
+        const stmt = this.dbService.prepare(`
+      SELECT 
+        school.id AS schoolId,
+        school.director,
+        institutions.address,
+        institutions.city,
+        institutions.postal_code,
+        institutions.phone,
+        institutions.email,
+        institutions.website,
+        institutions.municipality,
+        institutions.id AS institutionId,
+        institutions.name AS institution_name
+      FROM school
+      JOIN institutions ON school.id_institution = institutions.id
+`);
         if (!stmt) {
             console.error("Error preparing SQL statement");
             return [];
@@ -44,11 +59,22 @@ class SchoolService {
             console.error("No schools found");
             return [];
         }
-        console.log("Fetched all schools: ", rows);
         return rows;
     };
     getSchoolById = (id) => {
-        const stmt = this.dbService.prepare("SELECT * FROM school JOIN institutions ON school.id_institution = institutions.id WHERE school.id = ?");
+        const stmt = this.dbService.prepare(`SELECT   
+        school.id AS schoolId,
+        school.director,
+        institutions.address,
+        institutions.city,
+        institutions.postal_code,
+        institutions.phone,
+        institutions.email,
+        institutions.website,
+        institutions.municipality,
+        institutions.id AS institutionId,
+        institutions.name AS institution_name
+       FROM school WHERE id = ?`);
         if (!stmt) {
             console.error("Error preparing SQL statement");
             return null;

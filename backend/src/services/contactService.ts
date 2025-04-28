@@ -28,13 +28,22 @@ class ContactService {
   };
 
   public getAllContacts = (): Contact[] => {
-    const stmt = this.dbService.prepare("SELECT * FROM contacts");
+    const stmt = this.dbService.prepare(
+      "SELECT first_name as firstName, last_name as lastName, email, phone FROM contacts"
+    );
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return [];
     }
 
-    return stmt.all() as Contact[];
+    const rows = stmt.all() as Contact[];
+
+    if (rows.length === 0) {
+      console.log("No contacts found");
+      return [];
+    }
+
+    return rows;
   };
 
   public addNewContact = (
@@ -44,7 +53,7 @@ class ContactService {
     phone?: string
   ) => {
     const stmt = this.dbService.prepare(
-      "INSERT INTO contacts (firstName, lastName, email, phone) VALUES (?, ?, ?, ?)"
+      "INSERT INTO contacts (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)"
     );
 
     // Check if the statement was prepared successfully

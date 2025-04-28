@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { SchoolInstitution, schoolParams } from "../../../shared/types/index";
+import { SchoolWithInstitutionData, schoolParams } from "../../../shared/types/index";
 import { SchoolList } from "./SchoolList";
 import { SchoolAddForm } from "./SchoolAddForm/SchoolAddForm";
 
 export const School = () => {
-  const [schools, setSchools] = useState<SchoolInstitution[]>([]);
+  const [schools, setSchools] = useState<SchoolWithInstitutionData[]>([]);
   const URL = "http://127.0.0.1:3000";
 
   useEffect((): void => {

@@ -8,7 +8,7 @@ const schoolController = new SchoolController();
 
 schoolRouter.get("/school", schoolController.getAllSchools); // Route: /api/school - GET - Get all schools
 schoolRouter.post("/school", schoolController.createSchool); // Route: /api/school - POST - Create a new school
-schoolRouter.delete("/:id", schoolController.deleteSchool); // Route: /api/school/:id - DELETE - Delete a school by ID
+schoolRouter.delete("/school/:id", schoolController.deleteSchool); // Route: /api/school/:id - DELETE - Delete a school by ID
 schoolRouter.get("/:id", schoolController.getSchoolById); // Route: /api/school/:id - GET - Get a school by ID
 
 export default schoolRouter;

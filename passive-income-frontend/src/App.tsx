@@ -9,7 +9,7 @@ const routes = [
   },
   {
     name: "Kontakty",
-    path: "kontakty",
+    path: "contacts",
   },
 ];
 function App() {

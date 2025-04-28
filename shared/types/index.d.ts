@@ -16,8 +16,20 @@ export interface Institution {
   municipality?: string;
 }
 
-export interface SchoolInstitution extends School, Institution {}
-export type schoolParams = Omit<SchoolInstitution, "id">;
+export interface SchoolWithInstitutionData {
+  schoolId: number;
+  institutionId: number;
+  director?: string;
+  name: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+  municipality?: string;
+}
+export type schoolParams = Omit<SchoolWithInstitutionData, "schoolId" | "institutionId">;
 
 export interface Contact {
   id: number;

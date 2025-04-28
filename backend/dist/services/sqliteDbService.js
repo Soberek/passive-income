@@ -51,5 +51,13 @@ class sqliteDbService {
             return [];
         }
     };
+    close = () => {
+        try {
+            this.db.close();
+        }
+        catch (error) {
+            console.error("Error closing database connection:", error);
+        }
+    };
 }
 exports.default = sqliteDbService;
