@@ -28,7 +28,7 @@ class ContactService {
 
   public getAllContacts = (): Contact[] => {
     const stmt = this.dbService.prepare(
-      "SELECT first_name as firstName, last_name as lastName, email, phone FROM contacts"
+      "SELECT id, first_name as firstName, last_name as lastName, email, phone FROM contacts"
     );
 
     if (!stmt) {

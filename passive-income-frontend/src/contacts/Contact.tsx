@@ -54,22 +54,36 @@ export const Contact = () => {
       <h1>Contact List</h1>
 
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="firstName"
-          value={newContact.firstName}
-          onChange={handleInputChange}
-          placeholder="First Name"
-        />
-        <input
-          type="text"
-          name="lastName"
-          value={newContact.lastName}
-          onChange={handleInputChange}
-          placeholder="Last Name"
-        />
-        <input type="email" name="email" value={newContact.email} onChange={handleInputChange} placeholder="Email" />
-        <input type="text" name="phone" value={newContact.phone} onChange={handleInputChange} placeholder="Phone" />
+        <label>
+          First Name:
+          <input
+            type="text"
+            name="firstName"
+            value={newContact.firstName}
+            onChange={handleInputChange}
+            placeholder="First Name"
+          />
+        </label>
+
+        <label>
+          Last Name:
+          <input
+            type="text"
+            name="lastName"
+            value={newContact.lastName}
+            onChange={handleInputChange}
+            placeholder="Last Name"
+          />
+        </label>
+        <label>
+          Email:
+          <input type="email" name="email" value={newContact.email} onChange={handleInputChange} placeholder="Email" />
+        </label>
+        <label>
+          Phone:
+          <input type="text" name="phone" value={newContact.phone} onChange={handleInputChange} placeholder="Phone" />
+        </label>
+
         <button type="submit">Add Contact</button>
       </form>
 

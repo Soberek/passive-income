@@ -26,7 +26,7 @@ class ContactService {
         stmt.run();
     };
     getAllContacts = () => {
-        const stmt = this.dbService.prepare("SELECT first_name as firstName, last_name as lastName, email, phone FROM contacts");
+        const stmt = this.dbService.prepare("SELECT id, first_name as firstName, last_name as lastName, email, phone FROM contacts");
         if (!stmt) {
             console.error("Error preparing SQL statement");
             return [];
