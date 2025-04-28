@@ -73,11 +73,12 @@ export const Contact = () => {
         <button type="submit">Add Contact</button>
       </form>
       <ul>
-        {contacts.map((contact) => (
-          <li key={contact.id}>
-            {contact.firstName} {contact.lastName} - {contact.email} - {contact.phone}
-          </li>
-        ))}
+        {contacts.length > 0 &&
+          contacts.map((contact) => (
+            <li key={contact.id}>
+              {contact.firstName} {contact.lastName} - {contact.email} - {contact.phone}
+            </li>
+          ))}
       </ul>
     </div>
   );

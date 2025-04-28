@@ -66,20 +66,21 @@ class SchoolService {
   };
 
   getSchoolById = (id: number): School | null => {
+    console.log("Fetching school with id: ", id);
     const stmt = this.dbService.prepare(
       `SELECT   
         school.id AS schoolId,
         school.director,
         institutions.address,
         institutions.city,
-        institutions.postal_code,
+        institutions.postal_code as postalCode,
         institutions.phone,
         institutions.email,
         institutions.website,
         institutions.municipality,
         institutions.id AS institutionId,
-        institutions.name AS institution_name
-       FROM school WHERE id = ?`
+        institutions.name AS institutionName
+       FROM school JOIN institutions ON school.institutions_id = institutions.id WHERE id = ?`
     );
 
     if (!stmt) {
