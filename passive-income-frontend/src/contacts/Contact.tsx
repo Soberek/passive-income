@@ -3,8 +3,7 @@ import { Contact as Contacts } from "../../../shared/types";
 
 export const Contact = () => {
   const [contacts, setContacts] = useState<Contacts[]>([]);
-  const [newContact, setNewContact] = useState<Contacts>({
-    id: 0,
+  const [newContact, setNewContact] = useState<Omit<Contacts, "id">>({
     firstName: "",
     lastName: "",
     email: "",
@@ -43,7 +42,7 @@ export const Contact = () => {
       if (!response.ok) {
         throw new Error("Failed to add contact");
       }
-      setNewContact({ id: 0, firstName: "", lastName: "", email: "", phone: "" });
+      setNewContact({ firstName: "", lastName: "", email: "", phone: "" });
       fetchContacts();
     } catch (error) {
       console.error("Error adding contact:", error);
@@ -53,6 +52,7 @@ export const Contact = () => {
   return (
     <div>
       <h1>Contact List</h1>
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -72,14 +72,27 @@ export const Contact = () => {
         <input type="text" name="phone" value={newContact.phone} onChange={handleInputChange} placeholder="Phone" />
         <button type="submit">Add Contact</button>
       </form>
-      <ul>
-        {contacts.length > 0 &&
-          contacts.map((contact) => (
-            <li key={contact.id}>
-              {contact.firstName} {contact.lastName} - {contact.email} - {contact.phone}
-            </li>
+
+      <table>
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+          {contacts.map((contact) => (
+            <tr key={contact.id}>
+              <td>{contact.firstName}</td>
+              <td>{contact.lastName}</td>
+              <td>{contact.email}</td>
+              <td>{contact.phone}</td>
+            </tr>
           ))}
-      </ul>
+        </tbody>
+      </table>
     </div>
   );
 };
