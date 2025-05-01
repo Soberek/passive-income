@@ -113,8 +113,8 @@ const generateDocument = async () => {
     const program_name = document.getElementById("program_name") as HTMLInputElement;
     const typ_zadania = document.getElementById("typ_zadania") as HTMLInputElement;
     const adres = document.getElementById("adres") as HTMLSelectElement;
-    const dataInput = document.getElementById("data") as HTMLInputElement;
-    const data = formatDate(dataInput.value);
+    const dateInput = document.getElementById("data") as HTMLInputElement;
+    const date = formatDate(dateInput.value);
     const viewer_count = document.getElementById("viewer_count") as HTMLInputElement;
     const viewer_count_description = document.getElementById("viewer_count_description") as HTMLTextAreaElement;
     const opis_select = document.getElementById("opis_select") as HTMLSelectElement;
@@ -142,15 +142,21 @@ const generateDocument = async () => {
       viewer_count_description: viewer_count_description.value,
       opis_zadania: opis_zadania.value,
       additional_info: dodatkowe_info.value,
-      data,
     });
+
+    // This is the line that renders the document
+    // It will replace the variables in the template with the data provided
     doc.render();
 
+    // This is the line that generates the document
+    // It will create a blob object that can be saved as a file
     const output = doc.getZip().generate({ type: "blob" });
-    // output = doc.getZip().generate({ type: "blob" });
+
+    // This is the line that saves the document
+    // It will prompt the user to save the file with the specified name
     window.saveAs(
       output,
-      `${numer_izrz.value.split("/").join("_")} - ${znak_sprawy.value} - ${data} - ${typ_zadania.value} - ${
+      `${numer_izrz.value.split("/").join("_")} - ${znak_sprawy.value} - ${date} - ${typ_zadania.value} - ${
         program_name.value
       } - ${adres.value}.docx`
     );

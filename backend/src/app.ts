@@ -3,6 +3,7 @@ import indexRouter from "./routes/index";
 import schoolRouter from "./routes/schoolRouter";
 import cors from "cors";
 import contactRouter from "./routes/contactRouter";
+import multer from "multer";
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
 // npm install jsonwebtoken
@@ -27,9 +28,17 @@ import contactRouter from "./routes/contactRouter";
 export default class ExpressApp {
   private app;
   private PORT: number = 3000;
+  private multer: multer.Multer;
+  private storage: multer.StorageEngine;
+
   constructor() {
     this.app = express();
     this.initMiddlewares();
+    this.multer = multer({
+      storage: multer.memoryStorage(),
+    });
+
+    this.storage = multer.
   }
 
   // Initialize middlewares
@@ -45,7 +54,6 @@ export default class ExpressApp {
       console.log(req.body);
       next();
     });
-
     // Middleware for handling CORS (Cross-Origin Resource Sharing)
     // This middleware allows requests from a specific origin (in this case, http://localhost:5174)
     // It's prevents cross-origin issues when the frontend and backend are running on different ports.
@@ -76,6 +84,10 @@ export default class ExpressApp {
     this.app.use("/api", schoolRouter);
 
     this.app.use("/api", contactRouter);
+
+
+    // The izrzRouter is imported from the routes directory and is used to handle requests to the "/api" URL.
+    // this.app.use("/api", upload.single , izrzRouter);
   }
 
   // Initialize error handling

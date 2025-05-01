@@ -8,6 +8,7 @@ const index_1 = __importDefault(require("./routes/index"));
 const schoolRouter_1 = __importDefault(require("./routes/schoolRouter"));
 const cors_1 = __importDefault(require("cors"));
 const contactRouter_1 = __importDefault(require("./routes/contactRouter"));
+const multer_1 = __importDefault(require("multer"));
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
 // npm install jsonwebtoken
@@ -31,9 +32,16 @@ const contactRouter_1 = __importDefault(require("./routes/contactRouter"));
 class ExpressApp {
     app;
     PORT = 3000;
+    multer;
+    storage;
     constructor() {
         this.app = (0, express_1.default)();
         this.initMiddlewares();
+        this.multer = (0, multer_1.default)({
+            storage: multer_1.default.memoryStorage(),
+        });
+        this.storage = multer_1.default.
+        ;
     }
     // Initialize middlewares
     // This method is responsible for initializing the middlewares used in the application.
@@ -72,6 +80,8 @@ class ExpressApp {
         // The schoolRouter is imported from the routes directory and is used to handle requests to the "/api" URL.
         this.app.use("/api", schoolRouter_1.default);
         this.app.use("/api", contactRouter_1.default);
+        // The izrzRouter is imported from the routes directory and is used to handle requests to the "/api" URL.
+        // this.app.use("/api", upload.single , izrzRouter);
     }
     // Initialize error handling
     initErrorHandling() {
