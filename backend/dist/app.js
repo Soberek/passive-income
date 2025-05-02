@@ -8,7 +8,7 @@ const index_1 = __importDefault(require("./routes/index"));
 const schoolRouter_1 = __importDefault(require("./routes/schoolRouter"));
 const cors_1 = __importDefault(require("cors"));
 const contactRouter_1 = __importDefault(require("./routes/contactRouter"));
-const multer_1 = __importDefault(require("multer"));
+// import multer from "multer";
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
 // npm install jsonwebtoken
@@ -32,16 +32,14 @@ const multer_1 = __importDefault(require("multer"));
 class ExpressApp {
     app;
     PORT = 3000;
-    multer;
-    storage;
+    // private multer: multer.Multer;
+    // private storage: multer.StorageEngine;
     constructor() {
         this.app = (0, express_1.default)();
         this.initMiddlewares();
-        this.multer = (0, multer_1.default)({
-            storage: multer_1.default.memoryStorage(),
-        });
-        this.storage = multer_1.default.
-        ;
+        // this.multer = multer({
+        //   storage: multer.memoryStorage(),
+        // });
     }
     // Initialize middlewares
     // This method is responsible for initializing the middlewares used in the application.
@@ -62,10 +60,15 @@ class ExpressApp {
         // CORS is a security feature implemented by web browsers to prevent malicious websites from making requests to other domains.
         // By default, browsers block cross-origin requests unless the server explicitly allows them.
         this.app.use((0, cors_1.default)({
-            origin: "http://localhost:5174", // replace with your frontend URL
-            methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-            preflightContinue: false,
-            optionsSuccessStatus: 204,
+            origin: (origin, callback) => {
+                if (!origin || origin.startsWith("http://localhost")) {
+                    callback(null, true); // allow localhost:any
+                }
+                else {
+                    callback(new Error("Not allowed by CORS"));
+                }
+            },
+            credentials: true, // if you're using cookies or auth headers
         }));
     }
     run() {

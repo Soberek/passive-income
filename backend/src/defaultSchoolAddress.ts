@@ -1,4 +1,4 @@
-import { schoolParams } from "./controllers/schoolController";
+import { schoolParams } from "../../shared/types/index";
 
 const educationalInstitutions: schoolParams[] = [
   {
