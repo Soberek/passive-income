@@ -28,8 +28,15 @@ export class createIzrzController {
         return;
       }
 
+      // Set the headers for the response
+      // Set the headers for the response
+      // For example, if the file is a Word document:
+      res.setHeader("Content-Length", fileBuffer.buffer.length); // this is important for the client to know how much data to expect
       res.setHeader("Content-Disposition", `attachment; filename=${fileBuffer.fileName}.docx`);
-      res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"); // Ensure this is correct
+
+      // this is the MIME type for Word documents
+      // MIME stands for Multipurpose Internet Mail Extensions, and it is a standard way of classifying file type s on the Internet.
+      res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 
       console.log(fileBuffer.buffer);
       res.send(fileBuffer.buffer); // Send the blob as is, don't modify it here

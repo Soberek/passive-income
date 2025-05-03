@@ -1,5 +1,10 @@
 import { Contact } from "../../../shared/types";
 
+/**
+ * ContactModel class implements the Contact interface.
+ * It represents a contact with properties such as id, firstName, lastName, email, and phone.
+ * It also includes a validate method to check the validity of the contact's data.
+ */
 export class ContactModel implements Contact {
   id: number;
   firstName: string;

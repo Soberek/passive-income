@@ -1,26 +1,17 @@
 import { Request, Response } from "express";
 import { InstitutionsService } from "../services/institutionsService";
-import SchoolService from "../services/schoolService";
+import SchoolService from "../services/school.service";
 
-import { schoolParams } from "../../../shared/types/index";
+import { schoolParams, SchoolWithInstitutionData } from "../../../shared/types/index";
 
 export default class schoolController {
-  private schoolService: SchoolService;
   private institutionsService: InstitutionsService;
 
-  constructor() {
-    this.schoolService = new SchoolService();
+  constructor(private schoolService: SchoolService) {
+    this.schoolService = schoolService;
+
     this.institutionsService = new InstitutionsService();
   }
-
-  createSchoolTable = () => {
-    try {
-      this.schoolService.createSchoolTable();
-      console.log("School table created successfully");
-    } catch (error) {
-      console.error("Error creating school table: ", error);
-    }
-  };
 
   getAllSchools = (_: Request, res: Response): void => {
     console.log("Fetching all schools");
@@ -42,17 +33,7 @@ export default class schoolController {
   createSchool = (req: Request, res: Response): void => {
     console.log("Creating school");
     try {
-      const {
-        name,
-        address,
-        postalCode,
-        city,
-        phone,
-        email,
-        website,
-        municipality,
-        director,
-      }: schoolParams = req.body;
+      const { name, address, postalCode, city, phone, email, website, municipality, director }: schoolParams = req.body;
       if (!name || !address || !postalCode || !city) {
         res.status(400).json({ message: "Missing required fields" });
         return;
@@ -81,10 +62,7 @@ export default class schoolController {
         return;
       }
 
-      const newSchool = this.schoolService.addSchool(
-        newInstitution.newInstitutionId,
-        director
-      );
+      const newSchool = this.schoolService.addSchool(newInstitution.newInstitutionId, director);
 
       if (!newSchool) {
         res.status(500).json({ message: "Error creating school" });
@@ -148,5 +126,46 @@ export default class schoolController {
     }
   };
 
-  // Add more methods as needed
+  updateSchool = (req: Request, res: Response): void => {
+    console.log("Updating school");
+    try {
+      const { id } = req.params;
+      const { institutionId, director }: SchoolWithInstitutionData = req.body;
+      if (!id || !institutionId || !director) {
+        res.status(400).json({ message: "Missing required fields" });
+        return;
+      }
+      const updatedSchool = this.schoolService.updateSchool(parseInt(id), parseInt(institutionId.toString()), director);
+      if (!updatedSchool) {
+        res.status(404).json({ message: "School not found" });
+        return;
+      }
+      res.status(200).json({ message: "School updated successfully" });
+      return;
+    } catch (error) {
+      res.status(500).json({ message: "Error updating school", error });
+      return;
+    }
+  };
+
+  getSchoolByInstitutionId = (req: Request, res: Response): void => {
+    console.log("Fetching school by institution ID");
+    try {
+      const { institutionId } = req.params;
+      if (!institutionId) {
+        res.status(400).json({ message: "Missing institution ID" });
+        return;
+      }
+      const school = this.schoolService.getSchoolByInstitutionId(parseInt(institutionId));
+      if (!school) {
+        res.status(404).json({ message: "School not found" });
+        return;
+      }
+      res.status(200).json(school);
+      return;
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching school", error });
+      return;
+    }
+  };
 }

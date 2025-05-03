@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import indexRouter from "./routes/index";
-import schoolRouter from "./routes/schoolRouter";
+import schoolRouter from "./routes/school.router";
 import cors from "cors";
 import contactRouter from "./routes/contactRouter";
 import izrzRouter from "./routes/izrz.router";
@@ -31,7 +31,6 @@ export default class ExpressApp {
   private app;
   private PORT: number = 3000;
   private multer: multer.Multer;
-  // private storage: multer.StorageEngine;
 
   constructor() {
     this.app = express();
@@ -92,9 +91,6 @@ export default class ExpressApp {
     this.app.use("/api", contactRouter);
 
     this.app.use("/api", this.multer.single("templateFile"), izrzRouter);
-
-    // The izrzRouter is imported from the routes directory and is used to handle requests to the "/api" URL.
-    // this.app.use("/api", upload.single , izrzRouter);
   }
 
   // Initialize error handling

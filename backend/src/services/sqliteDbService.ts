@@ -11,7 +11,6 @@ class sqliteDbService {
     this.db = betterSqlite3(params.dbPath, {
       timeout: 5000,
     });
-    this.init();
   }
 
   // zwraca instancję sqliteDbService
@@ -25,9 +24,6 @@ class sqliteDbService {
     }
     return sqliteDbService.instance;
   };
-
-  // tworzenie tabeli w bazie danych, jezeli nie istnieje
-  init() {}
 
   prepare = (sql: string) => {
     try {
