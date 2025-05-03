@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { InstitutionsService } from "../services/institutionsService";
+import { InstitutionsService } from "../services/institutions.service";
 import SchoolService from "../services/school.service";
 
 import { schoolParams, SchoolWithInstitutionData } from "../../../shared/types/index";

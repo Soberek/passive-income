@@ -2,7 +2,7 @@ import { Router } from "express";
 import SchoolController from "../controllers/school.controller";
 import SchoolService from "../services/school.service";
 import { SchoolRepository } from "../repositories/school.repository";
-import { InstitutionsService } from "../services/institutionsService";
+import { InstitutionsService } from "../services/institutions.service";
 
 const schoolRouter = Router();
 const schoolRepository = new SchoolRepository();
