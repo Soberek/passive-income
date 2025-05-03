@@ -91,6 +91,12 @@ export class ContactRepository {
   };
 
   public updateContact = (id: number, firstName: string, lastName: string, email?: string, phone?: string) => {
+    // This SQL statement updates the contact with the given ID
+    // It sets the first name, last name, email, and phone number to the new values
+    // if some of them are not provided, it will not update them
+    // user provides every value
+    // if some of them are not provided, it will not update them
+
     const stmt = this.dbService.prepare(
       "UPDATE contacts SET first_name = ?, last_name = ?, email = ?, phone = ? WHERE id = ?"
     );
