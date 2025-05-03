@@ -1,12 +1,14 @@
 import { Router } from "express";
-import SchoolController from "../controllers/schoolController";
+import SchoolController from "../controllers/school.controller";
 import SchoolService from "../services/school.service";
 import { SchoolRepository } from "../repositories/school.repository";
+import { InstitutionsService } from "../services/institutionsService";
 
 const schoolRouter = Router();
 const schoolRepository = new SchoolRepository();
 const schoolService = new SchoolService(schoolRepository);
-const schoolController = new SchoolController(schoolService);
+const institutionsService = new InstitutionsService();
+const schoolController = new SchoolController(schoolService, institutionsService);
 
 // Implementing the updateSchool route
 schoolRouter.get("/school", schoolController.getAllSchools); // Route: /api/school - GET - Get all schools

@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import indexRouter from "./routes/index";
 import schoolRouter from "./routes/school.router";
 import cors from "cors";
-import contactRouter from "./routes/contactRouter";
+import contactRouter from "./routes/contact.router";
 import izrzRouter from "./routes/izrz.router";
 import multer from "multer";
 

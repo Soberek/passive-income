@@ -5,12 +5,10 @@ import SchoolService from "../services/school.service";
 import { schoolParams, SchoolWithInstitutionData } from "../../../shared/types/index";
 
 export default class schoolController {
-  private institutionsService: InstitutionsService;
-
-  constructor(private schoolService: SchoolService) {
+  constructor(private schoolService: SchoolService, private institutionsService: InstitutionsService) {
     this.schoolService = schoolService;
 
-    this.institutionsService = new InstitutionsService();
+    this.institutionsService = institutionsService;
   }
 
   getAllSchools = (_: Request, res: Response): void => {
