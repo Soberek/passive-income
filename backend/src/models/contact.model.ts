@@ -1,19 +1,18 @@
 import { Contact } from "../../../shared/types";
 
 /**
- * ContactModel class implements the Contact interface.
+ * ContactModel class implements the Contact interface but without the id property.
  * It represents a contact with properties such as id, firstName, lastName, email, and phone.
  * It also includes a validate method to check the validity of the contact's data.
  */
-export class ContactModel implements Contact {
-  id: number;
+
+export class ContactModel implements Omit<Contact, "id"> {
   firstName: string;
   lastName: string;
   email?: string;
   phone?: string;
 
-  constructor(id: number, firstName: string, lastName: string, email?: string, phone?: string) {
-    this.id = id;
+  constructor(firstName: string, lastName: string, email?: string, phone?: string) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;

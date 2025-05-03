@@ -3,14 +3,14 @@ import { ProgramRepository } from "../repositories/program.repository";
 import { ProgramModel } from "../models/program.model";
 
 export class ProgramService {
-  constructor(private programRepository: ProgramRepository) {
+  constructor(private programRepository: ProgramRepository, private programModel: ProgramModel) {
     this.programRepository = programRepository;
+    this.programModel = programModel;
   }
 
   getAllPrograms = (): Program[] => {
     const programs = this.programRepository.getAllPrograms();
     if (!programs) {
-      console.error("Error fetching all programs");
       return [];
     }
     return programs;
@@ -19,23 +19,20 @@ export class ProgramService {
   getProgramById = (id: number): Program | null => {
     const program = this.programRepository.getProgramById(id);
     if (!program) {
-      console.error("Error fetching program by id");
       return null;
     }
     return program;
   };
 
   addProgram = (name: string, description: string, programType: "programowy" | "nieprogramowy"): number => {
-    const programModel = new ProgramModel(0, name, description, programType);
-    const errors = programModel.validate();
+    const programModel = new ProgramModel(name, description, programType);
+    const errors = this.programModel.validate();
     if (errors.length > 0) {
-      console.error("Validation errors:", errors);
-      return -1;
+      throw new Error("Validation errors: " + errors.join(", "));
     }
     const programId = this.programRepository.addProgram(programModel);
     if (programId === -1) {
-      console.error("Error adding program");
-      return -1;
+      throw new Error("Error adding program");
     }
     return programId;
   };
@@ -55,7 +52,7 @@ export class ProgramService {
     description: string,
     programType: "programowy" | "nieprogramowy"
   ): boolean => {
-    const programModel = new ProgramModel(id, name, description, programType);
+    const programModel = new ProgramModel(name, description, programType, id);
     const errors = programModel.validate();
     if (errors.length > 0) {
       console.error("Validation errors:", errors);
@@ -66,6 +63,7 @@ export class ProgramService {
       console.error("Error updating program");
       return false;
     }
+
     return true;
   };
 }

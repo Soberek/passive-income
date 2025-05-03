@@ -26,7 +26,7 @@ export class ContactService {
   };
 
   public addNewContact = (firstName: string, lastName: string, email?: string, phone?: string) => {
-    const contact = new ContactModel(0, firstName, lastName, email, phone);
+    const contact = new ContactModel(firstName, lastName, email, phone);
     const validationErrors = contact.validate();
 
     if (validationErrors.length) {
@@ -41,7 +41,7 @@ export class ContactService {
   };
 
   public updateContact = (id: number, firstName: string, lastName: string, email?: string, phone?: string) => {
-    const contact = new ContactModel(id, firstName, lastName, email, phone);
+    const contact = new ContactModel(firstName, lastName, email, phone);
     const validationErrors = contact.validate();
 
     if (validationErrors.length) {

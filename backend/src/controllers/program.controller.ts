@@ -1,37 +1,91 @@
-import ProgramService from "../services/programService";
+import ProgramService from "../services/program.service";
 import { Request, Response } from "express";
 
 class ProgramController {
-  private programService: ProgramService;
-  constructor() {
-    this.programService = new ProgramService();
+  constructor(private programService: ProgramService) {
+    this.programService = programService;
   }
-  public getPrograms = (_: Request, res: Response): void => {
+
+  getAllPrograms = (_: Request, res: Response): void => {
+    console.log("Fetching all programs");
     try {
-      const programs = this.programService.getPrograms();
+      const programs = this.programService.getAllPrograms();
+      if (!programs) {
+        res.status(404).json({ message: "No programs found" });
+        return;
+      }
       res.status(200).json(programs);
+      return;
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: "Error fetching programs", error });
+      return;
+    }
+  };
+  createProgram = (req: Request, res: Response): void => {
+    console.log("Creating program");
+    try {
+      const { name, description, programType } = req.body;
+      if (!name || !description || !programType) {
+        res.status(400).json({ message: "Missing required fields" });
+        return;
+      }
+      const newProgramId = this.programService.addProgram(name, description, programType);
+      if (newProgramId === -1) {
+        res.status(500).json({ message: "Error creating program" });
+        return;
+      }
+      res.status(201).json({ message: "Program created successfully", newProgramId });
+      return;
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error creating program", error });
+      return;
     }
   };
 
-  public addProgram = (req: Request, res: Response): void => {
-    const { name, description, programType } = req.body;
-
-    if (!name || !programType) {
-      res.status(400).json({ message: "Name and program type are required." });
+  deleteProgram = (req: Request, res: Response): void => {
+    console.log("Deleting program");
+    try {
+      const { id } = req.params;
+      if (!id) {
+        res.status(400).json({ message: "Missing required fields" });
+        return;
+      }
+      const result = this.programService.deleteProgram(Number(id));
+      if (!result) {
+        res.status(500).json({ message: "Error deleting program" });
+        return;
+      }
+      res.status(200).json({ message: "Program deleted successfully" });
+      return;
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error deleting program", error });
       return;
     }
+  };
 
+  updateProgram = (req: Request, res: Response): void => {
+    console.log("Updating program");
     try {
-      const newProgram = this.programService.addProgram(
-        name,
-        description,
-        programType
-      );
-      res.status(201).json(newProgram);
+      const { id } = req.params;
+      const { name, description, programType } = req.body;
+      if (!id || !name || !description || !programType) {
+        res.status(400).json({ message: "Missing required fields" });
+        return;
+      }
+      const result = this.programService.updateProgram(Number(id), name, description, programType);
+      if (!result) {
+        res.status(500).json({ message: "Error updating program" });
+        return;
+      }
+      res.status(200).json({ message: "Program updated successfully" });
+      return;
     } catch (error) {
-      res.status(500).json({ message: "Error adding program", error });
+      console.log(error);
+      res.status(500).json({ message: "Error updating program", error });
+      return;
     }
   };
 }

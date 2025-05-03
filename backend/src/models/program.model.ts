@@ -1,12 +1,12 @@
 import { Program } from "../../../shared/types";
 
-export class ProgramModel implements Program {
-  id: number;
+export class ProgramModel implements Omit<Program, "id"> {
+  id?: number;
   name: string;
   description: string;
   programType: "programowy" | "nieprogramowy";
 
-  constructor(id: number, name: string, description: string, programType: "programowy" | "nieprogramowy") {
+  constructor(name: string, description: string, programType: "programowy" | "nieprogramowy", id?: number) {
     this.id = id;
     this.name = name;
     this.description = description;
