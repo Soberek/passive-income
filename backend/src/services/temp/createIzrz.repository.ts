@@ -18,69 +18,142 @@ interface ReportDataModel {
   additionalInfo: string;
 }
 
-export class IzrzService {
+export class Report implements ReportDataModel {
+  templateFile: File;
+  caseNumber: string;
+  reportNumber: string;
+  programName: string;
+  taskType: string;
+  address: string;
+  dateInput: Date;
+  viewerCount: number;
+  viewerCountDescription: string;
+  taskDescription: string;
+  additionalInfo: string;
+  constructor(data: ReportDataModel) {
+    this.templateFile = data.templateFile;
+    this.caseNumber = data.caseNumber;
+    this.reportNumber = data.reportNumber;
+    this.programName = data.programName;
+    this.taskType = data.taskType;
+    this.address = data.address;
+    this.dateInput = data.dateInput;
+    this.viewerCount = data.viewerCount;
+    this.viewerCountDescription = data.viewerCountDescription;
+    this.taskDescription = data.taskDescription;
+    this.additionalInfo = data.additionalInfo;
+  }
+
+  validate(): string[] {
+    const errors: string[] = [];
+
+    if (!this.caseNumber.trim()) {
+      errors.push("Case number is required.");
+    }
+
+    if (!this.reportNumber.trim()) {
+      errors.push("Report number is required.");
+    }
+
+    if (this.viewerCount < 0) {
+      errors.push("Viewer count cannot be negative.");
+    }
+
+    if (!(this.dateInput instanceof Date) || isNaN(this.dateInput.getTime())) {
+      errors.push("Invalid date.");
+    }
+
+    return errors;
+  }
+}
+
+export class IzrzRepository {
   constructor() {}
 
   // data will be passed from frontend
   // and will be used to generate izrz document
   generateIzrz = async (data: ReportDataModel): Promise<Blob | void> => {
-    try {
-      const {
-        templateFile,
-        caseNumber,
-        reportNumber,
-        programName,
-        taskType,
-        address,
-        dateInput,
-        viewerCount,
-        viewerCountDescription,
-        taskDescription,
-        additionalInfo,
-      } = data;
+    const report = new Report(data);
+    const validationErrors = report.validate();
 
-      if (!templateFile) {
-        throw new Error("Szablon nie został wybrany.");
-      }
-
-      const file = templateFile;
-      const templateBuffer = await file.arrayBuffer();
-
-      const zip = new PizZip(templateBuffer);
-      const doc = new docxtemplater(zip);
-
-      doc.setData({
-        znak_sprawy: caseNumber,
-        numer_izrz: reportNumber,
-        nazwa_programu: programName,
-        typ_zadania: taskType,
-        adres: address,
-        liczba_osob: viewerCount,
-        liczba_osob_opis: viewerCountDescription,
-        opis_zadania: taskDescription,
-        dodatkowe_informacje: additionalInfo,
-        data: formatDate(dateInput.toString()),
-      });
-
-      // This is the line that renders the document
-      // It will replace the variables in the template with the data provided
-      doc.render();
-
-      // This is the line that generates the document
-      // It will create a blob object that can be saved as a file
-      // blob is a binary large object
-      // it is used to store binary data
-      const output = doc.getZip().generate({ type: "blob" });
-
-      // Return the output blob to the frontend
-
-      return output as Blob;
-
-      // Process the document using docxtemplater
-    } catch (error) {
-      console.error("Error generating Izrz document:", error);
+    if (validationErrors.length) {
+      throw new Error("Niepoprawne dane: " + validationErrors.join(", "));
     }
+    const {
+      templateFile,
+      caseNumber,
+      reportNumber,
+      programName,
+      taskType,
+      address,
+      dateInput,
+      viewerCount,
+      viewerCountDescription,
+      taskDescription,
+      additionalInfo,
+    } = report;
+
+    if (!templateFile) {
+      throw new Error("Szablon nie został wybrany.");
+    }
+
+    const file = templateFile;
+    const templateBuffer = await file.arrayBuffer();
+
+    const zip = new PizZip(templateBuffer);
+    const doc = new docxtemplater(zip);
+
+    doc.setData({
+      znak_sprawy: caseNumber,
+      numer_izrz: reportNumber,
+      nazwa_programu: programName,
+      typ_zadania: taskType,
+      adres: address,
+      liczba_osob: viewerCount,
+      liczba_osob_opis: viewerCountDescription,
+      opis_zadania: taskDescription,
+      dodatkowe_informacje: additionalInfo,
+      data: formatDate(dateInput.toString()),
+    });
+
+    // This is the line that renders the document
+    // It will replace the variables in the template with the data provided
+    doc.render();
+
+    // This is the line that generates the document
+    // It will create a blob object that can be saved as a file
+    // blob is a binary large objectary data
+    const output = doc.getZip().generate({ type: "blob" });
+
+    // Return the output blob to the frontend
+
+    return output as Blob;
+
+    // Process the document using docxtemplate
   };
+}
+
+export class IzrzService {
+  private repo: IzrzRepository;
+  constructor(izrzRepository: IzrzRepository) {
+    this.repo = izrzRepository;
+  }
+
+  async generateIzrzDocument(data: ReportDataModel): Promise<Blob | void> {
+    const report = new Report(data);
+
+    const errors = report.validate();
+
+    if (errors.length) {
+      throw new Error("Invalid data: " + errors.join(", "));
+    }
+
+    try {
+      return await this.repo.generateIzrz(data);
+    } catch (error: any) {
+      throw new Error("Error generating Izrz document: " + error.message);
+    }
+  }
 }
 
 const formatDate = (dateString: string): string => {

@@ -1,30 +1,28 @@
 import { Request, Response } from "express";
-import { IzrzService } from "../services/temp/createIzrz.service";
+import { IzrzService } from "../services/temp/createIzrz.repository";
 
-class createIzrzController {
+export class createIzrzController {
   private izrzService: IzrzService;
-
-  constructor() {
-    this.izrzService = new IzrzService();
+  constructor(izrzService: IzrzService) {
+    this.izrzService = izrzService;
   }
 
   // Function to handle the izrz document generation
-  public generateIzrz = async (req: Request, res: Response) => {
+  generateIzrz = async (req: Request, res: Response) => {
     try {
-      const data = req.body;
       const file = req.file;
+      const data = req.body;
 
       if (!file) {
-        return res.status(400).json({ message: "File not found" });
+        res.status(400).json({ message: "Brak szablonu w żądaniu." });
+        return;
       }
 
-      const blob = await this.izrzService.generateIzrz({
-        ...data,
-        templateFile: file,
-      });
+      const blob = await this.izrzService.generateIzrzDocument(data);
 
       if (!blob) {
-        return res.status(500).json({ message: "Failed to generate document" });
+        res.status(500).json({ message: "Failed to generate document" });
+        return;
       }
 
       res.setHeader("Content-Disposition", `attachment; filename=report.docx`);
