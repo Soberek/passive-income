@@ -63,6 +63,8 @@ export class Report implements ReportDataModel {
   }
 }
 
+// IzrzRepository class will handle the logic of generating the izrz document
+// in service class we will use the repository to generate the document and report model to validate the data
 export class IzrzRepository {
   constructor() {}
 
@@ -163,14 +165,17 @@ export class IzrzService {
   async generateIzrzDocument(
     data: ReportDataModel
   ): Promise<{ buffer: Buffer; fileName: string } | void> {
-    const report = new Report(data);
+    // Validate the data using the Report model
 
+    const report = new Report(data);
     const errors = report.validate();
 
     if (errors.length) {
       throw new Error("Invalid data: " + errors.join(", "));
     }
 
+    // Call the repository method to generate the document
+    // and return the buffer and file name
     try {
       return await this.repo.generateIzrz(data);
     } catch (error: any) {
