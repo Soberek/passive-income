@@ -1,6 +1,11 @@
 import sqliteDbService from "./sqliteDbService";
 import { Contact } from "../../../shared/types";
 
+// korzysta z modelu
+class ContactRepository {
+  constructor() {}
+}
+
 class ContactService {
   private dbService: sqliteDbService;
 

@@ -5,7 +5,7 @@ import docxtemplater from "docxtemplater";
 
 // Model for the Izrz document
 interface ReportDataModel {
-  templateFile: File;
+  templateFile: Buffer;
   caseNumber: string;
   reportNumber: string;
   programName: string;
@@ -19,7 +19,7 @@ interface ReportDataModel {
 }
 
 export class Report implements ReportDataModel {
-  templateFile: File;
+  templateFile: Buffer;
   caseNumber: string;
   reportNumber: string;
   programName: string;
@@ -59,10 +59,6 @@ export class Report implements ReportDataModel {
       errors.push("Viewer count cannot be negative.");
     }
 
-    if (!(this.dateInput instanceof Date) || isNaN(this.dateInput.getTime())) {
-      errors.push("Invalid date.");
-    }
-
     return errors;
   }
 }
@@ -72,7 +68,9 @@ export class IzrzRepository {
 
   // data will be passed from frontend
   // and will be used to generate izrz document
-  generateIzrz = async (data: ReportDataModel): Promise<Blob | void> => {
+  generateIzrz = async (
+    data: ReportDataModel
+  ): Promise<{ buffer: Buffer; fileName: string } | void> => {
     const report = new Report(data);
     const validationErrors = report.validate();
 
@@ -97,12 +95,14 @@ export class IzrzRepository {
       throw new Error("Szablon nie został wybrany.");
     }
 
-    const file = templateFile;
-    const templateBuffer = await file.arrayBuffer();
+    console.log(templateFile);
 
-    const zip = new PizZip(templateBuffer);
+    const zip = new PizZip(data.templateFile);
     const doc = new docxtemplater(zip);
 
+    const date = new Date(dateInput).toISOString().split("T")[0];
+
+    console.log(date);
     doc.setData({
       znak_sprawy: caseNumber,
       numer_izrz: reportNumber,
@@ -113,24 +113,45 @@ export class IzrzRepository {
       liczba_osob_opis: viewerCountDescription,
       opis_zadania: taskDescription,
       dodatkowe_informacje: additionalInfo,
-      data: formatDate(dateInput.toString()),
+      data: date,
     });
 
     // This is the line that renders the document
     // It will replace the variables in the template with the data provided
-    doc.render();
+    try {
+      doc.render();
+    } catch (error) {
+      console.error("Error during document rendering:", error);
+      // Handle the error appropriately
+    }
 
     // This is the line that generates the document
     // It will create a blob object that can be saved as a file
     // blob is a binary large objectary data
-    const output = doc.getZip().generate({ type: "blob" });
+    const blob = doc.getZip().generate({ type: "blob" });
 
-    // Return the output blob to the frontend
+    // Return the output as Buffer to the frontend
 
-    return output as Blob;
+    const arrayBuffer = await blob.arrayBuffer();
+
+    const buffer = Buffer.from(arrayBuffer);
+
+    let fileName = `${caseNumber} - ${reportNumber} - ${date} - ${taskType} - ${programName} - ${address}`;
+
+    fileName = sanitizeFileName(fileName);
+
+    return { buffer, fileName: fileName };
 
     // Process the document using docxtemplate
   };
+}
+function sanitizeFileName(fileName: string) {
+  // Allow alphanumeric characters, dots, hyphens, and spaces
+  return fileName
+    .replace(/[\/\\]/g, "-")
+    .replace(/[\/:*?"<>|\\]/g, "") // Remove invalid characters (slashes, etc.)
+    .replace(/[^a-zA-Z0-9._\- ]/g, "") // Allow alphanumeric, dots, hyphens, and spaces
+    .trim(); // Remove leading/trailing spaces
 }
 
 export class IzrzService {
@@ -139,7 +160,9 @@ export class IzrzService {
     this.repo = izrzRepository;
   }
 
-  async generateIzrzDocument(data: ReportDataModel): Promise<Blob | void> {
+  async generateIzrzDocument(
+    data: ReportDataModel
+  ): Promise<{ buffer: Buffer; fileName: string } | void> {
     const report = new Report(data);
 
     const errors = report.validate();
@@ -154,77 +177,4 @@ export class IzrzService {
       throw new Error("Error generating Izrz document: " + error.message);
     }
   }
-}
-
-const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  if (isNaN(date.getTime())) {
-    return "Brak daty"; // Return default value for invalid dates
-  }
-  return date.toLocaleDateString("pl-PL", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-};
-
-function returnAddressList() {
-  const addressList = [
-    "Szkoła Podstawowa nr 1 im. Tadeusza Kościuszki w Barlinku, ul. Jeziorna 12, 74-320 Barlinek",
-    "Szkoła Podstawowa nr 4 im. Henryka Sienkiewicza w Barlinku, ul. Kombatantów 3, 74-320 Barlinek",
-    "Szkoła Policealna dla dorosłych w Barlinku, ul. Szosowa 2, 74-320 Barlinek",
-    "Szkoła Przysposabiająca do Pracy, ul. Sienkiewicza 15, 74-320 Barlinek",
-    "Technikum nr 1 w Barlinku, ul. Szosowa 2, 74-320 Barlinek",
-    "Żłobek miejski w Barlinku, ul. Podwale 11, 74-320 Barlinek",
-    "Ośrodek Szkolenia i Wychowania Ochotniczych Hufców Pracy w Barlinku, ul. Św. Bonifacego 36, 74-320 Barlinek",
-    "Niepubliczna Szkoła Podstawowa w Barnówku, Barnówko, 74-311 Różańsko",
-    "Niepubliczne Małe Przedszkole w Barnówku, Barnówko, 74-311 Różańsko",
-    "Przedszkole Gminne w Boleszkowicach, ul. Słoneczna 24a, 74-407 Boleszkowice",
-    "Szkoła Podstawowa im. Bolesława Chrobrego w Boleszkowicach, Pl. Bolesława Chrobrego 3 oraz ul. Słoneczna 24 (IV-VIII), 74-407 Boleszkowice",
-    "Punkt Przedszkolny 'Puchatek' w Cychrach, ul. Jana Pawła II 66/5, 74-404 Cychry",
-    "Szkoła Podstawowa im. Marii Konopnickiej w Sarbinowie, Sarbinowo 80, 74-404 Cychry",
-    "Szkoła Podstawowa im. Władysława St. Reymonta w Cychrach, ul. Jana Pawła II 85, 74-404 Cychry",
-    "Niepubliczne Przedszkole Montessori z oddziałami integracyjnymi i specjalnymi Żaneta Rybińska-Prostak, Joanna Kujawa S.C.",
-    "Branżowa Szkoła I Stopnia w Dębnie, ul. Zachodnia 4, 74-400 Dębno",
-    "I Liceum Ogólnokształcące w Dębnie, ul. Zachodnia 4, 74-400 Dębno",
-    "Niepubliczna Szkoła Podstawowa w Dębnie, ul. Baczewskiego 20, 74-400 Dębno",
-    "Niepubliczne Liceum Ogólnokształcące, ul. Baczewskiego 20, 74-400 Dębno",
-    "Przedszkole Specjalnego Towarzystwa Salezjańskiego im. Św. Jana Bosko, ul. Mickiewicza 33, 74-400 Dębno",
-    "Niepubliczne Przedszkole Towarzystwa Salezjańskiego im. Św. Jana Bosko, Plac Konstytucji 3 Maja 2, 74-400 Dębno",
-    "Przedszkole nr 1 Czarodziejska Kraina w Dębnie, ul. Kościuszki 6, 74-400 Dębno",
-    "Przedszkole nr 2 im. Stanisławy Modrzejewskiej w Dębnie, ul. Jana Pawła II 42, 74-400 Dębno",
-    "Szkoła Podstawowa nr 1 im. KEN w Dębnie, ul. Marszałka J. Piłsudskiego 10, 74-400 Dębno",
-    "Szkoła Podstawowa nr 2 im. Arkadego Fiedlera w Dębnie, ul. Jana Pawła II 1, 74-400 Dębno",
-    "Szkoła Podstawowa nr 3 im. J. Dąbrowskiego, ul. J. Słowackiego 21, 74-400 Dębno",
-    "Szkoła Podstawowa Towarzystwa Salezjańskiego im. św. Jana Bosko w Dębnie, ul. Mickiewicza 33, 74-400 Dębno",
-    "Szkoła Policealna dla Dorosłych w Dębnie, ul. Zachodnia, 74-400 Dębno",
-    "Żłobek Gminny w Dębnie, ul. Jana Pawła II 42, 74-400 Dębno",
-    "Szkoła Podstawowa im. Adama Mickiewicza w Golenicach, Golenice 1a, 74-300 Myślibórz",
-    "Przedszkole Gminne w Karsku, ul. Gorzowska 9, 74-305 Karsko",
-    "Szkoła Podstawowa im. H. Ch. Andersena w Karsku, ul. Gorzowska 9, 74-305 Karsko",
-    "Szkoła Podstawowa im. Janusza Korczaka w Kierzkowie, Kierzków 69, 74-300 Myślibórz",
-    "Szkoła Podstawowa im. Jana Pawła II w Mostkowie, 74-322 Mostkowo 37D",
-    "Branżowa Szkoła I Stopnia Nr 2 w Myśliborzu, ul. Strzelecka 51, 74-300 Myślibórz",
-    "Liceum Ogólnokształcące im. Noblistów Polskich, ul. Za bramką 8, 74-300 Myślibórz",
-    "Młodzieżowy Ośrodek Socjoterapii w Myśliborzu, ul. Marcinkowskiego 10, 74-300 Myślibórz",
-    "Niepubliczne Przedszkole im. Żwirka i Muchomorka, ul. Armii Polskiej 13, 74-300 Myślibórz",
-    "Oddział I Żłobka Miejskiego w Myśliborzu, ul. Spokojna 22, 74-300 Myślibórz",
-    "Przedszkole Publiczne Nr 1 'Zielona Dolinka' w Myśliborzu",
-    "Przedszkole Publiczne nr 2 Misia Uszatka, ul. Spokojna 12, 74-300 Myślibórz",
-    "Specjalny Ośrodek Szkolno-Wychowawczy TPD w Myśliborzu, ul. Pileckiego 27/Spokojna 22, 74-300 Myślibórz",
-    "Szkoła Podstawowa nr 2 im. Janusza Kusocińskiego w Myśliborzu, ul. Piłsudskiego 18, 74-300 Myślibórz",
-    "Szkoła Podstawowa nr 3 im. Leonida Teligi w Myśliborzu, ul. Lipowa 18a, 74-300 Myślibórz",
-    "Szkoła Policealna w Myśliborzu, ul. Strzelecka 51, 74-300 Myślibórz",
-    "Technikum nr 1 w Myśliborzu, ul. Strzelecka 51, 74-300 Myślibórz",
-    "Technikum nr 2 w Myśliborzu, ul. Za Bramką 8, 74-300 Myślibórz",
-    "Żłobek miejski w Myśliborzu, ul. Spokojna 15, 74-300 Myślibórz",
-    "Szkoła Podstawowa im. Jana Brzechwy w Nawrocku, Nawrocko 11, 74-300 Myślibórz",
-    "Szkoła Podstawowa im. Unii Europejskiej, ul. Szkolna 4, 74-304 Nowogródek Pomorski",
-    "Szkoła Podstawowa im. Kornela Makuszyńskiego w Różańsku, 74-311 Różańsko 87",
-    "Niepubliczne Przedszkole 'Małe Przedszkole' w Rychnowie",
-    "Młodzieżowy Ośrodek Socjoterapii w Smolnicy, Smolnica 51, 74-400 Dębno",
-    "Szkoła Podstawowa nr 1 im. Młodych Talentów w Smolnicy, Smolnica 21, 74-400 Dębno",
-  ];
-
-  return addressList;
 }

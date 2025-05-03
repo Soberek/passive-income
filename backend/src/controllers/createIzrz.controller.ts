@@ -10,7 +10,7 @@ export class createIzrzController {
   // Function to handle the izrz document generation
   generateIzrz = async (req: Request, res: Response) => {
     try {
-      const file = req.file;
+      const file = req.file?.buffer;
       const data = req.body;
 
       if (!file) {
@@ -18,19 +18,27 @@ export class createIzrzController {
         return;
       }
 
-      const blob = await this.izrzService.generateIzrzDocument(data);
+      const fileBuffer = await this.izrzService.generateIzrzDocument({
+        ...data,
+        templateFile: file,
+      });
 
-      if (!blob) {
+      if (!fileBuffer || !fileBuffer.buffer) {
         res.status(500).json({ message: "Failed to generate document" });
         return;
       }
 
-      res.setHeader("Content-Disposition", `attachment; filename=report.docx`);
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename=${fileBuffer.fileName}.docx`
+      );
       res.setHeader(
         "Content-Type",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      );
-      res.send(blob);
+      ); // Ensure this is correct
+
+      console.log(fileBuffer.buffer);
+      res.send(fileBuffer.buffer); // Send the blob as is, don't modify it here
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });

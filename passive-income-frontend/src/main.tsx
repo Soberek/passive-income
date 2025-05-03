@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider, useNavigate } from "react-router"; // <-- small typo here too
 import { School } from "./schools/School.tsx";
 import { Contact } from "./contacts/Contact.tsx";
+import IzrzForm from "./Izrz/Izrz.tsx";
 
 const ErrorElement = () => {
   const navigate = useNavigate();
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/contacts",
         element: <Contact />,
+      },
+      {
+        path: "/izrz",
+        element: <IzrzForm />,
       },
     ],
   },

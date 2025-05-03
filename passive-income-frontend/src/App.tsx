@@ -11,6 +11,10 @@ const routes = [
     name: "Kontakty",
     path: "contacts",
   },
+  {
+    name: "Izrz offline",
+    path: "izrz",
+  },
 ];
 function App() {
   return (

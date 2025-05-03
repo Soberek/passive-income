@@ -8,7 +8,8 @@ const index_1 = __importDefault(require("./routes/index"));
 const schoolRouter_1 = __importDefault(require("./routes/schoolRouter"));
 const cors_1 = __importDefault(require("cors"));
 const contactRouter_1 = __importDefault(require("./routes/contactRouter"));
-// import multer from "multer";
+const izrz_router_1 = __importDefault(require("./routes/izrz.router"));
+const multer_1 = __importDefault(require("multer"));
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
 // npm install jsonwebtoken
@@ -32,14 +33,14 @@ const contactRouter_1 = __importDefault(require("./routes/contactRouter"));
 class ExpressApp {
     app;
     PORT = 3000;
-    // private multer: multer.Multer;
+    multer;
     // private storage: multer.StorageEngine;
     constructor() {
         this.app = (0, express_1.default)();
         this.initMiddlewares();
-        // this.multer = multer({
-        //   storage: multer.memoryStorage(),
-        // });
+        this.multer = (0, multer_1.default)({
+            storage: multer_1.default.memoryStorage(),
+        });
     }
     // Initialize middlewares
     // This method is responsible for initializing the middlewares used in the application.
@@ -60,6 +61,8 @@ class ExpressApp {
         // CORS is a security feature implemented by web browsers to prevent malicious websites from making requests to other domains.
         // By default, browsers block cross-origin requests unless the server explicitly allows them.
         this.app.use((0, cors_1.default)({
+            allowedHeaders: ["Content-Type", "Content-Disposition"],
+            exposedHeaders: ["Content-Disposition"], // Expose Content-Disposition to frontend
             origin: (origin, callback) => {
                 if (!origin || origin.startsWith("http://localhost")) {
                     callback(null, true); // allow localhost:any
@@ -83,6 +86,7 @@ class ExpressApp {
         // The schoolRouter is imported from the routes directory and is used to handle requests to the "/api" URL.
         this.app.use("/api", schoolRouter_1.default);
         this.app.use("/api", contactRouter_1.default);
+        this.app.use("/api", this.multer.single("templateFile"), izrz_router_1.default);
         // The izrzRouter is imported from the routes directory and is used to handle requests to the "/api" URL.
         // this.app.use("/api", upload.single , izrzRouter);
     }
