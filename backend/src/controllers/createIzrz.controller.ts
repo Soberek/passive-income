@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IzrzService } from "../services/temp/createIzrz.repository";
+import { IzrzService } from "../repositories/temp/createIzrz.repository";
 
 export class createIzrzController {
   private izrzService: IzrzService;
@@ -28,14 +28,8 @@ export class createIzrzController {
         return;
       }
 
-      res.setHeader(
-        "Content-Disposition",
-        `attachment; filename=${fileBuffer.fileName}.docx`
-      );
-      res.setHeader(
-        "Content-Type",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      ); // Ensure this is correct
+      res.setHeader("Content-Disposition", `attachment; filename=${fileBuffer.fileName}.docx`);
+      res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"); // Ensure this is correct
 
       console.log(fileBuffer.buffer);
       res.send(fileBuffer.buffer); // Send the blob as is, don't modify it here

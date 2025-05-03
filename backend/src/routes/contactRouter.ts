@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import ContactController from "../controllers/contactController";
+import ContactController from "../controllers/contact.controller";
 import { ContactRepository } from "../repositories/contact.repository";
 import { ContactService } from "../services/contactService";
 
