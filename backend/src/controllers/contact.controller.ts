@@ -57,6 +57,7 @@ class ContactController {
     const id = parseInt(req.params.id, 10);
     const { firstName, lastName, email, phone } = req.body;
 
+    // Validate the ID and ensure required fields are present
     if (isNaN(id)) {
       res.status(400).json({ message: "Invalid contact ID" });
       return;
@@ -68,6 +69,12 @@ class ContactController {
     }
 
     try {
+      // Check if the contact exists before updating
+      const existingContact = this.contactService.getContactById(id);
+      if (!existingContact) {
+        res.status(404).json({ message: "Contact not found" });
+        return;
+      }
       const updatedContact = this.contactService.updateContact(id, firstName, lastName, email, phone);
       res.status(200).json(updatedContact);
     } catch (error) {
