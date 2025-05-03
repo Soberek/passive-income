@@ -70,9 +70,7 @@ export class IzrzRepository {
 
   // data will be passed from frontend
   // and will be used to generate izrz document
-  generateIzrz = async (
-    data: ReportDataModel
-  ): Promise<{ buffer: Buffer; fileName: string } | void> => {
+  generateIzrz = async (data: ReportDataModel): Promise<{ buffer: Buffer; fileName: string } | void> => {
     const report = new Report(data);
     const validationErrors = report.validate();
 
@@ -162,9 +160,7 @@ export class IzrzService {
     this.repo = izrzRepository;
   }
 
-  async generateIzrzDocument(
-    data: ReportDataModel
-  ): Promise<{ buffer: Buffer; fileName: string } | void> {
+  async generateIzrzDocument(data: ReportDataModel): Promise<{ buffer: Buffer; fileName: string } | void> {
     // Validate the data using the Report model
 
     const report = new Report(data);
