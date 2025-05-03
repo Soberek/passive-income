@@ -202,51 +202,9 @@ class ContactService {
   constructor(private contactRepository: ContactRepository) {
     this.contactRepository = contactRepository;
   }
-}
-
-class ContactService {
-  private dbService: sqliteDbService;
-
-  constructor() {
-    this.dbService = sqliteDbService.getInstance();
-  }
-
-  createContactTable = () => {
-    const stmt = this.dbService.prepare(`
-      CREATE TABLE IF NOT EXISTS contacts (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        first_name TEXT NOT NULL,
-        last_name TEXT NOT NULL,
-        email TEXT,
-        phone TEXT
-      )
-    `);
-
-    if (!stmt) {
-      console.error("Error preparing SQL statement");
-      return;
-    }
-    stmt.run();
-  };
 
   public getAllContacts = (): Contact[] => {
-    const stmt = this.dbService.prepare(
-      "SELECT id, first_name as firstName, last_name as lastName, email, phone FROM contacts"
-    );
-
-    if (!stmt) {
-      console.error("Error preparing SQL statement");
-      return [];
-    }
-
-    const rows = stmt.all() as Contact[];
-
-    if (rows.length === 0) {
-      console.log("No contacts found");
-      return [];
-    }
-
-    return rows;
+    return this.contactRepository.getAllContacts();
   };
 
   public addNewContact = (
@@ -255,29 +213,58 @@ class ContactService {
     email?: string,
     phone?: string
   ) => {
-    const stmt = this.dbService.prepare(
-      "INSERT INTO contacts (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)"
-    );
+    const contact = new ContactModel(0, firstName, lastName, email, phone);
+    const validationErrors = contact.validate();
 
-    // Check if the statement was prepared successfully
-    // and handle the error if it wasn't
-    if (!stmt) {
-      console.error("Error preparing SQL statement");
-      return null;
+    if (validationErrors.length) {
+      throw new Error("Invalid data: " + validationErrors.join(", "));
     }
-    const result = stmt.run(firstName, lastName, email, phone);
-    if (result.changes > 0) {
-      // If the insert is successful, log a success message
-      console.log("Contact added successfully");
-      return result.lastInsertRowid; // ID of the newly inserted contact
-    } else {
-      // If the insert fails, log an error message
-      console.error("Error adding contact");
-      return null;
+
+    return this.contactRepository.addNewContact(
+      firstName,
+      lastName,
+      email,
+      phone
+    );
+  };
+
+  public getContactById = (id: number): Contact | null => {
+    return this.contactRepository.getContactById(id);
+  };
+
+  public updateContact = (
+    id: number,
+    firstName: string,
+    lastName: string,
+    email?: string,
+    phone?: string
+  ) => {
+    const contact = new ContactModel(id, firstName, lastName, email, phone);
+    const validationErrors = contact.validate();
+
+    if (validationErrors.length) {
+      throw new Error("Invalid data: " + validationErrors.join(", "));
     }
+
+    return this.contactRepository.updateContact(
+      id,
+      firstName,
+      lastName,
+      email,
+      phone
+    );
+  };
+
+  public deleteContact = (id: number) => {
+    return this.contactRepository.deleteContact(id);
+  };
+
+  public createContactTable = () => {
+    this.contactRepository.createContactTable();
+
+    console.log("Contact table created successfully");
   };
 }
-export default ContactService;
 
 // Usage example
 // const contactsService = new ContactsService();
