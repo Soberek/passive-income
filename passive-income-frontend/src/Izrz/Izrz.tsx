@@ -19,6 +19,7 @@ const IzrzForm = () => {
   const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
 
   const [autocomplete, setAutocomplete] = useState("Szk");
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -156,45 +157,49 @@ const IzrzForm = () => {
             name="autocomplete"
             value={autocomplete}
             onChange={handleAutocompleteChange}
+            onFocus={() => setShowSuggestions(true)}
             required
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            placeholder="Type to search..."
+            style={{ width: "100%", padding: "0.5rem", borderRadius: "0.25rem", border: "1px solid #ddd" }}
           />
           {/* List of autocomplete options */}
           {/* Type in input, based on that filter suggestions */}
           {/* on suggestion clicked fill some input */}
 
-          <ul
-            style={{
-              position: "absolute",
-              top: "100%", // Place the dropdown below the input field
-              left: 0,
-              width: "100%", // Ensure it matches the width of the input field
-              maxHeight: "200px", // Limit the dropdown height to avoid overflowing
-              overflowY: "auto", // Allow vertical scrolling if there are many suggestions
-              backgroundColor: "white", // Background color of the dropdown
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow for 3D effect
-              borderRadius: "4px", // Rounded corners
-              padding: "0", // Remove padding from the list
-              margin: "0", // Remove margin
-              zIndex: 10, // Ensure it appears on top of other content
-            }}
-          >
-            {suggestions.map((address, index) => (
-              <li
-                key={index}
-                style={{
-                  padding: "10px", // Padding for each item
-                  borderBottom: "1px solid #ddd", // Separator between items
-                  listStyleType: "none", // Remove default list styling
-                  cursor: "pointer", // Show pointer cursor on hover
-                  backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white", // Alternate background color
-                }}
-                onMouseEnter={(e) => (e.target.style.backgroundColor = "#f1f1f1")} // Hover effect
-                onMouseLeave={(e) => (e.target.style.backgroundColor = index % 2 === 0 ? "#f9f9f9" : "white")} // Reset hover effect
-              >
-                {address}
-              </li>
-            ))}
-          </ul>
+          {showSuggestions && (
+            <div
+              style={{
+                position: "absolute",
+                top: "100%",
+                left: 0,
+                right: 0,
+                backgroundColor: "white",
+                border: "1px solid #ddd",
+                borderRadius: "0.25rem",
+                zIndex: 1,
+              }}
+            >
+              {suggestions.map((address, index) => (
+                <div
+                  key={index}
+                  onClick={() => {
+                    setFormData((prev) => ({ ...prev, address }));
+                    setAutocomplete(address);
+                    setShowSuggestions(false);
+                  }}
+                  style={{
+                    padding: "0.5rem",
+                    cursor: "pointer",
+                    backgroundColor: "#f9f9f9",
+                    borderBottom: index === suggestions.length - 1 ? "none" : "1px solid #ddd",
+                  }}
+                >
+                  {address}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div style={{ marginBottom: "1rem" }}>
