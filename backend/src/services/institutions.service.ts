@@ -1,4 +1,4 @@
-import sqliteDbService from "./sqliteDbService";
+import { InstitutionRepository } from "../repositories/institution.repository";
 
 // TODO: Add institution type foreign key
 //  id_institution_type INTEGER NOT NULL,
@@ -10,97 +10,46 @@ import { Institution } from "../../../shared/types";
 
 // This class is responsible for managing institutions in the database.
 class InstitutionsService {
-  private dbService: sqliteDbService;
-
-  constructor() {
-    this.dbService = sqliteDbService.getInstance();
+  constructor(private institutionRepository: InstitutionRepository) {
+    this.institutionRepository = institutionRepository;
   }
 
-  createInstitutionTable = () => {
-    const stmt = this.dbService.prepare(`
-      CREATE TABLE institutions ( 
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL, 
-        address TEXT NOT NULL, 
-        city TEXT NOT NULL, 
-        postal_code TEXT NOT NULL,
-        phone TEXT, 
-        email TEXT, 
-        website TEXT, 
-        municipality TEXT,
-      );
-    `);
-
-    // Check if the statement was prepared successfully
-    if (!stmt) {
-      console.error("Error preparing SQL statement");
-      return;
-    }
-
-    const info = stmt.run();
-
-    if (info.lastInsertRowid) {
-      console.log("Created institutions table with id: ", info.lastInsertRowid);
-    } else {
-      console.error("Error creating institutions table");
-    }
-  };
-
-  getAllInstitutions = (): Institution[] => {
-    const stmt = this.dbService.prepare("SELECT * FROM institutions");
-    if (!stmt) {
-      console.error("Error preparing SQL statement");
+  // Fetches all institutions from the database.
+  getAllInstitutions = () => {
+    const institutions = this.institutionRepository.getAllInstitutions();
+    if (!institutions) {
+      console.error("Error fetching all institutions");
       return [];
     }
-
-    return stmt.all() as Institution[];
+    return institutions;
   };
 
+  // Adds a new institution to the database.
   addInstitution = (input: Omit<Institution, "id">) => {
-    const {
-      name,
-      address,
-      postalCode,
-      city,
-      phone,
-      email,
-      website,
-      municipality,
-    } = input;
+    const { name, address, postalCode, city, phone, email, website, municipality } = input;
 
     // Check if the required fields are provided
     if (!name || !address || !postalCode || !city) {
       console.error("Missing required fields");
       return null;
     }
-    const stmt = this.dbService.prepare(
-      "INSERT INTO institutions (name, address, postal_code, city, phone, email, website, municipality) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-    );
-    // Check if the statement was prepared successfully
-    // and handle the error if it wasn't
-    if (!stmt) {
-      console.error("Error preparing SQL statement");
-      return null;
+
+    const institutionId = this.institutionRepository.addInstitution(input);
+    if (!institutionId || institutionId.newInstitutionId === -1) {
+      console.error("Error adding institution");
+      return -1;
     }
-    // Execute the statement with the provided parameters
-    const result = stmt.run(
-      name,
-      address,
-      postalCode,
-      city,
-      phone,
-      email,
-      website,
-      municipality
-    );
-    // Check if the execution was successful
-    if (result.changes > 0) {
-      console.log("Institution added successfully");
-      return { newInstitutionId: result.lastInsertRowid }; // Return the ID of the newly inserted row
+    return institutionId;
+  };
+
+  // Deletes an institution from the database.
+  deleteInstitution = (id: number) => {
+    const result = this.institutionRepository.deleteInstitution(id);
+    if (!result) {
+      console.error("Error deleting institution");
+      return false;
     }
-    // If the execution failed, log an error message
-    console.error("Error adding institution");
-    return null; // Return null to indicate failure
+    return true;
   };
 }
 
