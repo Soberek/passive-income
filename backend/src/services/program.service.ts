@@ -3,15 +3,12 @@ import { ProgramRepository } from "../repositories/program.repository";
 import { ProgramModel } from "../models/program.model";
 
 export class ProgramService {
-  constructor(private programRepository: ProgramRepository, private programModel: ProgramModel) {
-    this.programRepository = programRepository;
-    this.programModel = programModel;
-  }
+  constructor(private programRepository: ProgramRepository, private programModel: ProgramModel) {}
 
   getAllPrograms = (): Program[] => {
     const programs = this.programRepository.getAllPrograms();
     if (!programs) {
-      return [];
+      throw new Error("Error fetching all programs");
     }
     return programs;
   };
@@ -19,7 +16,7 @@ export class ProgramService {
   getProgramById = (id: number): Program | null => {
     const program = this.programRepository.getProgramById(id);
     if (!program) {
-      return null;
+      throw new Error("Program not found or invalid ID");
     }
     return program;
   };
@@ -40,8 +37,7 @@ export class ProgramService {
   deleteProgram = (id: number): boolean => {
     const result = this.programRepository.deleteProgram(id);
     if (!result) {
-      console.error("Error deleting program");
-      return false;
+      throw new Error("Error deleting program");
     }
     return true;
   };
@@ -55,13 +51,11 @@ export class ProgramService {
     const programModel = new ProgramModel(name, description, programType, id);
     const errors = programModel.validate();
     if (errors.length > 0) {
-      console.error("Validation errors:", errors);
-      return false;
+      throw new Error("Validation errors: " + errors.join(", "));
     }
     const result = this.programRepository.updateProgram(id, programModel);
     if (!result) {
-      console.error("Error updating program");
-      return false;
+      throw new Error("Error updating program");
     }
 
     return true;
