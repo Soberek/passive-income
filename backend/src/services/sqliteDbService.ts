@@ -30,8 +30,7 @@ class sqliteDbService {
       const stmt = this.db.prepare(sql);
       return stmt;
     } catch (error) {
-      console.error("Error preparing SQL statement:", error);
-      return null;
+      throw new Error(`Error preparing SQL statement: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
 
@@ -42,8 +41,9 @@ class sqliteDbService {
       const stmt = this.db.prepare(`SELECT * FROM ${tableName}`);
       return stmt.all() as T[];
     } catch (error) {
-      console.error(`Error fetching all records from ${tableName}:`, error);
-      return [];
+      throw new Error(
+        `Error fetching records from ${tableName}: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
   };
 
@@ -51,7 +51,7 @@ class sqliteDbService {
     try {
       this.db.close();
     } catch (error) {
-      console.error("Error closing database connection:", error);
+      throw new Error(`Error closing database connection: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
 }

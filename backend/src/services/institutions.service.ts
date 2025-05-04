@@ -18,8 +18,7 @@ class InstitutionsService {
   getAllInstitutions = () => {
     const institutions = this.institutionRepository.getAllInstitutions();
     if (!institutions) {
-      console.error("Error fetching all institutions");
-      return [];
+      throw new Error("Error fetching all institutions");
     }
     return institutions;
   };
@@ -30,14 +29,12 @@ class InstitutionsService {
 
     // Check if the required fields are provided
     if (!name || !address || !postalCode || !city) {
-      console.error("Missing required fields");
-      return null;
+      throw new Error("Missing required fields");
     }
 
     const institutionId = this.institutionRepository.addInstitution(input);
     if (!institutionId || institutionId.newInstitutionId === -1) {
-      console.error("Error adding institution");
-      return -1;
+      throw new Error("Error adding institution");
     }
     return institutionId;
   };
@@ -45,9 +42,10 @@ class InstitutionsService {
   // Deletes an institution from the database.
   deleteInstitution = (id: number) => {
     const result = this.institutionRepository.deleteInstitution(id);
+
+    // result is null if the institution was not found
     if (!result) {
-      console.error("Error deleting institution");
-      return false;
+      throw new Error("Error deleting institution");
     }
     return true;
   };
