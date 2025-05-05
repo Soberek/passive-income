@@ -1,7 +1,21 @@
 import React, { useState } from "react";
 
+interface FormData {
+  templateFile: File | null;
+  caseNumber: string;
+  reportNumber: string;
+  programName: string;
+  taskType: string;
+  address: string;
+  dateInput: string;
+  viewerCount: number;
+  viewerCountDescription: string;
+  taskDescription: string;
+  additionalInfo: string;
+}
+
 const IzrzForm = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     templateFile: null,
     caseNumber: "",
     reportNumber: "",
@@ -31,6 +45,7 @@ const IzrzForm = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
+
     setFormData((prev) => ({
       ...prev,
       templateFile: file,
