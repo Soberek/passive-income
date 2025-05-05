@@ -54,6 +54,10 @@ class sqliteDbService {
       throw new Error(`Error closing database connection: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
+
+  getDb = () => {
+    return this.db;
+  };
 }
 
 export default sqliteDbService;

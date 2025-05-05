@@ -1,7 +1,8 @@
-import { Institution, SchoolWithInstitutionData } from "../../../shared/types";
+import { Institution, schoolParams } from "../../../shared/types";
 import { School } from "../../../shared/types";
 import { SchoolRepository } from "../repositories/school.repository";
 import { InstitutionRepository } from "../repositories/institution.repository";
+import sqliteDbService from "./sqliteDbService";
 
 class SchoolService {
   constructor(private schoolRepository: SchoolRepository, private institutionRepository: InstitutionRepository) {}
@@ -21,6 +22,50 @@ class SchoolService {
   };
 
   // first add the institution and then add the school
+  // if i want to add a school i need to add institution first
+
+  addInstitutionSchool = (schoolInstitutionData: schoolParams) => {
+    const institution: Omit<Institution, "id"> = {
+      name: schoolInstitutionData.name,
+      address: schoolInstitutionData.address,
+      city: schoolInstitutionData.city,
+      postalCode: schoolInstitutionData.postalCode,
+      phone: schoolInstitutionData.phone,
+      email: schoolInstitutionData.email,
+      website: schoolInstitutionData.website,
+      municipality: schoolInstitutionData.municipality,
+    };
+    const school: Omit<School, "id"> = {
+      director: schoolInstitutionData.director,
+    };
+
+    // Start a transaction
+    try {
+      sqliteDbService.getInstance().getDb().exec("BEGIN TRANSACTION");
+
+      // Check if the required fields are provided
+      if (!institution.name || !institution.address || !institution.postalCode || !institution.city) {
+        throw new Error("Missing required fields");
+      }
+      const institutionId = this.institutionRepository.addInstitution(institution);
+
+      if (!institutionId || institutionId.newInstitutionId === -1) {
+        throw new Error("Error adding institution");
+      }
+      const schoolId = this.schoolRepository.addSchool(institutionId.newInstitutionId, school.director);
+      if (!schoolId || schoolId === -1) {
+        throw new Error("Error adding school");
+      }
+
+      sqliteDbService.getInstance().getDb().exec("COMMIT");
+
+      return { institutionId: institutionId.newInstitutionId, schoolId };
+    } catch (error) {
+      sqliteDbService.getInstance().getDb().exec("ROLLBACK");
+      throw error;
+    }
+  };
+
   addSchool = (institutionId: Institution["id"], director: School["director"]) => {
     // check if the institution exists
     const institution = this.institutionRepository.getInstitutionById(institutionId);
