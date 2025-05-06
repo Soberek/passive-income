@@ -12,7 +12,7 @@ export class ContactRepository {
   createContactTable = () => {
     const stmt = this.dbService.prepare(`
       CREATE TABLE IF NOT EXISTS contacts (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        contact_id INTEGER PRIMARY KEY AUTOINCREMENT,
         first_name TEXT NOT NULL,
         last_name TEXT NOT NULL,
         email TEXT,
@@ -29,7 +29,7 @@ export class ContactRepository {
 
   public getAllContacts = (): Contact[] => {
     const stmt = this.dbService.prepare(
-      "SELECT id, first_name as firstName, last_name as lastName, email, phone FROM contacts"
+      "SELECT contact_id, first_name as firstName, last_name as lastName, email, phone FROM contacts"
     );
 
     if (!stmt) {
@@ -72,7 +72,7 @@ export class ContactRepository {
 
   public getContactById = (id: number): Contact | null => {
     const stmt = this.dbService.prepare(
-      "SELECT id, first_name as firstName, last_name as lastName, email, phone FROM contacts WHERE id = ?"
+      "SELECT contact_id, first_name as firstName, last_name as lastName, email, phone FROM contacts WHERE id = ?"
     );
 
     if (!stmt) {
@@ -98,7 +98,7 @@ export class ContactRepository {
     // if some of them are not provided, it will not update them
 
     const stmt = this.dbService.prepare(
-      "UPDATE contacts SET first_name = ?, last_name = ?, email = ?, phone = ? WHERE id = ?"
+      "UPDATE contacts SET first_name = ?, last_name = ?, email = ?, phone = ? WHERE contact_id = ?"
     );
 
     if (!stmt) {
@@ -118,7 +118,7 @@ export class ContactRepository {
   };
 
   public deleteContact = (id: number) => {
-    const stmt = this.dbService.prepare("DELETE FROM contacts WHERE id = ?");
+    const stmt = this.dbService.prepare("DELETE FROM contacts WHERE contact_id = ?");
 
     if (!stmt) {
       console.error("Error preparing SQL statement");

@@ -8,7 +8,7 @@ export class SchoolRepository {
   }
 
   getAllSchools = () => {
-    const stmt = this.dbService.prepare("SELECT * FROM school");
+    const stmt = this.dbService.prepare("SELECT * FROM schools");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return [];
@@ -21,8 +21,8 @@ export class SchoolRepository {
     return rows;
   };
 
-  getSchoolById = (id: number) => {
-    const stmt = this.dbService.prepare("SELECT * FROM school WHERE id = ?");
+  getSchoolById = (id: School["schoolId"]) => {
+    const stmt = this.dbService.prepare("SELECT * FROM schools WHERE school_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return null;
@@ -35,8 +35,8 @@ export class SchoolRepository {
     return row;
   };
 
-  addSchool = (institutionId: Institution["id"], director: School["director"]) => {
-    const stmt = this.dbService.prepare("INSERT INTO school (id_institution, director) VALUES (?, ?)");
+  addSchool = (institutionId: Institution["institutionId"], director: School["director"]) => {
+    const stmt = this.dbService.prepare("INSERT INTO schools (institution_id, director) VALUES (?, ?)");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return -1;
@@ -49,8 +49,8 @@ export class SchoolRepository {
     return info.lastInsertRowid;
   };
 
-  deleteSchool = (id: number) => {
-    const stmt = this.dbService.prepare("DELETE FROM school WHERE id = ?");
+  deleteSchool = (id: School["schoolId"]) => {
+    const stmt = this.dbService.prepare("DELETE FROM schools WHERE schoolId = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
@@ -67,8 +67,12 @@ export class SchoolRepository {
     return true;
   };
 
-  updateSchool = (id: number, institutionId: Institution["id"], director: School["director"]) => {
-    const stmt = this.dbService.prepare("UPDATE school SET id_institution = ?, director = ? WHERE id = ?");
+  updateSchool = (
+    id: School["schoolId"],
+    institutionId: Institution["institutionId"],
+    director: School["director"]
+  ) => {
+    const stmt = this.dbService.prepare("UPDATE schools SET institution_id = ?, director = ? WHERE school_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
@@ -85,8 +89,8 @@ export class SchoolRepository {
     return true;
   };
 
-  getSchoolByInstitutionId = (institutionId: Institution["id"]) => {
-    const stmt = this.dbService.prepare("SELECT * FROM school WHERE id_institution = ?");
+  getSchoolByInstitutionId = (institutionId: Institution["institutionId"]) => {
+    const stmt = this.dbService.prepare("SELECT * FROM schools WHERE institution_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return null;
@@ -99,12 +103,12 @@ export class SchoolRepository {
     return row;
   };
 
-  getSchoolByIdWithInstitutionData = (id: number) => {
+  getSchoolByIdWithInstitutionData = (id: School["schoolId"]) => {
     const stmt = this.dbService.prepare(
-      `SELECT school.id AS schoolId, institution.id AS institutionId, school.director, institution.name, institution.address, institution.city, institution.postalCode, institution.phone, institution.email, institution.website, institution.municipality
-         FROM school
-         JOIN institution ON school.id_institution = institution.id
-         WHERE school.id = ?`
+      `SELECT school.school_id AS schoolId, institution.institution_id AS institutionId, school.director, institution.name, institution.address, institution.city, institution.postalCode, institution.phone, institution.email, institution.website, institution.municipality
+         FROM schools
+         JOIN institution ON school.institution_id = institution.institution_id
+         WHERE school.school_id = ?`
     );
     if (!stmt) {
       console.error("Error preparing SQL statement");

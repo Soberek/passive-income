@@ -1,4 +1,9 @@
-import { Institution, schoolParams } from "../../../shared/types";
+import {
+  CreateInstitutionDto,
+  CreateSchoolDto,
+  CreateSchoolWithInstitutionDto,
+  Institution,
+} from "../../../shared/types";
 import { School } from "../../../shared/types";
 import { SchoolRepository } from "../repositories/school.repository";
 import { InstitutionRepository } from "../repositories/institution.repository";
@@ -24,19 +29,15 @@ class SchoolService {
   // first add the institution and then add the school
   // if i want to add a school i need to add institution first
 
-  addInstitutionSchool = (schoolInstitutionData: schoolParams) => {
-    const institution: Omit<Institution, "id"> = {
+  addInstitutionSchool = (schoolInstitutionData: CreateSchoolWithInstitutionDto) => {
+    const institution: CreateInstitutionDto = {
       name: schoolInstitutionData.name,
       address: schoolInstitutionData.address,
       city: schoolInstitutionData.city,
       postalCode: schoolInstitutionData.postalCode,
       phone: schoolInstitutionData.phone,
       email: schoolInstitutionData.email,
-      website: schoolInstitutionData.website,
       municipality: schoolInstitutionData.municipality,
-    };
-    const school: Omit<School, "id"> = {
-      director: schoolInstitutionData.director,
     };
 
     // Start a transaction
@@ -52,6 +53,11 @@ class SchoolService {
       if (!institutionId || institutionId.newInstitutionId === -1) {
         throw new Error("Error adding institution");
       }
+
+      const school: CreateSchoolDto = {
+        director: schoolInstitutionData.director,
+        institutionId: institutionId.newInstitutionId,
+      };
       const schoolId = this.schoolRepository.addSchool(institutionId.newInstitutionId, school.director);
       if (!schoolId || schoolId === -1) {
         throw new Error("Error adding school");
@@ -66,7 +72,7 @@ class SchoolService {
     }
   };
 
-  addSchool = (institutionId: Institution["id"], director: School["director"]) => {
+  addSchool = (institutionId: Institution["institutionId"], director: School["director"]) => {
     // check if the institution exists
     const institution = this.institutionRepository.getInstitutionById(institutionId);
 
@@ -99,7 +105,7 @@ class SchoolService {
     return true;
   };
 
-  updateSchool = (id: number, institutionId: Institution["id"], director: School["director"]) => {
+  updateSchool = (id: number, institutionId: Institution["institutionId"], director: School["director"]) => {
     const result = this.schoolRepository.updateSchool(id, institutionId, director);
     if (!result) {
       throw new Error("Error updating school");
@@ -107,7 +113,7 @@ class SchoolService {
     return true;
   };
 
-  getSchoolByInstitutionId = (institutionId: Institution["id"]) => {
+  getSchoolByInstitutionId = (institutionId: Institution["institutionId"]) => {
     const school = this.schoolRepository.getSchoolByInstitutionId(institutionId);
     if (!school) {
       throw new Error("Error fetching school by institution id");
