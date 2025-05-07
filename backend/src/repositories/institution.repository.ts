@@ -39,7 +39,19 @@ export class InstitutionRepository {
   };
 
   getAllInstitutions = (): Institution[] => {
-    const stmt = this.dbService.prepare("SELECT * FROM institutions");
+    const stmt = this.dbService.prepare(`
+      SELECT 
+        institution_id as institutionId, 
+        name, 
+        address, 
+        postal_code as postalCode, 
+        municipality, 
+        city, 
+        created_at as createdAt, 
+        email, 
+        phone 
+      FROM institutions
+    `);
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return [];
