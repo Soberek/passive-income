@@ -29,7 +29,7 @@ export class ContactRepository {
 
   public getAllContacts = (): Contact[] => {
     const stmt = this.dbService.prepare(
-      "SELECT contact_id, first_name as firstName, last_name as lastName, email, phone FROM contacts"
+      "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts"
     );
 
     if (!stmt) {
@@ -72,7 +72,7 @@ export class ContactRepository {
 
   public getContactById = (id: number): Contact | null => {
     const stmt = this.dbService.prepare(
-      "SELECT contact_id, first_name as firstName, last_name as lastName, email, phone FROM contacts WHERE id = ?"
+      "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts WHERE id = ?"
     );
 
     if (!stmt) {
