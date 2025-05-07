@@ -6,7 +6,7 @@ import { Contact } from "../../../shared/types";
  * It also includes a validate method to check the validity of the contact's data.
  */
 
-export class ContactModel implements Omit<Contact, "id"> {
+export class ContactModel implements Omit<Contact, "contactId"> {
   firstName: string;
   lastName: string;
   email?: string;
