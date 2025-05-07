@@ -8,7 +8,7 @@ export class SchoolRepository {
   }
 
   getAllSchools = () => {
-    const stmt = this.dbService.prepare("SELECT * FROM schools");
+    const stmt = this.dbService.prepare("SELECT school_id as schoolId, director FROM schools");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return [];
@@ -72,7 +72,25 @@ export class SchoolRepository {
     institutionId: Institution["institutionId"],
     director: School["director"]
   ) => {
-    const stmt = this.dbService.prepare("UPDATE schools SET institution_id = ?, director = ? WHERE school_id = ?");
+    const fieldsToUpdate: string[] = []; // Array to hold the fields to be updated director
+    const valuesToUpdate: any[] = []; // Array to hold the values to be updated
+
+    if (director !== undefined) {
+      fieldsToUpdate.push("director = ?");
+      valuesToUpdate.push(director);
+    }
+    if (institutionId !== undefined) {
+      fieldsToUpdate.push("institution_id = ?");
+      valuesToUpdate.push(institutionId);
+    }
+    if (fieldsToUpdate.length === 0) {
+      console.warn("No fields to update provided");
+      return false;
+    }
+    const sql = `UPDATE schools SET ${fieldsToUpdate.join(", ")} WHERE school_id = ?`;
+    valuesToUpdate.push(id);
+    const stmt = this.dbService.prepare(sql);
+
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
