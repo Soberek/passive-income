@@ -58,6 +58,15 @@ class sqliteDbService {
   getDb = () => {
     return this.db;
   };
+
+  transaction = (callback: () => void) => {
+    try {
+      const transaction = this.db.transaction(callback);
+      transaction();
+    } catch (error) {
+      throw new Error(`Error executing transaction: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  };
 }
 
 export default sqliteDbService;
