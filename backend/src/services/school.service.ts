@@ -40,35 +40,32 @@ class SchoolService {
       municipality: schoolInstitutionData.municipality,
     };
 
+    if (!institution.name || !institution.address || !institution.postalCode || !institution.city) {
+      throw new Error("Missing required fields");
+    }
     // Start a transaction
     try {
-      sqliteDbService.getInstance().getDb().exec("BEGIN TRANSACTION");
-
       // Check if the required fields are provided
-      if (!institution.name || !institution.address || !institution.postalCode || !institution.city) {
-        throw new Error("Missing required fields");
-      }
-      const institutionId = this.institutionRepository.addInstitution(institution);
+      return sqliteDbService.getInstance().transaction(() => {
+        const institutionId = this.institutionRepository.addInstitution(institution);
 
-      if (!institutionId || institutionId.newInstitutionId === -1) {
-        throw new Error("Error adding institution");
-      }
+        if (!institutionId || institutionId.newInstitutionId === -1) {
+          throw new Error("Error adding institution");
+        }
 
-      const school: CreateSchoolDto = {
-        director: schoolInstitutionData.director,
-        institutionId: institutionId.newInstitutionId,
-      };
-      const schoolId = this.schoolRepository.addSchool(institutionId.newInstitutionId, school.director);
-      if (!schoolId || schoolId === -1) {
-        throw new Error("Error adding school");
-      }
+        const school: CreateSchoolDto = {
+          director: schoolInstitutionData.director,
+          institutionId: institutionId.newInstitutionId,
+        };
+        const schoolId = this.schoolRepository.addSchool(institutionId.newInstitutionId, school.director);
+        if (!schoolId || schoolId === -1) {
+          throw new Error("Error adding school");
+        }
 
-      sqliteDbService.getInstance().getDb().exec("COMMIT");
-
-      return { institutionId: institutionId.newInstitutionId, schoolId };
+        return { institutionId: institutionId.newInstitutionId, schoolId };
+      });
     } catch (error) {
-      sqliteDbService.getInstance().getDb().exec("ROLLBACK");
-      throw error;
+      throw new Error(`Error adding institution and school: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
 
