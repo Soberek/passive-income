@@ -76,8 +76,9 @@ class ContactController {
         res.status(404).json({ message: "Contact not found" });
         return;
       }
-      const updatedContact = this.contactService.updateContact(id, firstName, lastName, email, phone);
-      res.status(200).json(updatedContact);
+      const updatedContactId = this.contactService.updateContact(id, firstName, lastName, email, phone);
+
+      res.status(200).json({ message: "Contact updated successfully", contactId: updatedContactId });
     } catch (error) {
       res.status(500).json({ message: "Error updating contact", error });
     }
