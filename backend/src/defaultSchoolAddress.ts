@@ -1,6 +1,6 @@
 import { CreateSchoolWithInstitutionDto } from "../../shared/types/index";
 
-const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
+export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
   {
     name: "Branżowa Szkoła I Stopnia Nr 1 w Barlinku",
     address: "ul. Szosowa 2",
