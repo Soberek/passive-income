@@ -1,4 +1,12 @@
 import betterSqlite3 from "better-sqlite3";
+console.log("..", __dirname);
+
+import path from "path";
+
+// how to get current path
+const DB_PATH = path.resolve(__dirname, "../../sqliteDb.db");
+
+console.log("DB Path:", DB_PATH);
 // import { v4 as uuidv4 } from "uuid";
 
 class sqliteDbService {
@@ -19,7 +27,7 @@ class sqliteDbService {
   public static getInstance = (): sqliteDbService => {
     if (!sqliteDbService.instance) {
       sqliteDbService.instance = new sqliteDbService({
-        dbPath: "./sqliteDb.db",
+        dbPath: DB_PATH,
       });
     }
     return sqliteDbService.instance;
