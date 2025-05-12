@@ -62,6 +62,7 @@ export class ContactRepository {
     if (result.changes > 0) {
       // If the insert is successful, log a success message
       console.log("Contact added successfully");
+
       return result.lastInsertRowid; // ID of the newly inserted contact
     } else {
       // If the insert fails, log an error message
@@ -72,7 +73,7 @@ export class ContactRepository {
 
   public getContactById = (id: number): Contact | null => {
     const stmt = this.dbService.prepare(
-      "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts WHERE id = ?"
+      "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts WHERE contact_id = ?"
     );
 
     if (!stmt) {
