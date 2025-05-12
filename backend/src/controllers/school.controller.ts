@@ -83,6 +83,7 @@ export default class schoolController {
         return;
       }
       const deletedSchool = this.schoolService.deleteSchool(parseInt(id));
+
       if (!deletedSchool) {
         res.status(404).json({ message: "School not found" });
         return;
@@ -91,7 +92,7 @@ export default class schoolController {
       return;
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Error deleting school", error });
+      res.status(500).json({ message: "Error deleting school", error: String(error) });
       return;
     }
   };

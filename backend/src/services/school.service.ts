@@ -97,7 +97,13 @@ class SchoolService {
   };
 
   deleteSchool = (id: number) => {
+    // check if the school exists
+    const school = this.schoolRepository.getSchoolById(id);
+    if (!school) {
+      throw new Error("School not found");
+    }
     const result = this.schoolRepository.deleteSchool(id);
+
     if (!result) {
       throw new Error("Error deleting school");
     }

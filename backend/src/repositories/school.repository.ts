@@ -50,12 +50,13 @@ export class SchoolRepository {
   };
 
   deleteSchool = (id: School["schoolId"]) => {
-    const stmt = this.dbService.prepare("DELETE FROM schools WHERE schoolId = ?");
+    const stmt = this.dbService.prepare("DELETE FROM schools WHERE school_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
     }
     const info = stmt.run(id);
+
     if (!info) {
       console.error("Error executing SQL statement");
       return false;
