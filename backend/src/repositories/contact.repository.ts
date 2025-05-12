@@ -111,7 +111,7 @@ export class ContactRepository {
 
     if (result.changes > 0) {
       console.log(`Contact with ID ${id} updated successfully`);
-      return result.changes; // Number of rows changed
+      return id; // Number of rows changed
     } else {
       console.error(`Error updating contact with ID ${id}`);
       return null;
