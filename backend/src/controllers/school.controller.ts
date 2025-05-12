@@ -39,7 +39,8 @@ export default class schoolController {
       }
 
       // 1. Step 1: Create institution
-      const newInstitution = this.institutionsService.addInstitution({
+
+      const newInstitutionSchool = this.schoolService.addInstitutionSchool({
         name,
         address,
         postalCode,
@@ -47,32 +48,24 @@ export default class schoolController {
         phone,
         email,
         municipality,
+        director,
       });
 
-      if (!newInstitution) {
-        res.status(500).json({ message: "Error creating institution" });
-        return;
+      if (!newInstitutionSchool.institutionId || newInstitutionSchool.schoolId === -1) {
+        {
+          res.status(500).json({ message: "Error creating school institution" });
+          return;
+        }
       }
 
-      // 2. Step 2: Create school, pass institutionId from the new institution
-      if (!director || director.trim() === "") {
-        res.status(400).json({ message: "Missing director field" });
-        return;
-      }
-
-      const newSchool = this.schoolService.addSchool(newInstitution.newInstitutionId, director);
-
-      if (!newSchool) {
-        res.status(500).json({ message: "Error creating school" });
-        return;
-      }
-
-      // 3. Step 3: Return the new school with success message
+      // Check if the new school was created successfully
       res.status(201).json({
         message: "School created successfully",
-        newSchoolId: newSchool,
-        newInstitutionId: newInstitution.newInstitutionId,
+        institutionId: newInstitutionSchool.institutionId,
+        schoolId: newInstitutionSchool.schoolId,
       });
+
+      // 3. Step 3: Return the new school with success message
 
       return;
     } catch (error) {

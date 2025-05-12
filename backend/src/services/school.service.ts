@@ -46,7 +46,7 @@ class SchoolService {
     }
     // Start a transaction
     try {
-      return sqliteDbService.getInstance().transaction(() => {
+      const transaction = sqliteDbService.getInstance().transaction(() => {
         const institutionId = this.institutionRepository.addInstitution(institution);
 
         if (!institutionId || institutionId.newInstitutionId === -1) {
@@ -64,6 +64,8 @@ class SchoolService {
 
         return { institutionId: institutionId.newInstitutionId, schoolId };
       });
+
+      return transaction;
     } catch (error) {
       throw new Error(`Error adding institution and school: ${error instanceof Error ? error.message : String(error)}`);
     }
