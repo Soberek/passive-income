@@ -34,7 +34,7 @@ export class ContactModel implements Omit<Contact, "contactId"> {
       errors.push("Email is invalid.");
     }
 
-    if (this.phone && this.phone.length < 10) {
+    if (this.phone && this.phone.length < 9) {
       errors.push("Phone number is too short.");
     }
 
