@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { InstitutionsService } from "../services/institutions.service";
 import SchoolService from "../services/school.service";
 
-import { schoolParams, SchoolWithInstitutionData } from "../../../shared/types/index";
+import { CreateSchoolDto, CreateSchoolWithInstitutionDto } from "../../../shared/types/index";
 
 export default class schoolController {
   constructor(private schoolService: SchoolService, private institutionsService: InstitutionsService) {
@@ -31,7 +31,8 @@ export default class schoolController {
   createSchool = (req: Request, res: Response): void => {
     console.log("Creating school");
     try {
-      const { name, address, postalCode, city, phone, email, website, municipality, director }: schoolParams = req.body;
+      const { name, address, postalCode, city, phone, email, municipality, director }: CreateSchoolWithInstitutionDto =
+        req.body;
       if (!name || !address || !postalCode || !city) {
         res.status(400).json({ message: "Missing required fields" });
         return;
@@ -45,7 +46,6 @@ export default class schoolController {
         city,
         phone,
         email,
-        website,
         municipality,
       });
 
@@ -128,7 +128,7 @@ export default class schoolController {
     console.log("Updating school");
     try {
       const { id } = req.params;
-      const { institutionId, director }: SchoolWithInstitutionData = req.body;
+      const { institutionId, director }: CreateSchoolDto = req.body;
       if (!id || !institutionId || !director) {
         res.status(400).json({ message: "Missing required fields" });
         return;
