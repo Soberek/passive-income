@@ -40,12 +40,12 @@ class SchoolService {
       municipality: schoolInstitutionData.municipality,
     };
 
+    // Check if the required fields are provided
     if (!institution.name || !institution.address || !institution.postalCode || !institution.city) {
       throw new Error("Missing required fields");
     }
     // Start a transaction
     try {
-      // Check if the required fields are provided
       return sqliteDbService.getInstance().transaction(() => {
         const institutionId = this.institutionRepository.addInstitution(institution);
 
