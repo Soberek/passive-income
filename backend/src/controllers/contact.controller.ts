@@ -13,6 +13,7 @@ class ContactController {
       const contacts = this.contactService.getAllContacts() as Contact[];
       res.status(200).json(contacts);
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: "Error fetching contacts", error });
     }
   };
@@ -27,9 +28,9 @@ class ContactController {
 
     try {
       const newContact = this.contactService.addNewContact(firstName, lastName, email, phone);
-      res.status(201).json(newContact);
+      res.status(201).json({ message: "Contact added successfully", contactId: newContact });
     } catch (error) {
-      res.status(500).json({ message: "Error adding contact", error });
+      res.status(500).json({ message: "Error adding contact", error: String(error) });
     }
   };
 
@@ -49,7 +50,7 @@ class ContactController {
       }
       res.status(200).json(contact);
     } catch (error) {
-      res.status(500).json({ message: "Error fetching contact", error });
+      res.status(500).json({ message: "Error fetching contact", error: String(error) });
     }
   };
 
@@ -90,11 +91,18 @@ class ContactController {
       return;
     }
 
+    // Check if the contact exists before deleting
+    const existingContact = this.contactService.getContactById(id);
+    if (!existingContact) {
+      res.status(404).json({ message: "Contact not found" });
+      return;
+    }
+
     try {
       this.contactService.deleteContact(id);
-      res.status(204).send();
+      res.status(200).json({ message: "Contact deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Error deleting contact", error });
+      res.status(500).json({ message: "Error deleting contact", error: String(error) });
     }
   };
 
