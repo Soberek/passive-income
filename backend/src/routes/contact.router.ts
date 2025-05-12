@@ -14,6 +14,7 @@ contactRouter.post("/contact", contactController.addContact);
 contactRouter.get("/contact/:id", contactController.getContactById);
 contactRouter.put("/contact/:id", contactController.updateContact);
 contactRouter.delete("/contact/:id", contactController.deleteContact);
-contactRouter.post("/contact/create", contactController.createContactTable);
+
+// contactRouter.post("/contact/create", contactController.createContactTable);
 
 export default contactRouter;
