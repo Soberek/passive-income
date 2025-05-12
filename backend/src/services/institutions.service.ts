@@ -6,7 +6,7 @@ import { InstitutionRepository } from "../repositories/institution.repository";
 
 // Model for the Institution
 // This interface defines the structure of an institution object.
-import { Institution } from "../../../shared/types";
+import { CreateInstitutionDto, Institution } from "../../../shared/types";
 
 // This class is responsible for managing institutions in the database.
 class InstitutionsService {
@@ -24,8 +24,8 @@ class InstitutionsService {
   };
 
   // Adds a new institution to the database.
-  addInstitution = (input: Omit<Institution, "id">) => {
-    const { name, address, postalCode, city, phone, email, website, municipality } = input;
+  addInstitution = (input: CreateInstitutionDto) => {
+    const { name, address, postalCode, city, phone, email, municipality } = input;
 
     // Check if the required fields are provided
     if (!name || !address || !postalCode || !city) {
