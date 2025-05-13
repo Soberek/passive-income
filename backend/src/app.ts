@@ -5,6 +5,7 @@ import cors from "cors";
 import contactRouter from "./routes/contact.router";
 import izrzRouter from "./routes/izrz.router";
 import multer from "multer";
+import helmet from "helmet";
 
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
@@ -47,6 +48,8 @@ export default class ExpressApp {
     this.app.use(express.json());
     // Middleware for serving static files from the "public" directory
     this.app.use(express.static("public"));
+
+    this.app.use(helmet());
     // Middleware for logging requests
     this.app.use((req: Request, _: Response, next: () => void) => {
       console.log(`${req.method} ${req.url}`);
