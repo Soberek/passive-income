@@ -10,6 +10,10 @@ export interface Institution {
   phone?: string;
 }
 
+// For updating entities (partial updates)
+export type CreateInstitutionDto = Omit<Institution, "institutionId" | "createdAt">;
+export type UpdateInstitutionDto = Partial<CreateInstitutionDto>;
+
 export interface School {
   schoolId: number | BigInt;
   institutionId: number | BigInt;
@@ -17,19 +21,14 @@ export interface School {
   // foreign key to institution
 }
 
-// Types for creating new entities
-export type CreateInstitutionDto = Omit<Institution, "institutionId" | "createdAt">;
-
 // For creating a school when you already have an institutionId
 export type CreateSchoolDto = Omit<School, "schoolId">;
+export type UpdateSchoolDto = Partial<Omit<School, "schoolId" | "institutionId">>;
 
 // For creating both an institution and school in one operation
 export type CreateSchoolWithInstitutionDto = CreateInstitutionDto & Omit<School, "schoolId" | "institutionId">;
 
-// For updating entities (partial updates)
-export type UpdateInstitutionDto = Partial<CreateInstitutionDto>;
-export type UpdateSchoolDto = Partial<Omit<School, "schoolId" | "institutionId">>;
-
+// Types for contacts
 export interface Contact {
   contactId: number;
   firstName: string;
@@ -38,9 +37,16 @@ export interface Contact {
   phone?: string;
 }
 
+export type CreateContactDto = Omit<Contact, "contactId">;
+export type UpdateContactDto = Partial<CreateContactDto>;
+
+// Types for programs
 export interface Program {
   id: number;
   name: string;
   description: string;
   programType: "programowy" | "nieprogramowy";
 }
+
+export type CreateProgramDto = Omit<Program, "programId">;
+export type UpdateProgramDto = Partial<CreateProgramDto>;
