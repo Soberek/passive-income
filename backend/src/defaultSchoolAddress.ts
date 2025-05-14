@@ -7,6 +7,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "sekretariat@zsipo.eu",
   },
   {
     name: "I Liceum Ogólnokształcące w Barlinku",
@@ -14,6 +15,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "sekretariat@zsipo.eu",
   },
   {
     name: "Niepubliczna Szkoła Podstawowa RADOSNA",
@@ -21,6 +23,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "barlineckie.towarzystwo.edu@gmail.com",
   },
   {
     name: "Niepubliczne Przedszkole Językowe Wiśniowym Sadzie Jolanta Maria Rybarczyk",
@@ -28,6 +31,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "biuro@wwisniowymsadzie.pl",
   },
   {
     name: "Klub Dziecięcy w Wiśniowym Sadzie Jolanta Maria Rybarczyk",
@@ -35,6 +39,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "biuro@wwisniowymsadzie.pl",
   },
   {
     name: "Niepubliczne Przedszkole Specjalne 'BRATEK'",
@@ -42,6 +47,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "npbratek@gmail.com",
   },
   {
     name: "Przedszkole Miejskie nr 1 Janiny Porazińskiej",
@@ -49,6 +55,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "przedszkole1.barlinek@poczta.fm",
   },
   {
     name: "Przedszkole Miejskie nr 2 'Pod Topolą' w Barlinku",
@@ -56,6 +63,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "pm2@barlinek.stronyzklasa.pl",
   },
   {
     name: "Szkoła Podstawowa nr 1 im. Tadeusza Kościuszki w Barlinku",
@@ -63,6 +71,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "sp1barli@interia.pl",
   },
   {
     name: "Szkoła Podstawowa nr 4 im. Henryka Sienkiewicza w Barlinku",
@@ -70,6 +79,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "sp4barlinek@gmail.com",
   },
   {
     name: "Szkoła Policealna dla dorosłych w Barlinku",
@@ -77,6 +87,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "sekretariat@zsipo.eu",
   },
   {
     name: "Szkoła Przysposabiająca do Pracy",
@@ -84,6 +95,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "spdbarlinek@gmail.com",
   },
   {
     name: "Technikum nr 1 w Barlinku",
@@ -91,13 +103,15 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "sekretariat@zsipo.eu",
   },
   {
-    name: "Żłobek miejski w Barlinku",
+    name: "Żłobek miejski w Barlinek",
     address: "ul. Podwale 11",
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "zlobekmiejski@onet.pl",
   },
   {
     name: "Ośrodek Szkolenia i Wychowania Ochotniczych Hufców Pracy w Barlinku",
@@ -105,6 +119,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barlinek",
     postalCode: "74-320",
     municipality: "Barlinek",
+    email: "osiw.barlinek@zachodniopomorska.ohp.pl",
   },
   {
     name: "Niepubliczna Szkoła Podstawowa w Barnówku",
@@ -112,6 +127,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barnówko",
     postalCode: "74-311",
     municipality: "Różańsko",
+    email: "szkola.barnowko@yahoo.pl",
   },
   {
     name: "Niepubliczne Małe Przedszkole w Barnówku",
@@ -119,6 +135,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Barnówko",
     postalCode: "74-311",
     municipality: "Różańsko",
+    email: "szkola.barnowko@yahoo.pl",
   },
   {
     name: "Przedszkole Gminne w Boleszkowicach",
@@ -126,6 +143,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Boleszkowice",
     postalCode: "74-407",
     municipality: "Boleszkowice",
+    email: "gboleszkowice@wp.pl",
   },
   {
     name: "Szkoła Podstawowa im. Bolesława Chrobrego w Boleszkowicach",
@@ -133,6 +151,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Boleszkowice",
     postalCode: "74-407",
     municipality: "Boleszkowice",
+    email: "gboleszkowice@wp.pl",
   },
   {
     name: "Punkt Przedszkolny 'Puchatek' w Cychrach",
@@ -140,6 +159,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Cychry",
     postalCode: "74-404",
     municipality: "Cychry",
+    email: "monika.rebiasz@interia.pl",
   },
   {
     name: "Szkoła Podstawowa im. Marii Konopnickiej w Sarbinowie",
@@ -147,6 +167,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Sarbinowo",
     postalCode: "74-404",
     municipality: "Cychry",
+    email: "szkolasarbinowo@wp.pl",
   },
   {
     name: "Szkoła Podstawowa im. Władysława St. Reymonta w Cychrach",
@@ -154,13 +175,15 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Cychry",
     postalCode: "74-404",
     municipality: "Cychry",
+    email: "sekretariat@spcychry.pl",
   },
   {
     name: "Niepubliczne Przedszkole Montessori z oddziałami integracyjnymi i specjalnymi Żaneta Rybińska-Prostak, Joanna Kujawa S.C.",
-    address: "", // Address not provided in original data
-    city: "", // City not provided in original data
-    postalCode: "", // Postal code not provided in original data
-    municipality: "", // Municipality not provided in original data
+    address: "Dargomyśl 102",
+    city: "Dargomyśl",
+    postalCode: "74-404",
+    municipality: "Dębno",
+    email: "montessoridargomysl@gmail.com",
   },
   {
     name: "Branżowa Szkoła I Stopnia w Dębnie",
@@ -168,6 +191,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "zsdebno@wp.pl",
   },
   {
     name: "I Liceum Ogólnokształcące w Dębnie",
@@ -175,6 +199,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "zsdebno@wp.pl",
   },
   {
     name: "Niepubliczna Szkoła Podstawowa w Dębnie",
@@ -182,6 +207,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "",
   },
   {
     name: "Niepubliczne Liceum Ogólnokształcące",
@@ -189,6 +215,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "sto@stodebno.net",
   },
   {
     name: "Przedszkole Specjalnego Towarzystwa Salezjańskiego im. Św. Jana Bosko",
@@ -196,6 +223,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "",
   },
   {
     name: "Niepubliczne Przedszkole Towarzystwa Salezjańskiego im. Św. Jana Bosko",
@@ -203,6 +231,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "naszdom@onet.pl; naszdomdebno@gmail.pl",
   },
   {
     name: "Przedszkole nr 1 Czarodziejska Kraina w Dębnie",
@@ -210,6 +239,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "czarodziejskakraina@buziaczek.pl",
   },
   {
     name: "Przedszkole nr 2 im. Stanisławy Modrzejewskiej w Dębnie",
@@ -217,6 +247,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "p2debno@wp.pl",
   },
   {
     name: "Szkoła Podstawowa nr 1 im. KEN w Dębnie",
@@ -224,6 +255,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "sekretariat@sp1debno.pl",
   },
   {
     name: "Szkoła Podstawowa nr 2 im. Arkadego Fiedlera w Dębnie",
@@ -231,6 +263,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "sekretariat@sp2debno.pl",
   },
   {
     name: "Szkoła Podstawowa nr 3 im. J. Dąbrowskiego",
@@ -238,6 +271,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "sekretariat@sp3debno.pl",
   },
   {
     name: "Szkoła Podstawowa Towarzystwa Salezjańskiego im. św. Jana Bosko w Dębnie",
@@ -245,6 +279,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "sekretariatsts@gmail.com",
   },
   {
     name: "Szkoła Policealna dla Dorosłych w Dębnie",
@@ -252,6 +287,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "zsdebno@wp.pl",
   },
   {
     name: "Żłobek Gminny w Dębnie",
@@ -259,6 +295,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Dębno",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "p2debno@wp.pl",
   },
   {
     name: "Szkoła Podstawowa im. Adama Mickiewicza w Golenicach",
@@ -266,6 +303,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Golenice",
     postalCode: "74-300",
     municipality: "Myslibórz",
+    email: "szkolagolenice@wp.pl",
   },
   {
     name: "Przedszkole Gminne w Karsku",
@@ -273,6 +311,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Karsko",
     postalCode: "74-305",
     municipality: "Karsko",
+    email: "sekretariat@zpokarsko.pl",
   },
   {
     name: "Szkoła Podstawowa im. H. Ch. Andersena w Karsku",
@@ -280,6 +319,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Karsko",
     postalCode: "74-305",
     municipality: "Karsko",
+    email: "sekretariat@zpokarsko.pl",
   },
   {
     name: "Szkoła Podstawowa im. Janusza Korczaka w Kierzkowie",
@@ -287,6 +327,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Kierzków",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "szkolakierzkow@gmail.com",
   },
   {
     name: "Szkoła Podstawowa im. Jana Pawła II w Mostkowie",
@@ -294,6 +335,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Mostkowo",
     postalCode: "74-322",
     municipality: "Mostkowo",
+    email: "sekrspmostkowo@interia.pl",
   },
   {
     name: "Branżowa Szkoła I Stopnia Nr 2 w Myśliborzu",
@@ -301,6 +343,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "sekretariat@zsipomysliborz.pl",
   },
   {
     name: "Liceum Ogólnokształcące im. Noblistów Polskich",
@@ -308,6 +351,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "zsp2_mysliborz@poczta.onet.pl",
   },
   {
     name: "Młodzieżowy Ośrodek Socjoterapi w Myśliborzu",
@@ -315,6 +359,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "sekretariat@mosmysliborz.pl",
   },
   {
     name: "Niepubliczne Przedszkole im. Żwirka i Muchomorka",
@@ -322,6 +367,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "p.zwirkaimuchomorka@gmail.com",
   },
   {
     name: "Oddział I Żłobka Miejskiego w Myśliborzu",
@@ -329,13 +375,15 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "pp2.mysliborz@o2.pl",
   },
   {
     name: "Przedszkole Publiczne Nr 1 'Zielona Dolinka' w Myśliborzu",
-    address: "ul. Lipowa 18b", // Address not provided in original data
+    address: "ul. Lipowa 18b",
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "pp1.zielonadolinka@mysliborz.pl",
   },
   {
     name: "Przedszkole Publiczne nr 2 Misia Uszatka",
@@ -343,6 +391,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "pp2.mysliborz@o2.pl",
   },
   {
     name: "Specjalny Ośrodek Szkolno-Wychowawczy TPD w Myśliborzu",
@@ -350,6 +399,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "soswtpd@soswtpd.pl",
   },
   {
     name: "Szkoła Podstawowa nr 2 im. Janusza Kusocińskiego w Myśliborzu",
@@ -357,6 +407,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "sekretariat@sp2mysliborz.pl",
   },
   {
     name: "Szkoła Podstawowa nr 3 im. Leonida Teligi w Myśliborzu",
@@ -364,6 +415,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "sp3mysliborz@wp.pl",
   },
   {
     name: "Szkoła Policealna w Myśliborzu",
@@ -371,6 +423,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "sekretariat@zsipomysliborz.pl",
   },
   {
     name: "Technikum nr 1 w Myśliborzu",
@@ -378,6 +431,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "sekretariat@zsipomysliborz.pl",
   },
   {
     name: "Technikum nr 2 Myśliborzu",
@@ -385,6 +439,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "zsp2_mysliborz@poczta.onet.pl",
   },
   {
     name: "Żłobek miejski w Myśliborzu",
@@ -392,6 +447,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Myślibórz",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "pp2.mysliborz@o2.pl",
   },
   {
     name: "Szkoła Podstawowa im. Jana Brzechwy w Nawrocku",
@@ -399,6 +455,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Nawrocko",
     postalCode: "74-300",
     municipality: "Myślibórz",
+    email: "sp.nawrocko@wp.pl",
   },
   {
     name: "Szkoła Podstawowa im. Unii Europejskiej",
@@ -406,6 +463,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Nowogródek Pomorski",
     postalCode: "74-304",
     municipality: "Nowogródek Pomorski",
+    email: "spnowogrodek@o2.pl",
   },
   {
     name: "Szkoła Podstawowa im. Kornela Makuszyńskiego w Różańsku",
@@ -413,13 +471,15 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Różańsko",
     postalCode: "74-311",
     municipality: "Różańsko",
+    email: "sprozansko@sprozansko.pl",
   },
   {
     name: "Niepubliczne Przedszkole 'Małe Przedszkole' w Rychnowie",
-    address: "", // Address not provided in original data
+    address: "",
     city: "Rychnowo",
-    postalCode: "", // Postal code not provided in original data
-    municipality: "", // Municipality not provided in original data
+    postalCode: "",
+    municipality: "",
+    email: "aga_wita@interia.pl",
   },
   {
     name: "Młodzieżowy Ośrodek Socjoterapi w Smolnica",
@@ -427,6 +487,7 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Smolnica",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "smolnica@smolnica.pl",
   },
   {
     name: "Szkoła Podstawowa nr 1 im. Młodych Talentów w Smolnicy",
@@ -434,5 +495,6 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     city: "Smolnica",
     postalCode: "74-400",
     municipality: "Dębno",
+    email: "sp1smolnica@sp1smolnica.pl",
   },
 ];
