@@ -1,5 +1,5 @@
 import sqliteDbService from "../services/sqliteDbService";
-import { Program } from "../../../shared/types";
+import { CreateProgramDto, Program, UpdateProgramDto } from "../../../shared/types";
 
 export class ProgramRepository {
   private dbService: sqliteDbService;
@@ -9,7 +9,9 @@ export class ProgramRepository {
   }
 
   getAllPrograms = (): Program[] => {
-    const stmt = this.dbService.prepare("SELECT * FROM program");
+    const stmt = this.dbService.prepare(
+      "SELECT program_id as programId, name, description, program_type as programType FROM programs"
+    );
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return [];
@@ -18,7 +20,9 @@ export class ProgramRepository {
   };
 
   getProgramById = (id: number): Program | null => {
-    const stmt = this.dbService.prepare("SELECT * FROM program WHERE id = ?");
+    const stmt = this.dbService.prepare(
+      "SELECT program_id as programId, name, description, program_type as programType FROM programs WHERE program_id = ?"
+    );
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return null;
@@ -27,9 +31,9 @@ export class ProgramRepository {
     return program || null;
   };
 
-  addProgram = (input: Omit<Program, "id">): number => {
+  addProgram = (input: CreateProgramDto): number => {
     const { name, description, programType } = input;
-    const stmt = this.dbService.prepare("INSERT INTO program (name, description, programType) VALUES (?, ?, ?)");
+    const stmt = this.dbService.prepare("INSERT INTO program (name, description, program_type) VALUES (?, ?, ?)");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return -1;
@@ -44,7 +48,7 @@ export class ProgramRepository {
   };
 
   deleteProgram = (id: number): boolean => {
-    const stmt = this.dbService.prepare("DELETE FROM program WHERE id = ?");
+    const stmt = this.dbService.prepare("DELETE FROM programs WHERE program_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
@@ -53,9 +57,11 @@ export class ProgramRepository {
     return info.changes > 0;
   };
 
-  updateProgram = (id: number, input: Omit<Program, "id">): boolean => {
+  updateProgram = (id: number, input: UpdateProgramDto): boolean => {
     const { name, description, programType } = input;
-    const stmt = this.dbService.prepare("UPDATE program SET name = ?, description = ?, programType = ? WHERE id = ?");
+    const stmt = this.dbService.prepare(
+      "UPDATE programs SET name = ?, description = ?, program_type = ? WHERE program_id = ?"
+    );
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
