@@ -18,7 +18,7 @@ export default class schoolController {
         res.status(200).json({ message: "No schools found", schools: [] });
         return;
       }
-      res.status(200).json(schools);
+      res.status(200).json({ schools: schools });
       return;
     } catch (error) {
       console.log(error);
