@@ -74,4 +74,30 @@ describe("GET /api/contact", () => {
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("message", "Contact deleted successfully");
   });
+
+  // Test for invalid contact ID
+
+  it("should return 404 for invalid contact ID", async () => {
+    const res = await request(app).get("/api/contact/99999");
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty("message", "Contact not found");
+  });
+
+  it("should return 400 for invalid contact ID format", async () => {
+    const res = await request(app).get("/api/contact/invalid-id");
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("message", "Invalid contact ID");
+  });
+
+  it("should return 400 for first name and last name are required."),
+    async () => {
+      const newContact = {
+        firstName: "John",
+        email: "john.doe@example.com",
+        phone: "123-456-7890",
+      };
+      const res = await request(app).post("/api/contact").send(newContact);
+      expect(res.status).toBe(400);
+      expect(res.body).toHaveProperty("message", "First name and last name are required.");
+    };
 });
