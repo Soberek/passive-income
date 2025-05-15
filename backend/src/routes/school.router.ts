@@ -2,14 +2,12 @@ import { Router } from "express";
 import SchoolController from "../controllers/school.controller";
 import SchoolService from "../services/school.service";
 import { SchoolRepository } from "../repositories/school.repository";
-import { InstitutionsService } from "../services/institutions.service";
 import { InstitutionRepository } from "../repositories/institution.repository";
 
 const schoolRouter = Router();
 const schoolRepository = new SchoolRepository();
 const institutionRepository = new InstitutionRepository(); // Assuming you have a repository for institutions
 const schoolService = new SchoolService(schoolRepository, institutionRepository);
-const institutionsService = new InstitutionsService(institutionRepository);
 const schoolController = new SchoolController(schoolService);
 
 // Implementing the updateSchool route
