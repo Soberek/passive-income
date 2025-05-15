@@ -103,10 +103,12 @@ export default class schoolController {
       }
 
       const school = this.schoolService.getSchoolById(parseInt(id));
+
       if (!school) {
         res.status(404).json({ message: "School not found" });
         return;
       }
+
       res
         .status(200)
         .json({ schoolId: school.schoolId, institutionId: school.institutionId, director: school.director });
