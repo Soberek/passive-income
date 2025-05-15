@@ -15,11 +15,10 @@ Cheatsheet:
 */
 describe("POST /api/users", () => {
   const expressAppInstance = new ExpressApp();
-  // Assuming ExpressApp exposes the underlying express app as `.app`
   const app = expressAppInstance.app;
 
   it("should return error 500 fetching contacts", async () => {
-    const res = await request(app).get("/api/contacts");
+    const res = await request(app).get("/api/contact");
     expect(res.status).toBe(500);
     expect(res.body).toHaveProperty("message", "Error fetching contacts");
     expect(res.body).toHaveProperty("error");
