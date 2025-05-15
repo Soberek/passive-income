@@ -1,11 +1,11 @@
 // how to test a nodejs express app with supertest
 import request from "supertest";
 import ExpressApp from "../src/app";
-import contactRouter from "../src/routes/contact.router";
 
 const expressAppInstance = new ExpressApp();
 const app = expressAppInstance.app;
-app.use(contactRouter);
+expressAppInstance.initMiddlewares();
+expressAppInstance.initRoutes();
 
 /*  
 Cheatsheet:
