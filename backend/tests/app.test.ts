@@ -168,6 +168,7 @@ describe("School API", () => {
     };
 
     const res = await request(app).put(`/api/school/${schoolId}`).send(updatedSchool);
+    console.log(res.body);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("message", "School updated successfully");
   });
