@@ -119,7 +119,7 @@ export default class schoolController {
     try {
       const { id } = req.params;
       const { institutionId, director }: CreateSchoolDto = req.body;
-      if (!id || !institutionId || !director) {
+      if (!id || !institutionId) {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
