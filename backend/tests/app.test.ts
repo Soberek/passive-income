@@ -19,11 +19,11 @@ Cheatsheet:
     expect(res.body).toHaveProperty("id");
 */
 
-describe("POST /api/users", () => {
-  it("should return error 500 fetching contacts", async () => {
+describe("GET /api/contact", () => {
+  it("should return a list of contacts", async () => {
     const res = await request(app).get("/api/contact");
-    expect(res.status).toBe(500);
-    expect(res.body).toHaveProperty("message", "Error fetching contacts");
-    expect(res.body).toHaveProperty("error");
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("contacts");
+    expect(res.body.contacts).toBeInstanceOf(Array);
   });
 });
