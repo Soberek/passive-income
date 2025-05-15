@@ -1,6 +1,6 @@
-// how to test a nodejs express app with supertest
 import request from "supertest";
 import ExpressApp from "../src/app";
+import { describe, it, expect } from "@jest/globals";
 
 const expressAppInstance = new ExpressApp();
 const app = expressAppInstance.app;
