@@ -1,9 +1,9 @@
-import { Program } from "../../../shared/types";
+import { CreateProgramDto, Program } from "../../../shared/types";
+import { ProgramModelFactory } from "../factories/program-model.factory";
 import { ProgramRepository } from "../repositories/program.repository";
-import { ProgramModel } from "../models/program.model";
 
 export class ProgramService {
-  constructor(private programRepository: ProgramRepository, private programModel: ProgramModel) {}
+  constructor(private programRepository: ProgramRepository, private programModelFactory: ProgramModelFactory) {}
 
   getAllPrograms = (): Program[] => {
     const programs = this.programRepository.getAllPrograms();
@@ -21,9 +21,9 @@ export class ProgramService {
     return program;
   };
 
-  addProgram = (name: string, description: string, programType: "programowy" | "nieprogramowy"): number => {
-    const programModel = new ProgramModel(name, description, programType);
-    const errors = this.programModel.validate();
+  addProgram = (data: CreateProgramDto): number => {
+    const programModel = this.programModelFactory.createProgramModel(data.name, data.description, data.programType);
+    const errors = programModel.validate();
     if (errors.length > 0) {
       throw new Error("Validation errors: " + errors.join(", "));
     }
@@ -48,7 +48,8 @@ export class ProgramService {
     description: string,
     programType: "programowy" | "nieprogramowy"
   ): boolean => {
-    const programModel = new ProgramModel(name, description, programType, id);
+    const programModel = this.programModelFactory.createProgramModel(name, description, programType, id);
+
     const errors = programModel.validate();
     if (errors.length > 0) {
       throw new Error("Validation errors: " + errors.join(", "));

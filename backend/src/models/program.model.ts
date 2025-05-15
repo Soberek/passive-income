@@ -1,13 +1,18 @@
 import { Program } from "../../../shared/types";
 
-export class ProgramModel implements Omit<Program, "id"> {
-  id?: number;
+export class ProgramModel implements Omit<Program, "programId"> {
+  programId?: number | BigInt;
   name: string;
   description: string;
   programType: "programowy" | "nieprogramowy";
 
-  constructor(name: string, description: string, programType: "programowy" | "nieprogramowy", id?: number) {
-    this.id = id;
+  constructor(
+    name: string,
+    description: string,
+    programType: "programowy" | "nieprogramowy",
+    programId?: number | BigInt
+  ) {
+    this.programId = programId;
     this.name = name;
     this.description = description;
     this.programType = programType;
