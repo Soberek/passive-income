@@ -117,8 +117,8 @@ class SchoolService {
     return true;
   };
 
-  updateSchool = (school: UpdateSchoolDto) => {
-    const result = this.schoolRepository.updateSchool(school);
+  updateSchool = (schoolId: School["schoolId"], school: UpdateSchoolDto) => {
+    const result = this.schoolRepository.updateSchool(schoolId, school);
     if (!result) {
       throw new Error("Error updating school");
     }
