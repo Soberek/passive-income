@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider, useNavigate } from "react-router"; // <-- small typo here too
-import { School } from "./schools/School.tsx";
+import SchoolsPage from "./schools/School.tsx";
 import { Contact } from "./contacts/Contact.tsx";
 import IzrzForm from "./Izrz/Izrz.tsx";
 
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/schools",
-        element: <School />,
+        element: <SchoolsPage />,
       },
       {
         path: "/contacts",
