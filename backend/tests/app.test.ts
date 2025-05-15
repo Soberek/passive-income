@@ -124,6 +124,7 @@ describe("Contact API", () => {
 
 describe("School API", () => {
   let schoolId: number;
+  let institutionId: number;
 
   it("should return a list of schools", async () => {
     const res = await request(app).get("/api/school");
@@ -151,12 +152,14 @@ describe("School API", () => {
     expect(res.body).toHaveProperty("schoolId");
 
     schoolId = res.body.schoolId;
+    institutionId = res.body.institutionId;
   });
 
   it("should return a school by ID", async () => {
     const res = await request(app).get(`/api/school/${schoolId}`);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("schoolId", schoolId);
+    expect(res.body).toHaveProperty("institutionId", institutionId);
   });
 
   it("should update a school by ID", async () => {
