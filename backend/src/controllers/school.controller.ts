@@ -5,16 +5,14 @@ import SchoolService from "../services/school.service";
 import { CreateSchoolDto, CreateSchoolWithInstitutionDto } from "../../../shared/types/index";
 
 export default class schoolController {
-  constructor(private schoolService: SchoolService, private institutionsService: InstitutionsService) {
+  constructor(private schoolService: SchoolService) {
     this.schoolService = schoolService;
-
-    this.institutionsService = institutionsService;
   }
 
   getAllSchools = async (_: Request, res: Response): Promise<void> => {
     console.log("Fetching all schools");
     try {
-      const schools = await this.schoolService.getAllSchools();
+      const schools = this.schoolService.getAllSchools();
 
       if (!schools || schools.length === 0) {
         res.status(200).json({ message: "No schools found", schools: [] });
