@@ -89,15 +89,20 @@ describe("GET /api/contact", () => {
     expect(res.body).toHaveProperty("message", "Invalid contact ID");
   });
 
-  it("should return 400 for first name and last name are required."),
-    async () => {
-      const newContact = {
-        firstName: "John",
-        email: "john.doe@example.com",
-        phone: "123-456-7890",
-      };
-      const res = await request(app).post("/api/contact").send(newContact);
-      expect(res.status).toBe(400);
-      expect(res.body).toHaveProperty("message", "First name and last name are required.");
-    };
+  it("should return 400 for missing required fields", async () => {
+    const res = await request(app).post("/api/contact").send({
+      firstName: "Jane",
+    });
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("message", "First name and last name are required.");
+  });
+
+  it("should return 400 for invalid contact ID format on update", async () => {
+    const res = await request(app).put("/api/contact/invalid-id").send({
+      firstName: "Jane",
+      lastName: "Doe",
+    });
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("message", "Invalid contact ID");
+  });
 });
