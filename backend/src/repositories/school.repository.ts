@@ -1,5 +1,5 @@
 import sqliteDbService from "../services/sqliteDbService";
-import { School, Institution } from "../../../shared/types";
+import { School, Institution, UpdateSchoolDto } from "../../../shared/types";
 
 export class SchoolRepository {
   private dbService: sqliteDbService;
@@ -75,41 +75,37 @@ export class SchoolRepository {
     return true;
   };
 
-  updateSchool = (
-    id: School["schoolId"],
-    institutionId: Institution["institutionId"],
-    director: School["director"]
-  ) => {
+  updateSchool = (school: UpdateSchoolDto) => {
     const fieldsToUpdate: string[] = []; // Array to hold the fields to be updated director
     const valuesToUpdate: any[] = []; // Array to hold the values to be updated
 
-    if (director !== undefined) {
+    if (school.director !== undefined) {
       fieldsToUpdate.push("director = ?");
-      valuesToUpdate.push(director);
+      valuesToUpdate.push(school.director);
     }
-    if (institutionId !== undefined) {
+    if (school.institutionId !== undefined) {
       fieldsToUpdate.push("institution_id = ?");
-      valuesToUpdate.push(institutionId);
+      valuesToUpdate.push(school.institutionId);
     }
     if (fieldsToUpdate.length === 0) {
       console.warn("No fields to update provided");
       return false;
     }
     const sql = `UPDATE schools SET ${fieldsToUpdate.join(", ")} WHERE school_id = ?`;
-    valuesToUpdate.push(id);
+    valuesToUpdate.push(school.schoolId);
     const stmt = this.dbService.prepare(sql);
 
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
     }
-    const info = stmt.run(institutionId, director, id);
+    const info = stmt.run(...valuesToUpdate);
     if (!info) {
       console.error("Error executing SQL statement");
       return false;
     }
     if (info.changes === 0) {
-      console.error("No school found with id: ", id);
+      console.error("No school found with id: ", school.schoolId);
       return false;
     }
     return true;
