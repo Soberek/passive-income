@@ -118,13 +118,13 @@ export default class schoolController {
   updateSchool = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
-      const { institutionId, director }: CreateSchoolDto = req.body;
+      const { institutionId, director }: { institutionId: string | undefined; director: string | undefined } = req.body;
       if (!id) {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
       const updatedSchool = this.schoolService.updateSchool(parseInt(id), {
-        institutionId: parseInt(institutionId.toString()),
+        institutionId: institutionId ? parseInt(institutionId) : undefined,
         director,
       });
       if (!updatedSchool) {
