@@ -15,6 +15,13 @@ export default class schoolController {
     console.log("Fetching all schools");
     try {
       const schools = this.schoolService.getAllSchools();
+
+      // if schools is empty, return 200
+      if (!schools || schools.length === 0) {
+        res.status(200).json({ schools: [] });
+        return;
+      }
+
       if (!schools) {
         res.status(404).json({ message: "No schools found" });
         return;
