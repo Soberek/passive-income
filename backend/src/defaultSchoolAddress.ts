@@ -475,10 +475,10 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
   },
   {
     name: "Niepubliczne Przedszkole 'Małe Przedszkole' w Rychnowie",
-    address: "",
+    address: "Rychnów 57",
     city: "Rychnowo",
-    postalCode: "",
-    municipality: "",
+    postalCode: "74-320",
+    municipality: "Barlinek",
     email: "aga_wita@interia.pl",
   },
   {
@@ -498,3 +498,5 @@ export const educationalInstitutions: CreateSchoolWithInstitutionDto[] = [
     email: "sp1smolnica@sp1smolnica.pl",
   },
 ];
+
+export default educationalInstitutions;
