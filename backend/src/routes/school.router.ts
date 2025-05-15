@@ -10,7 +10,7 @@ const schoolRepository = new SchoolRepository();
 const institutionRepository = new InstitutionRepository(); // Assuming you have a repository for institutions
 const schoolService = new SchoolService(schoolRepository, institutionRepository);
 const institutionsService = new InstitutionsService(institutionRepository);
-const schoolController = new SchoolController(schoolService, institutionsService);
+const schoolController = new SchoolController(schoolService);
 
 // Implementing the updateSchool route
 schoolRouter.post("/school", schoolController.createSchool); // Route: /api/school - POST - Create a new school

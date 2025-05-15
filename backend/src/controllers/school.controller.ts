@@ -10,7 +10,6 @@ export default class schoolController {
   }
 
   getAllSchools = async (_: Request, res: Response): Promise<void> => {
-    console.log("Fetching all schools");
     try {
       const schools = this.schoolService.getAllSchools();
 
@@ -18,7 +17,7 @@ export default class schoolController {
         res.status(200).json({ message: "No schools found", schools: [] });
         return;
       }
-      res.status(200).json({ schools: schools });
+      res.status(200).json({ schools: [...schools] });
       return;
     } catch (error) {
       console.log(error);
@@ -28,7 +27,6 @@ export default class schoolController {
   };
 
   createSchool = async (req: Request, res: Response): Promise<void> => {
-    console.log("Creating school");
     try {
       const { name, address, postalCode, city, phone, email, municipality, director }: CreateSchoolWithInstitutionDto =
         req.body;
