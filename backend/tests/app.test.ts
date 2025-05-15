@@ -63,10 +63,10 @@ describe("GET /api/contact", () => {
     const res = await request(app).get("/api/contact/" + contactId);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("contactId", contactId);
-    expect(res.body).toHaveProperty("firstName", "John");
+    expect(res.body).toHaveProperty("firstName", "Jane");
     expect(res.body).toHaveProperty("lastName", "Doe");
-    expect(res.body).toHaveProperty("email", "john.doe@example.com");
-    expect(res.body).toHaveProperty("phone", "123-456-7890");
+    expect(res.body).toHaveProperty("email", "jane.doe@example.com");
+    expect(res.body).toHaveProperty("phone", "987-654-3210");
   });
 
   it("should delete a contact by ID", async () => {
