@@ -96,10 +96,12 @@ export default class schoolController {
     console.log("Fetching school by ID");
     try {
       const { id } = req.params;
-      if (!id) {
-        res.status(400).json({ message: "Missing school ID" });
+
+      if (!id || isNaN(parseInt(id))) {
+        res.status(400).json({ message: "Invalid or missing school ID" });
         return;
       }
+
       const school = this.schoolService.getSchoolById(parseInt(id));
       if (!school) {
         res.status(404).json({ message: "School not found" });
