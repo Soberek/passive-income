@@ -11,7 +11,7 @@ class ContactController {
   public getContacts = (_: Request, res: Response): void => {
     try {
       const contacts = this.contactService.getAllContacts() as Contact[];
-      res.status(200).json(contacts);
+      res.status(200).json({ contacts: contacts });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Error fetching contacts", error });
