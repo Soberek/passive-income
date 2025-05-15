@@ -13,16 +13,14 @@ export default class schoolController {
     try {
       const schools = this.schoolService.getAllSchools();
 
-      if (!schools || schools.length === 0) {
-        res.status(200).json({ message: "No schools found", schools: [] });
-        return;
-      }
-      res.status(200).json({ schools: [...schools] });
-      return;
+      res.status(200).json({
+        schools: schools || [],
+      });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error fetching schools", error });
-      return;
+      console.error("Error fetching schools:", error);
+      res.status(500).json({
+        message: "Error fetching schools",
+      });
     }
   };
 

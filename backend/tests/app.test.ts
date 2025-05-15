@@ -123,6 +123,8 @@ describe("Contact API", () => {
 });
 
 describe("School API", () => {
+  let schoolId: number;
+
   it("should return a list of schools", async () => {
     const res = await request(app).get("/api/school");
     expect(res.status).toBe(200);
@@ -130,10 +132,31 @@ describe("School API", () => {
     expect(res.body.schools).toBeInstanceOf(Array);
   });
 
+  it("should create a new school", async () => {
+    const newSchool = {
+      name: "Test School",
+      address: "123 Test St",
+      city: "Test City",
+      postalCode: "12345",
+      phone: "123-456-7890",
+      email: "test@example.com",
+      municipality: "Test Municipality",
+      director: "Test Director",
+    };
+
+    const res = await request(app).post("/api/school").send(newSchool);
+    expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty("message", "School created successfully");
+    expect(res.body).toHaveProperty("institutionId");
+    expect(res.body).toHaveProperty("schoolId");
+
+    schoolId = res.body.schoolId;
+  });
+
   it("should return a school by ID", async () => {
-    const res = await request(app).get("/api/school/1");
+    const res = await request(app).get(`/api/school/${schoolId}`);
     expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty("schoolId", 1);
+    expect(res.body).toHaveProperty("schoolId", schoolId);
   });
 
   it("should return 404 for non-existent school ID", async () => {
