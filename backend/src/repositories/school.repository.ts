@@ -21,18 +21,25 @@ export class SchoolRepository {
     return rows;
   };
 
-  getSchoolById = (id: School["schoolId"]) => {
+  getSchoolById = (id: School["schoolId"]): School | null => {
     const stmt = this.dbService.prepare("SELECT school_id as schoolId, director FROM schools WHERE school_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return null;
     }
-    const row = stmt.get(id);
+    const row = stmt.get(id) as School | null;
     if (!row) {
       console.error("No school found with id: ", id);
       return null;
     }
-    return row;
+    // Convert the row to the School type
+    const school: School = {
+      schoolId: row.schoolId,
+      institutionId: row.institutionId,
+      director: row.director,
+    };
+
+    return school;
   };
 
   addSchool = (institutionId: Institution["institutionId"], director: School["director"]) => {
