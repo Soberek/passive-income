@@ -1,6 +1,11 @@
 // how to test a nodejs express app with supertest
 import request from "supertest";
 import ExpressApp from "../src/app";
+import contactRouter from "../src/routes/contact.router";
+
+const expressAppInstance = new ExpressApp();
+const app = expressAppInstance.app;
+app.use(contactRouter);
 
 /*  
 Cheatsheet:
@@ -13,10 +18,8 @@ Cheatsheet:
     expect(res.body).toHaveProperty("updatedAt");
     expect(res.body).toHaveProperty("id");
 */
-describe("POST /api/users", () => {
-  const expressAppInstance = new ExpressApp();
-  const app = expressAppInstance.app;
 
+describe("POST /api/users", () => {
   it("should return error 500 fetching contacts", async () => {
     const res = await request(app).get("/api/contact");
     expect(res.status).toBe(500);
