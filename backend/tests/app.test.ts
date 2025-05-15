@@ -105,4 +105,19 @@ describe("GET /api/contact", () => {
     expect(res.status).toBe(400);
     expect(res.body).toHaveProperty("message", "Invalid contact ID");
   });
+
+  it("should return 400 for invalid contact ID format on delete", async () => {
+    const res = await request(app).delete("/api/contact/invalid-id");
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("message", "Invalid contact ID");
+  });
+
+  it("should return 404 for non-existent contact on update", async () => {
+    const res = await request(app).put("/api/contact/99999").send({
+      firstName: "Jane",
+      lastName: "Doe",
+    });
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty("message", "Contact not found");
+  });
 });
