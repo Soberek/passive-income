@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { InstitutionsService } from "../services/institutions.service";
 import SchoolService from "../services/school.service";
 
-import { CreateSchoolDto, CreateSchoolWithInstitutionDto } from "../../../shared/types/index";
+import { CreateSchoolWithInstitutionDto } from "../../../shared/types/index";
 
 export default class schoolController {
   constructor(private schoolService: SchoolService) {
@@ -16,8 +15,8 @@ export default class schoolController {
       res.status(200).json({
         schools: schools || [],
       });
+      return;
     } catch (error) {
-      console.error("Error fetching schools:", error);
       res.status(500).json({
         message: "Error fetching schools",
       });
