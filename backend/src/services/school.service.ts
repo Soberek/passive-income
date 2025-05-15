@@ -24,10 +24,8 @@ class SchoolService {
 
   getSchoolById = (id: number) => {
     const school = this.schoolRepository.getSchoolById(id);
-    if (!school) {
-      throw new Error("School not found or invalid ID");
-    }
-    return school;
+
+    return school || null;
   };
 
   // first add the institution and then add the school
