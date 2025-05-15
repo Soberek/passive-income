@@ -105,7 +105,7 @@ export default class schoolController {
         res.status(404).json({ message: "School not found" });
         return;
       }
-      res.status(200).json(school);
+      res.status(200).json({ school });
       return;
     } catch (error) {
       res.status(500).json({ message: "Error fetching school" });

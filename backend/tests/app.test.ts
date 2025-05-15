@@ -159,6 +159,29 @@ describe("School API", () => {
     expect(res.body).toHaveProperty("schoolId", schoolId);
   });
 
+  it("should update a school by ID", async () => {
+    const updatedSchool = {
+      name: "Updated School",
+      address: "456 Updated St",
+      city: "Updated City",
+      postalCode: "54321",
+      phone: "987-654-3210",
+      email: "updated@example.com",
+      municipality: "Updated Municipality",
+      director: "Updated Director",
+    };
+
+    const res = await request(app).put(`/api/school/${schoolId}`).send(updatedSchool);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("message", "School updated successfully");
+  });
+
+  it("should delete a school by ID", async () => {
+    const res = await request(app).delete(`/api/school/${schoolId}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("message", "School deleted successfully");
+  });
+
   it("should return 404 for non-existent school ID", async () => {
     const res = await request(app).get("/api/school/99999");
     expect(res.status).toBe(404);
