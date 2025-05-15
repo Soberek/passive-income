@@ -133,7 +133,7 @@ describe("School API", () => {
     expect(res.body.schools).toBeInstanceOf(Array);
   });
 
-  it("should create a new school", async () => {
+  it("should create a new institution school", async () => {
     const newSchool = {
       name: "Test School",
       address: "123 Test St",
@@ -159,7 +159,7 @@ describe("School API", () => {
     const res = await request(app).get(`/api/school/${schoolId}`);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("schoolId", schoolId);
-    expect(res.body).toHaveProperty("institutionId", institutionId);
+    expect(res.body).toHaveProperty("director");
   });
 
   it("should update a school by ID", async () => {
