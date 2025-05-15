@@ -8,7 +8,7 @@ export class ProgramService {
   getAllPrograms = (): Program[] => {
     const programs = this.programRepository.getAllPrograms();
     if (!programs) {
-      throw new Error("Error fetching all programs");
+      return [];
     }
     return programs;
   };
