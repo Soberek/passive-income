@@ -45,7 +45,7 @@ describe("GET /api/contact", () => {
   });
 
   it("should return a contact by ID", async () => {
-    const res = await request(app).get("/api/contact/1");
+    const res = await request(app).get("/api/contact/" + contactId);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("id", 1);
     expect(res.body).toHaveProperty("firstName", "John");
