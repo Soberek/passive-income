@@ -3,6 +3,7 @@ import {
   CreateSchoolDto,
   CreateSchoolWithInstitutionDto,
   Institution,
+  UpdateSchoolDto,
 } from "../../../shared/types";
 import { School } from "../../../shared/types";
 import { SchoolRepository } from "../repositories/school.repository";
@@ -116,8 +117,8 @@ class SchoolService {
     return true;
   };
 
-  updateSchool = (id: number, institutionId: Institution["institutionId"], director: School["director"]) => {
-    const result = this.schoolRepository.updateSchool(id, institutionId, director);
+  updateSchool = (school: UpdateSchoolDto) => {
+    const result = this.schoolRepository.updateSchool(school);
     if (!result) {
       throw new Error("Error updating school");
     }
