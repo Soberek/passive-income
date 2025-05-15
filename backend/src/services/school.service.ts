@@ -13,11 +13,17 @@ class SchoolService {
   constructor(private schoolRepository: SchoolRepository, private institutionRepository: InstitutionRepository) {}
   getAllSchools = () => {
     const schools = this.schoolRepository.getAllSchools();
+
+    if (!schools || schools.length === 0) {
+      return [];
+    }
+
     if (!schools) {
       throw new Error("Error fetching all schools");
     }
     return schools;
   };
+
   getSchoolById = (id: number) => {
     const school = this.schoolRepository.getSchoolById(id);
     if (!school) {
