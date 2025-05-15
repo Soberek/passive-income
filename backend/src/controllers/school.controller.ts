@@ -5,31 +5,26 @@ import SchoolService from "../services/school.service";
 import { CreateSchoolDto, CreateSchoolWithInstitutionDto } from "../../../shared/types/index";
 
 export default class schoolController {
-  constructor(private schoolService: SchoolService, private institutionsService: InstitutionsService) {
+  constructor(private schoolService: SchoolService) {
     this.schoolService = schoolService;
-
-    this.institutionsService = institutionsService;
   }
 
-  getAllSchools = (_: Request, res: Response): void => {
-    console.log("Fetching all schools");
+  getAllSchools = async (_: Request, res: Response): Promise<void> => {
     try {
       const schools = this.schoolService.getAllSchools();
-      if (!schools) {
-        res.status(404).json({ message: "No schools found" });
-        return;
-      }
-      res.status(200).json(schools);
-      return;
+
+      res.status(200).json({
+        schools: schools || [],
+      });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error fetching schools", error });
-      return;
+      console.error("Error fetching schools:", error);
+      res.status(500).json({
+        message: "Error fetching schools",
+      });
     }
   };
 
-  createSchool = (req: Request, res: Response): void => {
-    console.log("Creating school");
+  createSchool = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, address, postalCode, city, phone, email, municipality, director }: CreateSchoolWithInstitutionDto =
         req.body;
@@ -74,7 +69,7 @@ export default class schoolController {
     }
   };
 
-  deleteSchool = (req: Request, res: Response): void => {
+  deleteSchool = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     console.log("Deleting school with ID: ", id);
     try {
@@ -97,20 +92,26 @@ export default class schoolController {
     }
   };
 
-  getSchoolById = (req: Request, res: Response): void => {
+  getSchoolById = async (req: Request, res: Response): Promise<void> => {
     console.log("Fetching school by ID");
     try {
       const { id } = req.params;
-      if (!id) {
-        res.status(400).json({ message: "Missing school ID" });
+
+      if (!id || isNaN(parseInt(id))) {
+        res.status(400).json({ message: "Invalid or missing school ID" });
         return;
       }
+
       const school = this.schoolService.getSchoolById(parseInt(id));
+
       if (!school) {
         res.status(404).json({ message: "School not found" });
         return;
       }
-      res.status(200).json(school);
+
+      res
+        .status(200)
+        .json({ schoolId: school.schoolId, institutionId: school.institutionId, director: school.director });
       return;
     } catch (error) {
       res.status(500).json({ message: "Error fetching school" });
@@ -118,16 +119,18 @@ export default class schoolController {
     }
   };
 
-  updateSchool = (req: Request, res: Response): void => {
-    console.log("Updating school");
+  updateSchool = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
-      const { institutionId, director }: CreateSchoolDto = req.body;
-      if (!id || !institutionId || !director) {
+      const { institutionId, director }: { institutionId: string | undefined; director: string | undefined } = req.body;
+      if (!id) {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
-      const updatedSchool = this.schoolService.updateSchool(parseInt(id), parseInt(institutionId.toString()), director);
+      const updatedSchool = this.schoolService.updateSchool(parseInt(id), {
+        institutionId: institutionId ? parseInt(institutionId) : undefined,
+        director,
+      });
       if (!updatedSchool) {
         res.status(404).json({ message: "School not found" });
         return;
@@ -140,7 +143,7 @@ export default class schoolController {
     }
   };
 
-  getSchoolByInstitutionId = (req: Request, res: Response): void => {
+  getSchoolByInstitutionId = async (req: Request, res: Response): Promise<void> => {
     console.log("Fetching school by institution ID");
     try {
       const { institutionId } = req.params;

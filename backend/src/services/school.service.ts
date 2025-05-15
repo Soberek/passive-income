@@ -3,6 +3,7 @@ import {
   CreateSchoolDto,
   CreateSchoolWithInstitutionDto,
   Institution,
+  UpdateSchoolDto,
 } from "../../../shared/types";
 import { School } from "../../../shared/types";
 import { SchoolRepository } from "../repositories/school.repository";
@@ -13,17 +14,18 @@ class SchoolService {
   constructor(private schoolRepository: SchoolRepository, private institutionRepository: InstitutionRepository) {}
   getAllSchools = () => {
     const schools = this.schoolRepository.getAllSchools();
-    if (!schools) {
-      throw new Error("Error fetching all schools");
+
+    if (!schools || schools.length === 0) {
+      throw new Error("No schools found");
     }
+
     return schools;
   };
+
   getSchoolById = (id: number) => {
     const school = this.schoolRepository.getSchoolById(id);
-    if (!school) {
-      throw new Error("School not found or invalid ID");
-    }
-    return school;
+
+    return school || null;
   };
 
   // first add the institution and then add the school
@@ -99,7 +101,7 @@ class SchoolService {
   deleteSchool = (id: number) => {
     // check if the school exists
     const school = this.schoolRepository.getSchoolById(id);
-    if (!school) {
+    if (!school || school === null) {
       throw new Error("School not found");
     }
     const result = this.schoolRepository.deleteSchool(id);
@@ -110,8 +112,8 @@ class SchoolService {
     return true;
   };
 
-  updateSchool = (id: number, institutionId: Institution["institutionId"], director: School["director"]) => {
-    const result = this.schoolRepository.updateSchool(id, institutionId, director);
+  updateSchool = (schoolId: School["schoolId"], school: UpdateSchoolDto) => {
+    const result = this.schoolRepository.updateSchool(schoolId, school);
     if (!result) {
       throw new Error("Error updating school");
     }
