@@ -11,18 +11,12 @@ export default class schoolController {
     this.institutionsService = institutionsService;
   }
 
-  getAllSchools = (_: Request, res: Response): void => {
+  getAllSchools = async (_: Request, res: Response): Promise<void> => {
     console.log("Fetching all schools");
     try {
-      const schools = this.schoolService.getAllSchools();
+      const schools = await this.schoolService.getAllSchools();
 
-      // if schools is empty, return 200
-
-      if (!schools) {
-        res.status(404).json({ message: "No schools found", schools: [] });
-        return;
-      }
-      if (schools.length === 0) {
+      if (!schools || schools.length === 0) {
         res.status(200).json({ message: "No schools found", schools: [] });
         return;
       }
@@ -35,7 +29,7 @@ export default class schoolController {
     }
   };
 
-  createSchool = (req: Request, res: Response): void => {
+  createSchool = async (req: Request, res: Response): Promise<void> => {
     console.log("Creating school");
     try {
       const { name, address, postalCode, city, phone, email, municipality, director }: CreateSchoolWithInstitutionDto =
@@ -81,7 +75,7 @@ export default class schoolController {
     }
   };
 
-  deleteSchool = (req: Request, res: Response): void => {
+  deleteSchool = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     console.log("Deleting school with ID: ", id);
     try {
@@ -104,7 +98,7 @@ export default class schoolController {
     }
   };
 
-  getSchoolById = (req: Request, res: Response): void => {
+  getSchoolById = async (req: Request, res: Response): Promise<void> => {
     console.log("Fetching school by ID");
     try {
       const { id } = req.params;
@@ -125,7 +119,7 @@ export default class schoolController {
     }
   };
 
-  updateSchool = (req: Request, res: Response): void => {
+  updateSchool = async (req: Request, res: Response): Promise<void> => {
     console.log("Updating school");
     try {
       const { id } = req.params;
@@ -147,7 +141,7 @@ export default class schoolController {
     }
   };
 
-  getSchoolByInstitutionId = (req: Request, res: Response): void => {
+  getSchoolByInstitutionId = async (req: Request, res: Response): Promise<void> => {
     console.log("Fetching school by institution ID");
     try {
       const { institutionId } = req.params;
