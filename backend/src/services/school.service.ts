@@ -12,7 +12,7 @@ import sqliteDbService from "./sqliteDbService";
 
 class SchoolService {
   constructor(private schoolRepository: SchoolRepository, private institutionRepository: InstitutionRepository) {}
-  getAllSchools = () => {
+  getAllSchools = (): School[] | [] => {
     const schools = this.schoolRepository.getAllSchools();
 
     if (!schools || schools.length === 0) {
