@@ -39,6 +39,8 @@ export default class ExpressApp {
     this.multer = multer({
       storage: multer.memoryStorage(),
     });
+
+    this.onAppStop();
   }
 
   // Initialize middlewares
@@ -109,7 +111,7 @@ export default class ExpressApp {
     this.app.addListener("SIGINT", () => {
       console.log("Received SIGINT. Shutting down...");
 
-      // Perform any cleanup tasks here
+      // stop the server
     });
   }
 
