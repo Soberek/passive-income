@@ -19,7 +19,7 @@ Cheatsheet:
     expect(res.body).toHaveProperty("id");
 */
 
-describe("GET /api/contact", () => {
+describe("Contact API", () => {
   let contactId: number;
 
   it("should create a new contact", async () => {
@@ -119,5 +119,26 @@ describe("GET /api/contact", () => {
     });
     expect(res.status).toBe(404);
     expect(res.body).toHaveProperty("message", "Contact not found");
+  });
+});
+
+describe("School API", () => {
+  it("should return a list of schools", async () => {
+    const res = await request(app).get("/api/school");
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("schools");
+    expect(res.body.schools).toBeInstanceOf(Array);
+  });
+
+  it("should return a school by ID", async () => {
+    const res = await request(app).get("/api/school/1");
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("schoolId", 1);
+  });
+
+  it("should return 404 for non-existent school ID", async () => {
+    const res = await request(app).get("/api/school/99999");
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty("message", "School not found");
   });
 });
