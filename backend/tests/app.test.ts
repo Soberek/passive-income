@@ -164,13 +164,6 @@ describe("School API", () => {
 
   it("should update a school by ID", async () => {
     const updatedSchool = {
-      name: "Updated School",
-      address: "456 Updated St",
-      city: "Updated City",
-      postalCode: "54321",
-      phone: "987-654-3210",
-      email: "updated@example.com",
-      municipality: "Updated Municipality",
       director: "Updated Director",
     };
 
