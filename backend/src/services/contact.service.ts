@@ -57,8 +57,6 @@ export class ContactService {
 
   public createContactTable = () => {
     this.contactRepository.createContactTable();
-
-    console.log("Contact table created successfully");
   };
 }
 
