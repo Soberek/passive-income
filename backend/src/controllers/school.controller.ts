@@ -17,13 +17,13 @@ export default class schoolController {
       const schools = this.schoolService.getAllSchools();
 
       // if schools is empty, return 200
-      if (!schools || schools.length === 0) {
-        res.status(200).json({ message: "No schools found", schools: [] });
-        return;
-      }
 
       if (!schools) {
-        res.status(404).json({ message: "No schools found" });
+        res.status(404).json({ message: "No schools found", schools: [] });
+        return;
+      }
+      if (schools.length === 0) {
+        res.status(200).json({ message: "No schools found", schools: [] });
         return;
       }
       res.status(200).json(schools);
