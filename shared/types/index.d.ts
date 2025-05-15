@@ -23,7 +23,7 @@ export interface School {
 
 // For creating a school when you already have an institutionId
 export type CreateSchoolDto = Omit<School, "schoolId">;
-export type UpdateSchoolDto = Partial<School>; //
+export type UpdateSchoolDto = Partial<Omit<School, "schoolId">>; //
 
 // For creating both an institution and school in one operation
 export type CreateSchoolWithInstitutionDto = CreateInstitutionDto & Omit<School, "schoolId" | "institutionId">;

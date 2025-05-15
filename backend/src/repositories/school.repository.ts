@@ -75,7 +75,7 @@ export class SchoolRepository {
     return true;
   };
 
-  updateSchool = (school: UpdateSchoolDto) => {
+  updateSchool = (schoolId: School["schoolId"], school: UpdateSchoolDto) => {
     const fieldsToUpdate: string[] = []; // Array to hold the fields to be updated director
     const valuesToUpdate: any[] = []; // Array to hold the values to be updated
 
@@ -92,7 +92,7 @@ export class SchoolRepository {
       return false;
     }
     const sql = `UPDATE schools SET ${fieldsToUpdate.join(", ")} WHERE school_id = ?`;
-    valuesToUpdate.push(school.schoolId);
+    valuesToUpdate.push(schoolId);
     const stmt = this.dbService.prepare(sql);
 
     if (!stmt) {
@@ -105,7 +105,7 @@ export class SchoolRepository {
       return false;
     }
     if (info.changes === 0) {
-      console.error("No school found with id: ", school.schoolId);
+      console.error("No school found with id: ", schoolId);
       return false;
     }
     return true;
