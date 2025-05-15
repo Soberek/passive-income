@@ -116,7 +116,6 @@ export default class schoolController {
   };
 
   updateSchool = async (req: Request, res: Response): Promise<void> => {
-    console.log("Updating school");
     try {
       const { id } = req.params;
       const { institutionId, director }: CreateSchoolDto = req.body;
