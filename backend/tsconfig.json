@@ -15,5 +15,12 @@
     "skipLibCheck": true, // Pomija sprawdzanie typów w bibliotekach
     "outDir": "./dist",
     "rootDir": "./src"
-  }
+  },
+  "include": [
+    "src/**/*.ts" // Włącza wszystkie pliki TypeScript w katalogu src
+  ],
+  "exclude": [
+    "node_modules", // Pomija katalog node_modules
+    "**/*.spec.ts" // Pomija pliki testowe
+  ]
 }
