@@ -29,7 +29,7 @@ import helmet from "helmet";
 // and use it in your application
 
 export default class ExpressApp {
-  private app;
+  public app;
   private PORT: number = 3000;
   private multer: multer.Multer;
 
