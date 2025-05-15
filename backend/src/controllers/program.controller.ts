@@ -88,6 +88,28 @@ class ProgramController {
       return;
     }
   };
+
+  getProgramById = (req: Request, res: Response): void => {
+    console.log("Fetching program by ID");
+    try {
+      const { id } = req.params;
+      if (!id) {
+        res.status(400).json({ message: "Missing required fields" });
+        return;
+      }
+      const program = this.programService.getProgramById(Number(id));
+      if (!program) {
+        res.status(404).json({ message: "Program not found" });
+        return;
+      }
+      res.status(200).json(program);
+      return;
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error fetching program", error });
+      return;
+    }
+  };
 }
 
 export default ProgramController;
