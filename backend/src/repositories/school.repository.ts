@@ -22,7 +22,7 @@ export class SchoolRepository {
   };
 
   getSchoolById = (id: School["schoolId"]) => {
-    const stmt = this.dbService.prepare("SELECT * FROM schools WHERE school_id = ?");
+    const stmt = this.dbService.prepare("SELECT school_id as schoolId, director FROM schools WHERE school_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return null;
