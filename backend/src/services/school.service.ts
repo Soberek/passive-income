@@ -16,12 +16,9 @@ class SchoolService {
     const schools = this.schoolRepository.getAllSchools();
 
     if (!schools || schools.length === 0) {
-      return [];
+      throw new Error("No schools found");
     }
 
-    if (!schools) {
-      throw new Error("Error fetching all schools");
-    }
     return schools;
   };
 
@@ -106,7 +103,7 @@ class SchoolService {
   deleteSchool = (id: number) => {
     // check if the school exists
     const school = this.schoolRepository.getSchoolById(id);
-    if (!school) {
+    if (!school || school === null) {
       throw new Error("School not found");
     }
     const result = this.schoolRepository.deleteSchool(id);
