@@ -30,7 +30,7 @@ class ProgramController {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
-      const newProgramId = this.programService.addProgram(name, description, programType);
+      const newProgramId = this.programService.addProgram({ name, description, programType });
       if (newProgramId === -1) {
         res.status(500).json({ message: "Error creating program" });
         return;
