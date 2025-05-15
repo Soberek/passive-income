@@ -42,7 +42,7 @@ export type UpdateContactDto = Partial<CreateContactDto>;
 
 // Types for programs
 export interface Program {
-  id: number;
+  programId: number | BigInt;
   name: string;
   description: string;
   programType: "programowy" | "nieprogramowy";

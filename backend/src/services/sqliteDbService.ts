@@ -6,7 +6,6 @@ import path from "path";
 // how to get current path
 const DB_PATH = path.resolve(__dirname, "../../sqliteDb.db");
 
-console.log("DB Path:", DB_PATH);
 // import { v4 as uuidv4 } from "uuid";
 
 class sqliteDbService {

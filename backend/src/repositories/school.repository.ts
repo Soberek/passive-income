@@ -7,7 +7,7 @@ export class SchoolRepository {
     this.dbService = sqliteDbService.getInstance();
   }
 
-  getAllSchools = () => {
+  getAllSchools = (): School[] | [] => {
     const stmt = this.dbService.prepare("SELECT school_id as schoolId, director FROM schools");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -18,7 +18,7 @@ export class SchoolRepository {
       console.error("No schools found");
       return [];
     }
-    return rows;
+    return rows as School[];
   };
 
   getSchoolById = (id: School["schoolId"]): School | null => {
