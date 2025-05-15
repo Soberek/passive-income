@@ -44,10 +44,25 @@ describe("GET /api/contact", () => {
     expect(res.body.contacts).toBeInstanceOf(Array);
   });
 
+  it("should update a contact by id", async () => {
+    const updatedContact = {
+      firstName: "Jane",
+      lastName: "Doe",
+      email: "jane.doe@example.com",
+      phone: "987-654-3210",
+    };
+    const res = await request(app)
+      .put("/api/contact/" + contactId)
+      .send(updatedContact);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("message", "Contact updated successfully");
+    expect(res.body).toHaveProperty("contactId", contactId);
+  });
+
   it("should return a contact by ID", async () => {
     const res = await request(app).get("/api/contact/" + contactId);
     expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty("id", 1);
+    expect(res.body).toHaveProperty("contactId", contactId);
     expect(res.body).toHaveProperty("firstName", "John");
     expect(res.body).toHaveProperty("lastName", "Doe");
     expect(res.body).toHaveProperty("email", "john.doe@example.com");
