@@ -123,7 +123,10 @@ export default class schoolController {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
-      const updatedSchool = this.schoolService.updateSchool(parseInt(id), parseInt(institutionId.toString()), director);
+      const updatedSchool = this.schoolService.updateSchool(parseInt(id), {
+        institutionId: parseInt(institutionId.toString()),
+        director,
+      });
       if (!updatedSchool) {
         res.status(404).json({ message: "School not found" });
         return;
