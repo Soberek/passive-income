@@ -18,7 +18,7 @@ export default class schoolController {
 
       // if schools is empty, return 200
       if (!schools || schools.length === 0) {
-        res.status(200).json({ schools: [] });
+        res.status(200).json({ message: "No schools found", schools: [] });
         return;
       }
 
