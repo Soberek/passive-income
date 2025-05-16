@@ -1,14 +1,17 @@
 import sqliteDbService from "../services/sqliteDbService";
-import { CreateProgramDto, Program, UpdateProgramDto } from "../../../shared/types";
+import { Program } from "../../../shared/types";
+import { RepositoryI } from "../types/repositories.type";
 
-export class ProgramRepository {
+interface ProgramRepositoryI extends RepositoryI<Program> {}
+
+export class ProgramRepository implements ProgramRepositoryI {
   private dbService: sqliteDbService;
 
   constructor() {
     this.dbService = sqliteDbService.getInstance();
   }
 
-  getAllPrograms = (): Program[] => {
+  getAll = (): Program[] => {
     const stmt = this.dbService.prepare(
       "SELECT program_id as programId, name, description, program_type as programType FROM programs"
     );
@@ -19,7 +22,7 @@ export class ProgramRepository {
     return stmt.all() as Program[];
   };
 
-  getProgramById = (id: number): Program | null => {
+  getById = (id: number): Program | null => {
     const stmt = this.dbService.prepare(
       "SELECT program_id as programId, name, description, program_type as programType FROM programs WHERE program_id = ?"
     );
@@ -31,8 +34,8 @@ export class ProgramRepository {
     return program || null;
   };
 
-  addProgram = (input: CreateProgramDto): number => {
-    const { name, description, programType } = input;
+  add = (entity: Partial<Program>): number => {
+    const { name, description, programType } = entity;
     const stmt = this.dbService.prepare("INSERT INTO program (name, description, program_type) VALUES (?, ?, ?)");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -47,7 +50,7 @@ export class ProgramRepository {
     }
   };
 
-  deleteProgram = (id: number): boolean => {
+  delete = (id: number): boolean => {
     const stmt = this.dbService.prepare("DELETE FROM programs WHERE program_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -57,8 +60,8 @@ export class ProgramRepository {
     return info.changes > 0;
   };
 
-  updateProgram = (id: number, input: UpdateProgramDto): boolean => {
-    const { name, description, programType } = input;
+  update = (id: number, entity: Partial<Program>): boolean => {
+    const { name, description, programType } = entity;
     const stmt = this.dbService.prepare(
       "UPDATE programs SET name = ?, description = ?, program_type = ? WHERE program_id = ?"
     );
