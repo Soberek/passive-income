@@ -22,7 +22,7 @@ export class ContactService {
   }
 
   public getAllContacts = (): Contact[] => {
-    return this.contactRepository.getAllContacts();
+    return this.contactRepository.getAll();
   };
 
   public addNewContact = (firstName: string, lastName: string, email?: string, phone?: string) => {
@@ -33,11 +33,11 @@ export class ContactService {
       throw new Error("Invalid data: " + validationErrors.join(", "));
     }
 
-    return this.contactRepository.addNewContact(firstName, lastName, email, phone);
+    return this.contactRepository.add(contact);
   };
 
   public getContactById = (id: number): Contact | null => {
-    return this.contactRepository.getContactById(id);
+    return this.contactRepository.getById(id);
   };
 
   public updateContact = (id: number, firstName: string, lastName: string, email?: string, phone?: string) => {
@@ -48,18 +48,14 @@ export class ContactService {
       throw new Error("Invalid data: " + validationErrors.join(", "));
     }
 
-    return this.contactRepository.updateContact(id, firstName, lastName, email, phone);
+    return this.contactRepository.update(id, contact);
   };
 
   public deleteContact = (id: number) => {
-    return this.contactRepository.deleteContact(id);
+    return this.contactRepository.delete(id);
   };
 
   public createContactTable = () => {
     this.contactRepository.createContactTable();
   };
 }
-
-// Usage example
-// const contactsService = new ContactsService();
-// const contacts = contactsService.getAllContacts();
