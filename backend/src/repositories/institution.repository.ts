@@ -9,8 +9,9 @@ interface InstitutionRepositoryI extends RepositoryI<Institution> {
 export class InstitutionRepository implements InstitutionRepositoryI {
   private dbService: sqliteDbService;
 
-  constructor() {
-    this.dbService = sqliteDbService.getInstance();
+  constructor(dbService: sqliteDbService) {
+    this.dbService = dbService;
+    // this.dbService = sqliteDbService.getInstance();
   }
 
   createInstitutionTable = () => {

@@ -8,8 +8,8 @@ interface ContactRepositoryI extends RepositoryI<Contact> {}
 export class ContactRepository implements ContactRepositoryI {
   private dbService: sqliteDbService;
 
-  constructor() {
-    this.dbService = sqliteDbService.getInstance();
+  constructor(dbService: sqliteDbService) {
+    this.dbService = dbService;
   }
 
   createContactTable = () => {

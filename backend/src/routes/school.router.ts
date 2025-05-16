@@ -3,10 +3,12 @@ import SchoolController from "../controllers/school.controller";
 import SchoolService from "../services/school.service";
 import { SchoolRepository } from "../repositories/school.repository";
 import { InstitutionRepository } from "../repositories/institution.repository";
+import sqliteDbService from "../services/sqliteDbService";
 
 const schoolRouter = Router();
 const schoolRepository = new SchoolRepository();
-const institutionRepository = new InstitutionRepository(); // Assuming you have a repository for institutions
+const dbService = sqliteDbService.getInstance();
+const institutionRepository = new InstitutionRepository(dbService); // Assuming you have a repository for institutions
 const schoolService = new SchoolService(schoolRepository, institutionRepository);
 const schoolController = new SchoolController(schoolService);
 
