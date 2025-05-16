@@ -3,6 +3,7 @@ import { ContactService } from "../services/contact.service";
 import { Request, Response } from "express";
 
 import { Contact } from "../../../shared/types";
+
 class ContactController {
   constructor(private contactService: ContactService) {
     this.contactService = contactService;
@@ -14,7 +15,7 @@ class ContactController {
       res.status(200).json({ contacts: contacts });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Error fetching contacts", error });
+      res.status(500).json({ message: "Error fetching contacts", error: String(error) });
     }
   };
 
@@ -27,7 +28,12 @@ class ContactController {
     }
 
     try {
-      const newContact = this.contactService.addNewContact(firstName, lastName, email, phone);
+      const newContact = this.contactService.addNewContact({
+        firstName,
+        lastName,
+        email,
+        phone,
+      });
       res.status(201).json({ message: "Contact added successfully", contactId: newContact });
     } catch (error) {
       res.status(500).json({ message: "Error adding contact", error: String(error) });
@@ -76,11 +82,11 @@ class ContactController {
         res.status(404).json({ message: "Contact not found" });
         return;
       }
-      const updatedContactId = this.contactService.updateContact(id, firstName, lastName, email, phone);
+      const updatedContactId = this.contactService.updateContact(id, { firstName, lastName, email, phone });
 
       res.status(200).json({ message: "Contact updated successfully", contactId: updatedContactId });
     } catch (error) {
-      res.status(500).json({ message: "Error updating contact", error });
+      res.status(500).json({ message: "Error updating contact", error: String(error) });
     }
   };
 
@@ -112,7 +118,7 @@ class ContactController {
       this.contactService.createContactTable();
       res.status(201).json({ message: "Contact table created successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Error creating contact table", error });
+      res.status(500).json({ message: "Error creating contact table", error: String(error) });
     }
   };
 }

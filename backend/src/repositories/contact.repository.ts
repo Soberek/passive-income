@@ -63,9 +63,6 @@ export class ContactRepository implements ContactRepositoryI {
     }
     const result = stmt.run(entity);
     if (result.changes > 0) {
-      // If the insert is successful, log a success message
-      console.log("Contact added successfully");
-
       return result.lastInsertRowid; // ID of the newly inserted contact
     } else {
       // If the insert fails, log an error message

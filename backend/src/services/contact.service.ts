@@ -16,7 +16,14 @@ import { ContactRepository } from "../repositories/contact.repository";
 // It uses the ContactService to perform operations on contacts.
 // It can also include request validation, response formatting, etc. Joi
 
-export class ContactService {
+export interface ContactServiceI {
+  getAllContacts: () => Contact[];
+  addNewContact: (entity: Omit<Contact, "contactId">) => number | BigInt | null;
+  getContactById: (id: number) => Contact | null;
+  updateContact: (id: number, entity: Partial<Contact>) => boolean;
+  deleteContact: (id: number) => boolean;
+}
+export class ContactService implements ContactServiceI {
   constructor(private contactRepository: ContactRepository) {
     this.contactRepository = contactRepository;
   }
@@ -25,8 +32,8 @@ export class ContactService {
     return this.contactRepository.getAll();
   };
 
-  public addNewContact = (firstName: string, lastName: string, email?: string, phone?: string) => {
-    const contact = new ContactModel(firstName, lastName, email, phone);
+  public addNewContact = (entity: Omit<Contact, "contactId">) => {
+    const contact = new ContactModel(entity.firstName, entity.lastName, entity.email, entity.phone);
     const validationErrors = contact.validate();
 
     if (validationErrors.length) {
@@ -40,8 +47,13 @@ export class ContactService {
     return this.contactRepository.getById(id);
   };
 
-  public updateContact = (id: number, firstName: string, lastName: string, email?: string, phone?: string) => {
-    const contact = new ContactModel(firstName, lastName, email, phone);
+  public updateContact = (id: number, entity: Partial<Contact>) => {
+    const contact = new ContactModel(
+      entity.firstName || "",
+      entity.lastName || "",
+      entity.email || "",
+      entity.phone || ""
+    );
     const validationErrors = contact.validate();
 
     if (validationErrors.length) {

@@ -9,10 +9,10 @@ import { Contact } from "../../../shared/types";
 export class ContactModel implements Omit<Contact, "contactId"> {
   firstName: string;
   lastName: string;
-  email?: string;
-  phone?: string;
+  email: string;
+  phone: string;
 
-  constructor(firstName: string, lastName: string, email?: string, phone?: string) {
+  constructor(firstName: string, lastName: string, email: string, phone: string) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
@@ -22,11 +22,11 @@ export class ContactModel implements Omit<Contact, "contactId"> {
   validate(): string[] {
     const errors: string[] = [];
 
-    if (!this.firstName.trim()) {
+    if (!this.firstName?.trim()) {
       errors.push("First name is required.");
     }
 
-    if (!this.lastName.trim()) {
+    if (!this.lastName?.trim()) {
       errors.push("Last name is required.");
     }
 
