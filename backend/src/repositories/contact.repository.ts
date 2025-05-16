@@ -61,11 +61,10 @@ export class ContactRepository implements ContactRepositoryI {
       console.error("Error preparing SQL statement");
       return null;
     }
-    const result = stmt.run(entity);
+    const result = stmt.run(entity.firstName, entity.lastName, entity.email, entity.phone);
     if (result.changes > 0) {
-      return result.lastInsertRowid; // ID of the newly inserted contact
+      return result.lastInsertRowid;
     } else {
-      // If the insert fails, log an error message
       console.error("Error adding contact");
       return null;
     }
