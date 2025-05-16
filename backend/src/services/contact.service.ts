@@ -33,7 +33,7 @@ export class ContactService implements ContactServiceI {
   };
 
   public addNewContact = (entity: Omit<Contact, "contactId">) => {
-    const contact = new ContactModel(entity.firstName, entity.lastName, entity.email, entity.phone);
+    const contact = new ContactModel(entity.firstName, entity.lastName, entity.email || "", entity.phone || "");
     const validationErrors = contact.validate();
 
     if (validationErrors.length) {
