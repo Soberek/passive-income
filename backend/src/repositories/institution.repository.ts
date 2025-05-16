@@ -1,7 +1,12 @@
 import sqliteDbService from "../services/sqliteDbService";
-import { Institution, CreateInstitutionDto, UpdateInstitutionDto } from "../../../shared/types";
+import { Institution, UpdateInstitutionDto } from "../../../shared/types";
 
-export class InstitutionRepository {
+import { RepositoryI } from "../types/repositories.type";
+
+interface InstitutionRepositoryI extends RepositoryI<Institution> {
+  // addSchoolInstitution: (entity: Partial<Institution>) => number | BigInt | null;
+}
+export class InstitutionRepository implements InstitutionRepositoryI {
   private dbService: sqliteDbService;
 
   constructor() {
@@ -38,7 +43,7 @@ export class InstitutionRepository {
     }
   };
 
-  getAllInstitutions = (): Institution[] => {
+  getAll = (): Institution[] => {
     const stmt = this.dbService.prepare(`
       SELECT 
         institution_id as institutionId, 
@@ -60,17 +65,9 @@ export class InstitutionRepository {
     return stmt.all() as Institution[];
   };
 
-  addInstitution = (input: CreateInstitutionDto): { newInstitutionId: number | BigInt } | null => {
-    const { name, address, postalCode, city, phone, email, municipality } = input;
-
-    // Check if the required fields are provided
-    if (!name || !address || !postalCode || !city) {
-      console.error("Missing required fields");
-      return null;
-    }
-
+  add = (entity: Partial<Institution>) => {
     const stmt = this.dbService.prepare(
-      `INSERT INTO institutions (name, address, postal_code, city, phone, email, municipality) VALUES (?, ?, ?, ?, ?, ?, ?)`
+      "INSERT INTO institutions (name, address, postal_code, municipality, city, created_at, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     );
 
     // Check if the statement was prepared successfully
@@ -79,19 +76,16 @@ export class InstitutionRepository {
       console.error("Error preparing SQL statement");
       return null;
     }
-    // Execute the statement with the provided parameters
-    const result = stmt.run(name, address, postalCode, city, phone, email, municipality);
-    // Check if the execution was successful
+    const result = stmt.run(entity);
     if (result.changes > 0) {
       console.log("Institution added successfully");
-      return { newInstitutionId: result.lastInsertRowid }; // Return the ID of the newly inserted row
+      return result.lastInsertRowid; // Return the ID of the newly inserted row
     }
-    // If the execution failed, log an error message
     console.error("Error adding institution");
     return null; // Return null to indicate failure
   };
 
-  getInstitutionById = (id: Institution["institutionId"]): Institution | null => {
+  getById = (id: Institution["institutionId"]): Institution | null => {
     const stmt = this.dbService.prepare("SELECT * FROM institutions WHERE institution_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -101,7 +95,7 @@ export class InstitutionRepository {
     return institution || null;
   };
 
-  deleteInstitution = (id: Institution["institutionId"]): boolean => {
+  delete = (id: Institution["institutionId"]): boolean => {
     const stmt = this.dbService.prepare("DELETE FROM institutions WHERE institution_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -111,7 +105,7 @@ export class InstitutionRepository {
     return info.changes > 0;
   };
 
-  updateInstitution = (id: Institution["institutionId"], input: UpdateInstitutionDto): boolean => {
+  update = (id: Institution["institutionId"], input: UpdateInstitutionDto): boolean => {
     const fieldsToUpdate: string[] = [];
     const valuesToUpdate: any[] = [];
 

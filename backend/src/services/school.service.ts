@@ -49,22 +49,22 @@ class SchoolService {
     // Start a transaction
     try {
       const transaction = sqliteDbService.getInstance().transaction(() => {
-        const institutionId = this.institutionRepository.addInstitution(institution);
+        const newInstitutionId = this.institutionRepository.add(institution);
 
-        if (!institutionId || institutionId.newInstitutionId === -1) {
+        if (!newInstitutionId) {
           throw new Error("Error adding institution");
         }
 
         const school: CreateSchoolDto = {
           director: schoolInstitutionData.director,
-          institutionId: institutionId.newInstitutionId,
+          institutionId: newInstitutionId,
         };
-        const schoolId = this.schoolRepository.addSchool(institutionId.newInstitutionId, school.director);
+        const schoolId = this.schoolRepository.addSchool(newInstitutionId, school.director);
         if (!schoolId || schoolId === -1) {
           throw new Error("Error adding school");
         }
 
-        return { institutionId: institutionId.newInstitutionId, schoolId };
+        return { institutionId: newInstitutionId, schoolId };
       });
 
       return transaction;
@@ -75,7 +75,7 @@ class SchoolService {
 
   addSchool = (institutionId: Institution["institutionId"], director: School["director"]) => {
     // check if the institution exists
-    const institution = this.institutionRepository.getInstitutionById(institutionId);
+    const institution = this.institutionRepository.getById(institutionId);
 
     // Check if the institution exists
     // If it doesn't exist, return an error or handle it as needed
