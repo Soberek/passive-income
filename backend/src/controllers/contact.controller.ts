@@ -82,9 +82,13 @@ class ContactController {
         res.status(404).json({ message: "Contact not found" });
         return;
       }
-      const updatedContactId = this.contactService.updateContact(id, { firstName, lastName, email, phone });
+      const isUpdated = this.contactService.updateContact(id, { firstName, lastName, email, phone });
+      if (!isUpdated) {
+        res.status(500).json({ message: "Error updating contact" });
+        return;
+      }
 
-      res.status(200).json({ message: "Contact updated successfully", contactId: updatedContactId });
+      res.status(200).json({ message: "Contact updated successfully" });
     } catch (error) {
       res.status(500).json({ message: "Error updating contact", error: String(error) });
     }
