@@ -96,17 +96,38 @@ export class ContactRepository implements ContactRepositoryI {
     // if some of them are not provided, it will not update them
     // user provides every value
     // if some of them are not provided, it will not update them
+    const fieldsToUpdate = [];
+    const valuesToUpdate = [];
+    if (entity.firstName) {
+      fieldsToUpdate.push("first_name = ?");
+      valuesToUpdate.push(entity.firstName);
+    }
+    if (entity.lastName) {
+      fieldsToUpdate.push("last_name = ?");
+      valuesToUpdate.push(entity.lastName);
+    }
+    if (entity.email) {
+      fieldsToUpdate.push("email = ?");
+      valuesToUpdate.push(entity.email);
+    }
+    if (entity.phone) {
+      fieldsToUpdate.push("phone = ?");
+      valuesToUpdate.push(entity.phone);
+    }
+    if (fieldsToUpdate.length === 0) {
+      console.error("No fields to update");
+      return false;
+    }
+    const sql = `UPDATE contacts SET ${fieldsToUpdate.join(", ")} WHERE contact_id = ?`;
 
-    const stmt = this.dbService.prepare(
-      "UPDATE contacts SET first_name = ?, last_name = ?, email = ?, phone = ? WHERE contact_id = ?"
-    );
+    const stmt = this.dbService.prepare(sql);
 
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
     }
 
-    const result = stmt.run(entity.firstName, entity.lastName, entity.email, entity.phone, id);
+    const result = stmt.run(...valuesToUpdate, id);
 
     if (result.changes > 0) {
       return true;
