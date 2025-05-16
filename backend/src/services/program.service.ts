@@ -6,7 +6,7 @@ export class ProgramService {
   constructor(private programRepository: ProgramRepository, private programModelFactory: ProgramModelFactory) {}
 
   getAllPrograms = (): Program[] => {
-    const programs = this.programRepository.getAllPrograms();
+    const programs = this.programRepository.getAll();
     if (!programs) {
       return [];
     }
@@ -14,7 +14,7 @@ export class ProgramService {
   };
 
   getProgramById = (id: number): Program | null => {
-    const program = this.programRepository.getProgramById(id);
+    const program = this.programRepository.getById(id);
     if (!program) {
       throw new Error("Program not found or invalid ID");
     }
@@ -27,7 +27,7 @@ export class ProgramService {
     if (errors.length > 0) {
       throw new Error("Validation errors: " + errors.join(", "));
     }
-    const programId = this.programRepository.addProgram(programModel);
+    const programId = this.programRepository.add(programModel);
     if (programId === -1) {
       throw new Error("Error adding program");
     }
@@ -35,7 +35,7 @@ export class ProgramService {
   };
 
   deleteProgram = (id: number): boolean => {
-    const result = this.programRepository.deleteProgram(id);
+    const result = this.programRepository.delete(id);
     if (!result) {
       throw new Error("Error deleting program");
     }
@@ -54,7 +54,7 @@ export class ProgramService {
     if (errors.length > 0) {
       throw new Error("Validation errors: " + errors.join(", "));
     }
-    const result = this.programRepository.updateProgram(id, programModel);
+    const result = this.programRepository.update(id, programModel);
     if (!result) {
       throw new Error("Error updating program");
     }
