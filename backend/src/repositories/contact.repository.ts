@@ -2,7 +2,10 @@ import sqliteDbService from "../services/sqliteDbService";
 
 import { Contact } from "../../../shared/types";
 
-export class ContactRepository {
+import { RepositoryI } from "../types/repositories.type";
+
+interface ContactRepositoryI extends RepositoryI<Contact> {}
+export class ContactRepository implements ContactRepositoryI {
   private dbService: sqliteDbService;
 
   constructor() {
@@ -27,7 +30,7 @@ export class ContactRepository {
     stmt.run();
   };
 
-  public getAllContacts = (): Contact[] => {
+  public getAll = (): Contact[] => {
     const stmt = this.dbService.prepare(
       "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts"
     );
@@ -47,7 +50,7 @@ export class ContactRepository {
     return rows;
   };
 
-  public addNewContact = (firstName: string, lastName: string, email?: string, phone?: string) => {
+  public add = (entity: Partial<Contact>) => {
     const stmt = this.dbService.prepare(
       "INSERT INTO contacts (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)"
     );
@@ -58,7 +61,7 @@ export class ContactRepository {
       console.error("Error preparing SQL statement");
       return null;
     }
-    const result = stmt.run(firstName, lastName, email, phone);
+    const result = stmt.run(entity);
     if (result.changes > 0) {
       // If the insert is successful, log a success message
       console.log("Contact added successfully");
@@ -71,7 +74,7 @@ export class ContactRepository {
     }
   };
 
-  public getContactById = (id: number): Contact | null => {
+  public getById = (id: number): Contact | null => {
     const stmt = this.dbService.prepare(
       "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts WHERE contact_id = ?"
     );
@@ -91,7 +94,7 @@ export class ContactRepository {
     return row;
   };
 
-  public updateContact = (id: number, firstName: string, lastName: string, email?: string, phone?: string) => {
+  public update = (id: number, entity: Partial<Contact>) => {
     // This SQL statement updates the contact with the given ID
     // It sets the first name, last name, email, and phone number to the new values
     // if some of them are not provided, it will not update them
@@ -104,36 +107,35 @@ export class ContactRepository {
 
     if (!stmt) {
       console.error("Error preparing SQL statement");
-      return null;
+      return false;
     }
 
-    const result = stmt.run(firstName, lastName, email, phone, id);
+    const result = stmt.run(entity.firstName, entity.lastName, entity.email, entity.phone, id);
 
     if (result.changes > 0) {
-      console.log(`Contact with ID ${id} updated successfully`);
-      return id; // Number of rows changed
+      return true;
     } else {
       console.error(`Error updating contact with ID ${id}`);
-      return null;
+      return false;
     }
   };
 
-  public deleteContact = (id: number) => {
+  public delete = (id: number) => {
     const stmt = this.dbService.prepare("DELETE FROM contacts WHERE contact_id = ?");
 
     if (!stmt) {
       console.error("Error preparing SQL statement");
-      return null;
+      return false;
     }
 
     const result = stmt.run(id);
 
     if (result.changes > 0) {
       console.log(`Contact with ID ${id} deleted successfully`);
-      return result.changes; // Number of rows changed
+      return true;
     } else {
       console.error(`Error deleting contact with ID ${id}`);
-      return null;
+      return false;
     }
   };
 }
