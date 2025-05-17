@@ -1,11 +1,12 @@
-import { CreateProgramDto, Program } from "../../../shared/types";
-import { ProgramModelFactory } from "../factories/program-model.factory";
+import { Program } from "../../../shared/types";
+import { ProgramModel } from "../models/program.model";
 import { ProgramRepository } from "../repositories/program.repository";
 
-export class ProgramService {
-  constructor(private programRepository: ProgramRepository, private programModelFactory: ProgramModelFactory) {}
+import { ServiceI } from "../types/index.type";
+export class ProgramService implements ServiceI<Program, "programId"> {
+  constructor(private programRepository: ProgramRepository) {}
 
-  getAllPrograms = (): Program[] => {
+  getAll = (): Program[] => {
     const programs = this.programRepository.getAll();
     if (!programs) {
       return [];
@@ -13,7 +14,7 @@ export class ProgramService {
     return programs;
   };
 
-  getProgramById = (id: number): Program | null => {
+  getById = (id: number | BigInt): Program | null => {
     const program = this.programRepository.getById(id);
     if (!program) {
       throw new Error("Program not found or invalid ID");
@@ -21,20 +22,20 @@ export class ProgramService {
     return program;
   };
 
-  addProgram = (data: CreateProgramDto): number => {
-    const programModel = this.programModelFactory.createProgramModel(data.name, data.description, data.programType);
-    const errors = programModel.validate();
-    if (errors.length > 0) {
-      throw new Error("Validation errors: " + errors.join(", "));
+  add = (entity: Omit<Program, "programId">): number => {
+    const validationErrors = ProgramModel.validate(entity);
+
+    if (validationErrors.length > 0) {
+      throw new Error("Validation errors: " + validationErrors.join(", "));
     }
-    const programId = this.programRepository.add(programModel);
+    const programId = this.programRepository.add(entity);
     if (programId === -1) {
       throw new Error("Error adding program");
     }
     return programId;
   };
 
-  deleteProgram = (id: number): boolean => {
+  delete = (id: number | BigInt): boolean => {
     const result = this.programRepository.delete(id);
     if (!result) {
       throw new Error("Error deleting program");
@@ -42,19 +43,12 @@ export class ProgramService {
     return true;
   };
 
-  updateProgram = (
-    id: number,
-    name: string,
-    description: string,
-    programType: "programowy" | "nieprogramowy"
-  ): boolean => {
-    const programModel = this.programModelFactory.createProgramModel(name, description, programType, id);
-
-    const errors = programModel.validate();
-    if (errors.length > 0) {
-      throw new Error("Validation errors: " + errors.join(", "));
+  update = (id: number | BigInt, entity: Partial<Program>): boolean => {
+    const validationErrors = ProgramModel.validate(entity);
+    if (validationErrors.length > 0) {
+      throw new Error("Validation errors: " + validationErrors.join(", "));
     }
-    const result = this.programRepository.update(id, programModel);
+    const result = this.programRepository.update(id, entity);
     if (!result) {
       throw new Error("Error updating program");
     }

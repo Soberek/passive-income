@@ -1,34 +1,17 @@
 import { Program } from "../../../shared/types";
 
-export class ProgramModel implements Omit<Program, "programId"> {
-  programId?: number | BigInt;
-  name: string;
-  description: string;
-  programType: "programowy" | "nieprogramowy";
-
-  constructor(
-    name: string,
-    description: string,
-    programType: "programowy" | "nieprogramowy",
-    programId?: number | BigInt
-  ) {
-    this.programId = programId;
-    this.name = name;
-    this.description = description;
-    this.programType = programType;
-  }
-
-  validate(): string[] {
+export class ProgramModel {
+  static validate(entity: Omit<Program, "programId"> | Partial<Program>): string[] {
     const errors: string[] = [];
-    if (!this.name) {
+    if (!entity.name) {
       errors.push("Name is required");
     }
-    if (!this.description) {
+    if (!entity.description) {
       errors.push("Description is required");
     }
-    if (!this.programType) {
+    if (!entity.programType) {
       errors.push("Program type is required");
-    } else if (this.programType !== "programowy" && this.programType !== "nieprogramowy") {
+    } else if (entity.programType !== "programowy" && entity.programType !== "nieprogramowy") {
       errors.push("Invalid program type");
     }
     return errors;

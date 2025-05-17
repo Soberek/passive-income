@@ -1,4 +1,3 @@
-import { ProgramModelFactory } from "../factories/program-model.factory";
 import { ProgramRepository } from "../repositories/program.repository";
 import ProgramService from "../services/program.service";
 import ProgramController from "../controllers/program.controller";
@@ -6,9 +5,8 @@ import ProgramController from "../controllers/program.controller";
 import { Router } from "express";
 
 const programRouter = Router();
-const programModelFactory = new ProgramModelFactory();
 const programRepository = new ProgramRepository();
-const programService = new ProgramService(programRepository, programModelFactory);
+const programService = new ProgramService(programRepository);
 const programController = new ProgramController(programService);
 
 // Implementing the updateProgram route

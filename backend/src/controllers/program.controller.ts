@@ -9,7 +9,7 @@ class ProgramController {
   getAllPrograms = (_: Request, res: Response): void => {
     console.log("Fetching all programs");
     try {
-      const programs = this.programService.getAllPrograms();
+      const programs = this.programService.getAll();
       if (!programs) {
         res.status(404).json({ message: "No programs found" });
         return;
@@ -25,12 +25,14 @@ class ProgramController {
   createProgram = (req: Request, res: Response): void => {
     console.log("Creating program");
     try {
-      const { name, description, programType } = req.body;
-      if (!name || !description || !programType) {
+      const { name, description, programType, referenceNumber } = req.body;
+
+      if (!name || !description || !programType || !referenceNumber) {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
-      const newProgramId = this.programService.addProgram({ name, description, programType });
+
+      const newProgramId = this.programService.add({ name, description, programType, referenceNumber });
       if (newProgramId === -1) {
         res.status(500).json({ message: "Error creating program" });
         return;
@@ -52,7 +54,7 @@ class ProgramController {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
-      const result = this.programService.deleteProgram(Number(id));
+      const result = this.programService.delete(Number(id));
       if (!result) {
         res.status(500).json({ message: "Error deleting program" });
         return;
@@ -70,12 +72,12 @@ class ProgramController {
     console.log("Updating program");
     try {
       const { id } = req.params;
-      const { name, description, programType } = req.body;
-      if (!id || !name || !description || !programType) {
+      const { name, description, programType, referenceNumber } = req.body;
+      if (!id || !name || !description || !programType || !referenceNumber) {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
-      const result = this.programService.updateProgram(Number(id), name, description, programType);
+      const result = this.programService.update(Number(id), { name, description, programType, referenceNumber });
       if (!result) {
         res.status(500).json({ message: "Error updating program" });
         return;
@@ -97,7 +99,7 @@ class ProgramController {
         res.status(400).json({ message: "Missing required fields" });
         return;
       }
-      const program = this.programService.getProgramById(Number(id));
+      const program = this.programService.getById(Number(id));
       if (!program) {
         res.status(404).json({ message: "Program not found" });
         return;
