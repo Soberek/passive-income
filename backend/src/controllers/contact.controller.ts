@@ -11,7 +11,7 @@ class ContactController {
 
   public getContacts = (_: Request, res: Response): void => {
     try {
-      const contacts = this.contactService.getAllContacts() as Contact[];
+      const contacts = this.contactService.getAll() as Contact[];
       res.status(200).json({ contacts: contacts });
     } catch (error) {
       console.log(error);
@@ -28,7 +28,7 @@ class ContactController {
     }
 
     try {
-      const newContact = this.contactService.addNewContact({
+      const newContact = this.contactService.add({
         firstName,
         lastName,
         email,
@@ -49,7 +49,7 @@ class ContactController {
     }
 
     try {
-      const contact = this.contactService.getContactById(id);
+      const contact = this.contactService.getById(id);
       if (!contact) {
         res.status(404).json({ message: "Contact not found" });
         return;
@@ -77,12 +77,12 @@ class ContactController {
 
     try {
       // Check if the contact exists before updating
-      const existingContact = this.contactService.getContactById(id);
+      const existingContact = this.contactService.getById(id);
       if (!existingContact) {
         res.status(404).json({ message: "Contact not found" });
         return;
       }
-      const isUpdated = this.contactService.updateContact(id, { firstName, lastName, email, phone });
+      const isUpdated = this.contactService.update(id, { firstName, lastName, email, phone });
       if (!isUpdated) {
         res.status(500).json({ message: "Error updating contact" });
         return;
@@ -103,14 +103,14 @@ class ContactController {
     }
 
     // Check if the contact exists before deleting
-    const existingContact = this.contactService.getContactById(id);
+    const existingContact = this.contactService.getById(id);
     if (!existingContact) {
       res.status(404).json({ message: "Contact not found" });
       return;
     }
 
     try {
-      this.contactService.deleteContact(id);
+      this.contactService.delete(id);
       res.status(200).json({ message: "Contact deleted successfully" });
     } catch (error) {
       res.status(500).json({ message: "Error deleting contact", error: String(error) });
