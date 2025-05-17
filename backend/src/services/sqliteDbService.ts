@@ -5,31 +5,45 @@ import path from "path";
 
 // how to get current path
 const DB_PATH = path.resolve(__dirname, "../../sqliteDb.db");
+const DB_PATH_TEST = path.resolve(__dirname, "../../sqliteDbTest.db");
 
 // import { v4 as uuidv4 } from "uuid";
 
 class sqliteDbService {
   private db: betterSqlite3.Database;
-  private static instance: sqliteDbService;
+  private static instance: sqliteDbService | null = null;
 
   // The constructor takes an object with a dbPath property, which is the path to the SQLite database file.
   // constructor is a special method for creating and initializing an object created with a class.
-  private constructor(params: { dbPath: string }) {
+  private constructor(params: { dbPath: string; test?: boolean }) {
     this.db = betterSqlite3(params.dbPath, {
-      timeout: 5000,
+      verbose: console.log, // Enable verbose logging for debugging
     });
   }
 
   // zwraca instancję sqliteDbService
   // singleton pattern zeby nie tworzyc nowej instancji za kazdym razem
   // bede przekazywal do kazdego service czy kontrolera
-  public static getInstance = (): sqliteDbService => {
-    if (!sqliteDbService.instance) {
-      sqliteDbService.instance = new sqliteDbService({
-        dbPath: DB_PATH,
-      });
+  public static getInstance = (test: boolean = false): sqliteDbService => {
+    const dbPath = test ? DB_PATH_TEST : DB_PATH;
+
+    // Always create a new instance for tests
+    if (test) {
+      console.log("Creating new instance for test");
+      return new sqliteDbService({ dbPath });
     }
+
+    // Use the singleton instance for production
+    if (!sqliteDbService.instance) {
+      console.log("Creating new instance");
+      sqliteDbService.instance = new sqliteDbService({ dbPath });
+    }
+
     return sqliteDbService.instance;
+  };
+
+  public static resetInstance = (): void => {
+    sqliteDbService.instance = null; // Clear the singleton instance
   };
 
   prepare = (sql: string) => {
