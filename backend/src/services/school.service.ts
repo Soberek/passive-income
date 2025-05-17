@@ -7,7 +7,7 @@ import sqliteDbService from "./sqliteDbService";
 class SchoolService {
   constructor(private schoolRepository: SchoolRepository, private institutionRepository: InstitutionRepository) {}
   getAllSchools = (): School[] | [] => {
-    const schools = this.schoolRepository.getAllSchools();
+    const schools = this.schoolRepository.getAll();
 
     if (!schools || schools.length === 0) {
       throw new Error("No schools found");
@@ -17,7 +17,7 @@ class SchoolService {
   };
 
   getSchoolById = (id: number) => {
-    const school = this.schoolRepository.getSchoolById(id);
+    const school = this.schoolRepository.getById(id);
 
     return school || null;
   };
@@ -49,11 +49,11 @@ class SchoolService {
           throw new Error("Error adding institution");
         }
 
-        const school: CreateSchoolDto = {
+        const school: Omit<School, "schoolId"> = {
           director: schoolInstitutionData.director,
           institutionId: newInstitutionId,
         };
-        const schoolId = this.schoolRepository.addSchool(newInstitutionId, school.director);
+        const schoolId = this.schoolRepository.add(school);
         if (!schoolId || schoolId === -1) {
           throw new Error("Error adding school");
         }
@@ -82,7 +82,10 @@ class SchoolService {
       throw new Error("Invalid institution ID");
     }
 
-    const schoolId = this.schoolRepository.addSchool(institutionId, director);
+    const schoolId = this.schoolRepository.add({
+      director,
+      institutionId,
+    });
     if (schoolId === -1) {
       throw new Error("Error adding school");
     }
@@ -94,11 +97,11 @@ class SchoolService {
 
   deleteSchool = (id: number) => {
     // check if the school exists
-    const school = this.schoolRepository.getSchoolById(id);
+    const school = this.schoolRepository.getById(id);
     if (!school || school === null) {
       throw new Error("School not found");
     }
-    const result = this.schoolRepository.deleteSchool(id);
+    const result = this.schoolRepository.delete(id);
 
     if (!result) {
       throw new Error("Error deleting school");
@@ -107,7 +110,7 @@ class SchoolService {
   };
 
   updateSchool = (schoolId: School["schoolId"], school: UpdateSchoolDto) => {
-    const result = this.schoolRepository.updateSchool(schoolId, school);
+    const result = this.schoolRepository.update(schoolId, school);
     if (!result) {
       throw new Error("Error updating school");
     }
