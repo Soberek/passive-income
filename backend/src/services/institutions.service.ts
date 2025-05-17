@@ -1,4 +1,6 @@
+import { Institution } from "../../../shared/types";
 import { InstitutionRepository } from "../repositories/institution.repository";
+import { ServiceI } from "../types/index.type";
 
 // TODO: Add institution type foreign key
 //  id_institution_type INTEGER NOT NULL,
@@ -6,16 +8,16 @@ import { InstitutionRepository } from "../repositories/institution.repository";
 
 // Model for the Institution
 // This interface defines the structure of an institution object.
-import { CreateInstitutionDto } from "../../../shared/types";
 
 // This class is responsible for managing institutions in the database.
-class InstitutionsService {
+
+class InstitutionsService implements ServiceI<Institution, "institutionId", number> {
   constructor(private institutionRepository: InstitutionRepository) {
     this.institutionRepository = institutionRepository;
   }
 
   // Fetches all institutions from the database.
-  getAllInstitutions = () => {
+  getAll = () => {
     const institutions = this.institutionRepository.getAll();
     if (!institutions) {
       throw new Error("Error fetching all institutions");
@@ -23,26 +25,44 @@ class InstitutionsService {
     return institutions;
   };
 
-  // Adds a new institution to the database.
-  addInstitution = (input: CreateInstitutionDto) => {
-    if (!input.name || !input.address || !input.postalCode || !input.city) {
-      throw new Error("Missing required fields");
+  getById = (id: number) => {
+    const institution = this.institutionRepository.getById(id);
+    if (!institution) {
+      throw new Error("Institution not found or invalid ID");
     }
-
-    const institutionId = this.institutionRepository.add(input);
-    if (!institutionId || institutionId === -1) {
-      throw new Error("Error adding institution");
-    }
-    return institutionId;
+    return institution;
   };
 
-  // Deletes an institution from the database.
-  deleteInstitution = (id: number) => {
+  // Adds a new institution to the database.
+  add = (entity: Omit<Institution, "institutionId">) => {
+    if (!entity.name || !entity.address || !entity.postalCode || !entity.city) {
+      throw new Error("Missing required fields");
+    }
+    const result = this.institutionRepository.add(entity);
+    if (typeof result === "bigint") {
+      return Number(result);
+    }
+    return result;
+  };
+
+  delete = (id: number | BigInt) => {
     const result = this.institutionRepository.delete(id);
 
     // result is null if the institution was not found
     if (!result) {
       throw new Error("Error deleting institution");
+    }
+    return true;
+  };
+
+  update = (id: number, input: Partial<Institution>) => {
+    if (!input.name || !input.address || !input.postalCode || !input.city) {
+      throw new Error("Missing required fields");
+    }
+
+    const result = this.institutionRepository.update(id, input);
+    if (!result) {
+      throw new Error("Error updating institution");
     }
     return true;
   };
