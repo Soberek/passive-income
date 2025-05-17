@@ -2,9 +2,9 @@ import sqliteDbService from "../services/sqliteDbService";
 
 import { Contact } from "../../../shared/types";
 
-import { RepositoryI } from "../types/repositories.type";
+import { RepositoryI } from "../types/index.type";
 
-interface ContactRepositoryI extends RepositoryI<Contact> {}
+interface ContactRepositoryI extends RepositoryI<Contact, "contactId"> {}
 export class ContactRepository implements ContactRepositoryI {
   private dbService: sqliteDbService;
 
@@ -70,7 +70,7 @@ export class ContactRepository implements ContactRepositoryI {
     }
   };
 
-  public getById = (id: number): Contact | null => {
+  public getById = (id: number | BigInt): Contact | null => {
     const stmt = this.dbService.prepare(
       "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts WHERE contact_id = ?"
     );
@@ -90,7 +90,7 @@ export class ContactRepository implements ContactRepositoryI {
     return row;
   };
 
-  public update = (id: number, entity: Partial<Contact>) => {
+  public update = (id: number | BigInt, entity: Partial<Contact>) => {
     // This SQL statement updates the contact with the given ID
     // It sets the first name, last name, email, and phone number to the new values
     // if some of them are not provided, it will not update them
@@ -137,7 +137,7 @@ export class ContactRepository implements ContactRepositoryI {
     }
   };
 
-  public delete = (id: number) => {
+  public delete = (id: number | BigInt) => {
     const stmt = this.dbService.prepare("DELETE FROM contacts WHERE contact_id = ?");
 
     if (!stmt) {
