@@ -11,7 +11,7 @@ export interface Institution {
 }
 
 // For updating entities (partial updates)
-export type CreateInstitutionDto = Omit<Institution, "institutionId" | "createdAt">;
+
 export type UpdateInstitutionDto = Partial<CreateInstitutionDto>;
 
 export interface School {
@@ -46,6 +46,7 @@ export interface Program {
   name: string;
   description: string;
   programType: "programowy" | "nieprogramowy";
+  referenceNumber: string;
 }
 
 export type CreateProgramDto = Omit<Program, "programId">;

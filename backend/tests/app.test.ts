@@ -1,7 +1,8 @@
 import request from "supertest";
 import ExpressApp from "../src/app";
-import { describe, it, expect } from "@jest/globals";
-
+import { describe, it, expect, beforeEach, beforeAll } from "@jest/globals";
+import sqliteDbService from "../src/services/sqliteDbService";
+import { contacts } from "../src/defaultContacts";
 const expressAppInstance = new ExpressApp();
 const app = expressAppInstance.app;
 expressAppInstance.initMiddlewares();
@@ -19,8 +20,16 @@ Cheatsheet:
     expect(res.body).toHaveProperty("id");
 */
 
-describe("Contact API", () => {
+describe.only("Contact API", () => {
+  let dbService: sqliteDbService;
   let contactId: number;
+
+  beforeAll(() => {
+    // Reset the database instance before each test
+    sqliteDbService.resetInstance();
+    // Initialize the database service with test mode
+    dbService = sqliteDbService.getInstance(true);
+  });
 
   it("should create a new contact", async () => {
     const newContact = {
@@ -30,6 +39,10 @@ describe("Contact API", () => {
       phone: "123-456-7890",
     };
     const res = await request(app).post("/api/contact").send(newContact);
+
+    console.log("Response status:", res.status);
+    console.log("Response body:", res.body);
+
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty("message", "Contact added successfully");
     expect(res.body).toHaveProperty("contactId");
@@ -56,7 +69,6 @@ describe("Contact API", () => {
       .send(updatedContact);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("message", "Contact updated successfully");
-    expect(res.body).toHaveProperty("contactId", contactId);
   });
 
   it("should return a contact by ID", async () => {

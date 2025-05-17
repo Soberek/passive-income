@@ -1,10 +1,4 @@
-import {
-  CreateInstitutionDto,
-  CreateSchoolDto,
-  CreateSchoolWithInstitutionDto,
-  Institution,
-  UpdateSchoolDto,
-} from "../../../shared/types";
+import { CreateSchoolDto, CreateSchoolWithInstitutionDto, Institution, UpdateSchoolDto } from "../../../shared/types";
 import { School } from "../../../shared/types";
 import { SchoolRepository } from "../repositories/school.repository";
 import { InstitutionRepository } from "../repositories/institution.repository";
@@ -32,7 +26,7 @@ class SchoolService {
   // if i want to add a school i need to add institution first
 
   addInstitutionSchool = (schoolInstitutionData: CreateSchoolWithInstitutionDto) => {
-    const institution: CreateInstitutionDto = {
+    const institution: Omit<Institution, "institutionId"> = {
       name: schoolInstitutionData.name,
       address: schoolInstitutionData.address,
       city: schoolInstitutionData.city,

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSchools } from "./useSchools";
 
 interface FormData {
   templateFile: File | null;
@@ -34,6 +35,10 @@ const IzrzForm = () => {
 
   const [autocomplete, setAutocomplete] = useState("Szk");
   const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const { schools } = useSchools();
+
+  console.log("Schools:", schools);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

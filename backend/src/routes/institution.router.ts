@@ -10,9 +10,9 @@ const institutionsService = new InstitutionsService(institutionRepository);
 const institutionController = new InstitutionController(institutionsService);
 
 router.get("/institution", institutionController.getAllInstitutions);
-router.get("/institutions/:id", institutionController.getInstitutionById);
+router.get("/institution/:id", institutionController.getInstitutionById);
 router.post("/institution", institutionController.createInstitution);
 router.put("/institution/:id", institutionController.updateInstitution);
-router.delete("/institutions/:id", institutionController.deleteInstitution);
+router.delete("/institution/:id", institutionController.deleteInstitution);
 
 export { router as institutionRouter };
