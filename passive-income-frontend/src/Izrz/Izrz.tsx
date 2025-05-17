@@ -33,7 +33,7 @@ const IzrzForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
 
-  const [autocomplete, setAutocomplete] = useState("Szk");
+  const [autocomplete, setAutocomplete] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
@@ -164,24 +164,52 @@ const IzrzForm = () => {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
           <div>
             <label>Case Number:</label>
-            <input type="text" name="caseNumber" value={formData.caseNumber} onChange={handleChange} required />
+            <input
+              type="text"
+              name="caseNumber"
+              placeholder="np. OZiPZ.966.1.1.2025"
+              value={formData.caseNumber}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div>
             <label>Report Number:</label>
-            <input type="text" name="reportNumber" value={formData.reportNumber} onChange={handleChange} required />
+            <input
+              type="text"
+              name="reportNumber"
+              placeholder="np. 45/2025"
+              value={formData.reportNumber}
+              onChange={handleChange}
+              required
+            />
           </div>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
           <div>
             <label>Program Name:</label>
-            <input type="text" name="programName" value={formData.programName} onChange={handleChange} required />
+            <input
+              type="text"
+              name="programName"
+              placeholder="np. Higiena naszą tarczą ochronną"
+              value={formData.programName}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div>
             <label>Task Type:</label>
-            <input type="text" name="taskType" value={formData.taskType} onChange={handleChange} required />
+            <input
+              type="text"
+              name="taskType"
+              placeholder="np. Prelekcja"
+              value={formData.taskType}
+              onChange={handleChange}
+              required
+            />
           </div>
         </div>
 
@@ -203,7 +231,11 @@ const IzrzForm = () => {
           {/* Type in input, based on that filter suggestions */}
           {/* on suggestion clicked fill some input */}
 
-          {showSuggestions && (
+          {institutionsLoading && (
+            <div style={{ position: "absolute", top: "100%", left: 0, right: 0, padding: "0.5rem" }}>Loading...</div>
+          )}
+          {/* Show suggestions */}
+          {showSuggestions && suggestions.length > 0 && (
             <div
               style={{
                 position: "absolute",
@@ -244,6 +276,7 @@ const IzrzForm = () => {
             type="text"
             name="address"
             value={formData.address}
+            placeholder="Wprowadź adres"
             onChange={handleChange}
             required
             style={{ width: "100%" }}
@@ -274,6 +307,7 @@ const IzrzForm = () => {
           <input
             type="text"
             name="viewerCountDescription"
+            placeholder="Wprowadź opis liczby widzów"
             value={formData.viewerCountDescription}
             onChange={handleChange}
             required
@@ -285,6 +319,7 @@ const IzrzForm = () => {
           <label>Task Description:</label>
           <textarea
             name="taskDescription"
+            placeholder="Wprowadź opis zadania"
             value={formData.taskDescription}
             onChange={handleChange}
             required
@@ -298,6 +333,7 @@ const IzrzForm = () => {
             name="additionalInfo"
             value={formData.additionalInfo}
             onChange={handleChange}
+            placeholder="Wprowadź dodatkowe informacje"
             required
             style={{ width: "100%", minHeight: "100px" }}
           />
