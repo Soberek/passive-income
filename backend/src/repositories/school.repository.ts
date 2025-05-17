@@ -1,13 +1,14 @@
 import sqliteDbService from "../services/sqliteDbService";
 import { School, Institution, UpdateSchoolDto } from "../../../shared/types";
+import { RepositoryI } from "../types/index.type";
 
-export class SchoolRepository {
+export class SchoolRepository implements RepositoryI<School, "schoolId"> {
   private dbService: sqliteDbService;
   constructor() {
     this.dbService = sqliteDbService.getInstance();
   }
 
-  getAllSchools = (): School[] | [] => {
+  getAll = (): School[] | [] => {
     const stmt = this.dbService.prepare("SELECT school_id as schoolId, director FROM schools");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -21,7 +22,7 @@ export class SchoolRepository {
     return rows as School[];
   };
 
-  getSchoolById = (id: School["schoolId"]): School | null => {
+  getById = (id: School["schoolId"]): School | null => {
     const stmt = this.dbService.prepare("SELECT school_id as schoolId, director FROM schools WHERE school_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -42,13 +43,13 @@ export class SchoolRepository {
     return school;
   };
 
-  addSchool = (institutionId: Institution["institutionId"], director: School["director"]) => {
+  add = (entity: Partial<School>) => {
     const stmt = this.dbService.prepare("INSERT INTO schools (institution_id, director) VALUES (?, ?)");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return -1;
     }
-    const info = stmt.run(institutionId, director);
+    const info = stmt.run(entity.institutionId, entity.director);
     if (!info) {
       console.error("Error executing SQL statement");
       return -1;
@@ -56,7 +57,7 @@ export class SchoolRepository {
     return info.lastInsertRowid;
   };
 
-  deleteSchool = (id: School["schoolId"]) => {
+  delete = (id: School["schoolId"]) => {
     const stmt = this.dbService.prepare("DELETE FROM schools WHERE school_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -75,7 +76,7 @@ export class SchoolRepository {
     return true;
   };
 
-  updateSchool = (schoolId: School["schoolId"], school: UpdateSchoolDto) => {
+  update = (schoolId: School["schoolId"], school: UpdateSchoolDto) => {
     const fieldsToUpdate: string[] = []; // Array to hold the fields to be updated director
     const valuesToUpdate: any[] = []; // Array to hold the values to be updated
 
