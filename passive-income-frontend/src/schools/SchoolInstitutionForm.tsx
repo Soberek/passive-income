@@ -8,13 +8,13 @@ import {
   CircularProgress,
   Container,
   Divider,
-  Grid,
   Paper,
   TextField,
   Typography,
   Snackbar,
   Alert,
 } from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 // Import your types (assuming they're in a separate file)
 import { CreateSchoolWithInstitutionDto } from "../../../shared/types";
@@ -91,7 +91,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
               </Typography>
 
               <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Controller
                     name="name"
                     control={control}
@@ -110,7 +110,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
                   />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Controller
                     name="address"
                     control={control}
@@ -127,7 +127,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid size={12}>
                   <Controller
                     name="postalCode"
                     control={control}
@@ -144,7 +144,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid size={12}>
                   <Controller
                     name="city"
                     control={control}
@@ -161,7 +161,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid size={12}>
                   <Controller
                     name="municipality"
                     control={control}
@@ -178,7 +178,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={12}>
                   <Controller
                     name="email"
                     control={control}
@@ -202,7 +202,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={12}>
                   <Controller
                     name="phone"
                     control={control}
@@ -234,7 +234,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
               </Typography>
 
               <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid size={12}>
                   <Controller
                     name="director"
                     control={control}
