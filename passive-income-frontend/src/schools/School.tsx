@@ -22,8 +22,13 @@ const SchoolsPage: React.FC = () => {
       // Return the created data
       return await response.json();
     } catch (error) {
-      console.error("Error creating school:", error);
-      throw error;
+      if (error instanceof Error) {
+        console.error("Error creating school:", error.message);
+        throw error;
+      } else {
+        console.error("Error creating school:", error);
+        throw error;
+      }
     }
   };
 
