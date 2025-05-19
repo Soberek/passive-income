@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useInstitutions } from "./useInstitutions";
+import { useInstitutions } from "../../hooks/useInstitutions";
 
 interface FormData {
   templateFile: File | null;

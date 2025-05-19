@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Institution } from "../../../../shared/types";
+import { Institution } from "../../../shared/types";
 
 export const useInstitutions = () => {
   const [institutions, setInstitutions] = useState<Institution[] | []>([]);
