@@ -85,7 +85,6 @@ CREATE TABLE program_coordinators (
     FOREIGN KEY (contact_id) REFERENCES contacts(contact_id)
 );
 
-
 CREATE TABLE action_types (
     action_type_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE
@@ -108,6 +107,10 @@ CREATE TABLE task_materials (
   FOREIGN KEY (material_id) REFERENCES materials(material_id)
 );
 
+CREATE TABLE media_platforms (  -- Changed to plural
+    media_platform_id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Renamed from 'id_media_platform'
+    name TEXT NOT NULL UNIQUE
+);
 
 CREATE TABLE tasks (
     task_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -120,14 +123,12 @@ CREATE TABLE tasks (
     date DATE,
     actions_count INTEGER,
     audience_count INTEGER,
-    media_platform_id INTEGER,
+    media_platform_id INTEGER, -- bedzie, jezeli task to publikacja media
     FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
     FOREIGN KEY (program_id) REFERENCES programs(program_id),
     FOREIGN KEY (action_type_id) REFERENCES action_types(action_type_id),
     FOREIGN KEY (media_platform_id) REFERENCES media_platforms(media_platform_id)
 );
-
-
 
 CREATE TABLE materials (
     material_id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Renamed from 'id_material'
@@ -143,7 +144,6 @@ CREATE TABLE task_materials (
   FOREIGN KEY (task_id) REFERENCES tasks(task_id),
   FOREIGN KEY (material_id) REFERENCES materials(material_id)
 );
-
 
 -- IDEA Vvvvvv
 CREATE TABLE material_distributions (
