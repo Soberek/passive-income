@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import SchoolService from "../services/school.service";
 
-import { CreateSchoolWithInstitutionDto } from "../../../shared/types/index";
+import { CreateSchoolWithInstitutionDto, Institution, School } from "../../../shared/types/index";
 
 export default class schoolController {
   constructor(private schoolService: SchoolService) {
@@ -25,8 +25,16 @@ export default class schoolController {
 
   createSchool = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { name, address, postalCode, city, phone, email, municipality, director }: CreateSchoolWithInstitutionDto =
-        req.body;
+      const {
+        name,
+        address,
+        postalCode,
+        city,
+        phone,
+        email,
+        municipality,
+        director,
+      }: Omit<Institution, "institutionId"> & Omit<School, "schoolId"> = req.body;
       if (!name || !address || !postalCode || !city) {
         res.status(400).json({ message: "Missing required fields" });
         return;
