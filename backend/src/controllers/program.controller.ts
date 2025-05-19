@@ -112,6 +112,8 @@ class ProgramController {
       return;
     }
   };
+
+  bulkCreatePrograms = (req: Request, res: Response): void => {};
 }
 
 export default ProgramController;

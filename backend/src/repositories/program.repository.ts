@@ -72,4 +72,26 @@ export class ProgramRepository implements ProgramRepositoryI {
     const info = stmt.run(name, description, programType, id);
     return info.changes > 0;
   };
+
+  bulkInsert = (programs: Omit<Program, "programId">[]): boolean => {
+    const stmt = this.dbService.prepare("INSERT INTO programs (name, description, program_type) VALUES (?, ?, ?)");
+    if (!stmt) {
+      console.error("Error preparing SQL statement");
+      return false;
+    }
+
+    // Use a transaction for bulk insert
+    const transaction = this.dbService.transaction(() => {
+      for (const program of programs) {
+        stmt.run(program.name, program.description, program.programType);
+      }
+    });
+    try {
+      transaction();
+      return true;
+    } catch (error) {
+      console.error("Error during bulk insert transaction", error);
+      return false;
+    }
+  };
 }

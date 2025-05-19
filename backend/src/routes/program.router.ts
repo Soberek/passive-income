@@ -15,5 +15,6 @@ programRouter.get("/program", programController.getAllPrograms); // Route: /api/
 programRouter.delete("/program/:id", programController.deleteProgram); // Route: /api/program/:id - DELETE - Delete a program by ID
 programRouter.get("/program/:id", programController.getProgramById); // Route: /api/program/:id - GET - Get a program by ID
 programRouter.put("/program/:id", programController.updateProgram); // Route: /api/program/:id - PUT - Update a program by ID
+programRouter.post("/program/bulk", programController.bulkCreatePrograms); // Route: /api/program/bulk - POST - Create multiple programs
 
 export default programRouter;
