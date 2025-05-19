@@ -122,6 +122,38 @@ CREATE TABLE tasks (
     FOREIGN KEY (media_platform_id) REFERENCES media_platforms(media_platform_id)
 );
 
+
+
+CREATE TABLE materials (
+    material_id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Renamed from 'id_material'
+    name TEXT NOT NULL UNIQUE,
+    description TEXT
+);
+
+CREATE TABLE task_materials (
+  task_id INTEGER NOT NULL,
+  material_id INTEGER NOT NULL,
+  quantity INTEGER NOT NULL DEFAULT 1,
+  PRIMARY KEY (task_id, material_id),
+  FOREIGN KEY (task_id) REFERENCES tasks(task_id),
+  FOREIGN KEY (material_id) REFERENCES materials(material_id)
+);
+
+
+-- IDEA Vvvvvv
+CREATE TABLE material_distributions (
+    distribution_id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Renamed from 'id_distribution'
+    material_id INTEGER NOT NULL,  -- Renamed from 'id_material'
+    quantity INTEGER NOT NULL,
+    distribution_date DATE NOT NULL,
+    institution_id INTEGER NOT NULL,
+    program_id INTEGER NOT NULL,
+    school_year TEXT NOT NULL CHECK (school_year IN ('2023/2024', '2024/2025', '2025/2026', '2026/2027', '2027/2028')),  -- Added 2025/2026
+    FOREIGN KEY (material_id) REFERENCES materials(material_id),
+    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+    FOREIGN KEY (program_id) REFERENCES programs(program_id)
+);
+
 -- TODO IN FUTURE
 -- It will be used to define levels of education (e.g., primary, secondary, etc.)
 CREATE TABLE levels (
@@ -136,25 +168,5 @@ CREATE TABLE school_levels (
     FOREIGN KEY (school_id) REFERENCES schools(school_id) ON DELETE CASCADE,
     FOREIGN KEY (level_id) REFERENCES levels(level_id) ON DELETE CASCADE,
     PRIMARY KEY (school_id, level_id)
-);
-
-CREATE TABLE materials (
-    material_id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Renamed from 'id_material'
-    name TEXT NOT NULL UNIQUE,
-    description TEXT
-);
-
-
-CREATE TABLE material_distributions (
-    distribution_id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Renamed from 'id_distribution'
-    material_id INTEGER NOT NULL,  -- Renamed from 'id_material'
-    quantity INTEGER NOT NULL,
-    distribution_date DATE NOT NULL,
-    institution_id INTEGER NOT NULL,
-    program_id INTEGER NOT NULL,
-    school_year TEXT NOT NULL CHECK (school_year IN ('2023/2024', '2024/2025', '2025/2026', '2026/2027', '2027/2028')),  -- Added 2025/2026
-    FOREIGN KEY (material_id) REFERENCES materials(material_id),
-    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
-    FOREIGN KEY (program_id) REFERENCES programs(program_id)
 );
 ```
