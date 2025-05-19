@@ -1,4 +1,4 @@
-import { Institution, UpdateSchoolDto } from "../../../shared/types";
+import { Institution } from "../../../shared/types";
 import { School } from "../../../shared/types";
 import { SchoolRepository } from "../repositories/school.repository";
 import { InstitutionRepository } from "../repositories/institution.repository";
@@ -111,7 +111,7 @@ class SchoolService {
     return true;
   };
 
-  updateSchool = (schoolId: School["schoolId"], school: UpdateSchoolDto) => {
+  updateSchool = (schoolId: School["schoolId"], school: Partial<School>) => {
     const result = this.schoolRepository.update(schoolId, school);
     if (!result) {
       throw new Error("Error updating school");

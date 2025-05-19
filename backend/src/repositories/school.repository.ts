@@ -1,5 +1,5 @@
 import sqliteDbService from "../services/sqliteDbService";
-import { School, Institution, UpdateSchoolDto } from "../../../shared/types";
+import { School, Institution } from "../../../shared/types";
 import { RepositoryI } from "../types/index.type";
 
 export class SchoolRepository implements RepositoryI<School, "schoolId"> {
@@ -76,7 +76,7 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
     return true;
   };
 
-  update = (schoolId: School["schoolId"], school: UpdateSchoolDto) => {
+  update = (schoolId: School["schoolId"], school: Partial<School>) => {
     const fieldsToUpdate: string[] = []; // Array to hold the fields to be updated director
     const valuesToUpdate: any[] = []; // Array to hold the values to be updated
 

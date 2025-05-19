@@ -1,5 +1,5 @@
 import sqliteDbService from "../services/sqliteDbService";
-import { Institution, UpdateInstitutionDto } from "../../../shared/types";
+import { Institution } from "../../../shared/types";
 
 import { RepositoryI } from "../types/index.type";
 
@@ -106,7 +106,7 @@ export class InstitutionRepository implements InstitutionRepositoryI {
     return info.changes > 0;
   };
 
-  update = (id: Institution["institutionId"], input: UpdateInstitutionDto): boolean => {
+  update = (id: Institution["institutionId"], input: Partial<Institution>): boolean => {
     const fieldsToUpdate: string[] = [];
     const valuesToUpdate: any[] = [];
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import SchoolService from "../services/school.service";
 
-import { CreateSchoolWithInstitutionDto, Institution, School } from "../../../shared/types/index";
+import { Institution, School } from "../../../shared/types/index";
 
 export default class schoolController {
   constructor(private schoolService: SchoolService) {
