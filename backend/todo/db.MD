@@ -21,7 +21,10 @@ Przykład wysłanego ządania
 }
 ```
 
+## TODO
+
 ```sql
+
 CREATE TABLE institutions (
     institution_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
