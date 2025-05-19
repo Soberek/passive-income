@@ -15,16 +15,15 @@ import {
   Alert,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
+import { Institution, School } from "../../../../shared/types";
 
 // Import your types (assuming they're in a separate file)
-import { CreateSchoolWithInstitutionDto } from "../../../../shared/types";
 
 // Define a type for form submission
-type SubmitHandler = (data: CreateSchoolWithInstitutionDto) => Promise<void>;
 
 interface SchoolInstitutionFormProps {
-  onSubmit: SubmitHandler;
-  initialValues?: Partial<CreateSchoolWithInstitutionDto>;
+  onSubmit: (data: Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">) => Promise<void>;
+  initialValues?: Partial<Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">>;
 }
 
 const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit, initialValues = {} }) => {

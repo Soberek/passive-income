@@ -1,9 +1,11 @@
 import React from "react";
 import SchoolInstitutionForm from "./SchoolInstitutionForm";
-import { CreateSchoolWithInstitutionDto } from "../../../../shared/types";
+import { Institution, School } from "../../../../shared/types";
 
 const SchoolsPage: React.FC = () => {
-  const handleSubmit = async (data: CreateSchoolWithInstitutionDto) => {
+  const handleSubmit = async (
+    data: Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">
+  ) => {
     try {
       // Make your API call here
       const response = await fetch("http://localhost:3000/api/schools-with-institutions", {
