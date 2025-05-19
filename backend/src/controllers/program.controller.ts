@@ -124,7 +124,9 @@ class ProgramController {
 
   bulkCreatePrograms = (req: Request, res: Response): void => {
     console.log("Bulk creating programs");
+
     try {
+      console.log("BULK CREATE PROGRAMS");
       const { programs } = req.body as { programs: Array<Omit<Program, "programId">> };
       // console.log("Received req.body:", req.body);
       console.log("Received programs:", req.body.programs);

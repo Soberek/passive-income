@@ -56,7 +56,7 @@ export default class ExpressApp {
     // Middleware for logging requests
     this.app.use((req: Request, _: Response, next: () => void) => {
       console.log(`${req.method} ${req.url}`);
-      console.log("Request body:", req.body);
+      // console.log("Request body:", req.body);
       next();
     });
     // Middleware for handling CORS (Cross-Origin Resource Sharing)
