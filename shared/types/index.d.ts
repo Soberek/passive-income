@@ -12,8 +12,6 @@ export interface Institution {
 
 // For updating entities (partial updates)
 
-export type UpdateInstitutionDto = Partial<CreateInstitutionDto>;
-
 export interface School {
   schoolId: number | BigInt;
   institutionId: number | BigInt;
@@ -26,7 +24,7 @@ export type CreateSchoolDto = Omit<School, "schoolId">;
 export type UpdateSchoolDto = Partial<Omit<School, "schoolId">>; //
 
 // For creating both an institution and school in one operation
-export type CreateSchoolWithInstitutionDto = CreateInstitutionDto & Omit<School, "schoolId" | "institutionId">;
+export type CreateSchoolWithInstitutionDto = Omit<School, "schoolId" | "institutionId">;
 
 // Types for contacts
 export interface Contact {
