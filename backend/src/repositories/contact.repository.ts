@@ -4,7 +4,9 @@ import { Contact } from "../../../shared/types";
 
 import { RepositoryI } from "../types/index.type";
 
-interface ContactRepositoryI extends RepositoryI<Contact, "contactId"> {}
+interface ContactRepositoryI extends RepositoryI<Contact, "contactId"> {
+  bulkInsert: (contacts: Contact[]) => boolean;
+}
 export class ContactRepository implements ContactRepositoryI {
   private dbService: sqliteDbService;
 
@@ -152,6 +154,31 @@ export class ContactRepository implements ContactRepositoryI {
       return true;
     } else {
       console.error(`Error deleting contact with ID ${id}`);
+      return false;
+    }
+  };
+
+  public bulkInsert = (contacts: Contact[]) => {
+    const stmt = this.dbService.prepare(
+      "INSERT INTO contacts (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)"
+    );
+
+    if (!stmt) {
+      console.error("Error preparing SQL statement");
+      return false;
+    }
+
+    const transaction = this.dbService.transaction(() => {
+      for (const contact of contacts) {
+        stmt.run(contact.firstName, contact.lastName, contact.email, contact.phone);
+      }
+    });
+
+    try {
+      transaction();
+      return true;
+    } catch (error) {
+      console.error("Error inserting contacts in bulk", error);
       return false;
     }
   };
