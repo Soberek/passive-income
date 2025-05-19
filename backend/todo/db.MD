@@ -79,7 +79,6 @@ CREATE TABLE program_coordinators (
     FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
     FOREIGN KEY (contact_id) REFERENCES contacts(contact_id)
 );
------------------------
 
 
 CREATE TABLE action_types (
