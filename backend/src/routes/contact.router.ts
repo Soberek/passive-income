@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 
 import ContactController from "../controllers/contact.controller";
 import { ContactRepository } from "../repositories/contact.repository";
@@ -16,6 +16,7 @@ contactRouter.post("/contact", contactController.addContact);
 contactRouter.get("/contact/:id", contactController.getContactById);
 contactRouter.put("/contact/:id", contactController.updateContact);
 contactRouter.delete("/contact/:id", contactController.deleteContact);
+contactRouter.post("/contact/bulk", contactController.bulkInsert);
 
 // contactRouter.post("/contact/create", contactController.createContactTable);
 

@@ -43,4 +43,8 @@ export class ContactService implements ServiceI<Contact, "contactId", number | B
   public createContactTable = () => {
     this.contactRepository.createContactTable();
   };
+
+  public bulkInsert = (contacts: Omit<Contact, "contactId">[]) => {
+    return this.contactRepository.bulkInsert(contacts);
+  };
 }

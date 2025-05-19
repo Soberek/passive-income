@@ -158,7 +158,7 @@ export class ContactRepository implements ContactRepositoryI {
     }
   };
 
-  public bulkInsert = (contacts: Contact[]) => {
+  public bulkInsert = (contacts: Omit<Contact, "contactId">[]) => {
     const stmt = this.dbService.prepare(
       "INSERT INTO contacts (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)"
     );

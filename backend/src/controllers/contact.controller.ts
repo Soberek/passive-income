@@ -125,6 +125,22 @@ class ContactController {
       res.status(500).json({ message: "Error creating contact table", error: String(error) });
     }
   };
+
+  public bulkInsert = (req: Request, res: Response): void => {
+    const contacts = req.body.contacts;
+
+    if (!Array.isArray(contacts) || contacts.length === 0) {
+      res.status(400).json({ message: "Invalid contacts data" });
+      return;
+    }
+
+    try {
+      this.contactService.bulkInsert(contacts);
+      res.status(201).json({ message: "Contacts added successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Error adding contacts", error: String(error) });
+    }
+  };
 }
 
 export default ContactController;

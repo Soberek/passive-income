@@ -83,7 +83,7 @@ class sqliteDbService {
   transaction = <T>(callback: () => T) => {
     try {
       const transaction = this.db.transaction(callback);
-      return transaction();
+      return transaction;
     } catch (error) {
       throw new Error(`Error executing transaction: ${error instanceof Error ? error.message : String(error)}`);
     }
