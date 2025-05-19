@@ -36,7 +36,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<CreateSchoolWithInstitutionDto>({
+  } = useForm<Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">>({
     defaultValues: {
       // Institution fields
       name: initialValues.name || "",
@@ -52,7 +52,9 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
     },
   });
 
-  const processSubmit = async (data: CreateSchoolWithInstitutionDto) => {
+  const processSubmit = async (
+    data: Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">
+  ) => {
     setIsSubmitting(true);
     setSubmitError(null);
 
