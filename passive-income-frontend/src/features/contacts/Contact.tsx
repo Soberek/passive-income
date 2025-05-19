@@ -17,15 +17,13 @@ export const Contact = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      // Check if the response is empty
-      console.log("1");
-      const data = await response.json();
 
+      const data = await response.json();
       if (!data || data.length === 0) {
         console.log("No contacts found");
         return;
       }
-      setContacts(data);
+      setContacts(data.contacts);
     } catch (error) {
       console.error("Error fetching contacts:", error);
     }
