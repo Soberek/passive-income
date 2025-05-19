@@ -18,13 +18,13 @@ class ProgramController {
       res.status(200).json(programs);
       return;
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error fetching programs", error });
+      res
+        .status(500)
+        .json({ message: "Error fetching programs", error: error instanceof Error ? error.message : error });
       return;
     }
   };
   createProgram = (req: Request, res: Response): void => {
-    console.log("Creating program");
     try {
       const { name, description, programType, referenceNumber } = req.body;
 
@@ -35,14 +35,16 @@ class ProgramController {
 
       const newProgramId = this.programService.add({ name, description, programType, referenceNumber });
       if (newProgramId === -1) {
-        res.status(500).json({ message: "Error creating program" });
+        res.status(500).json({ message: "Error creating program", error: "Failed to create program" });
         return;
       }
       res.status(201).json({ message: "Program created successfully", newProgramId });
       return;
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Error creating program", error });
+      res
+        .status(500)
+        .json({ message: "Error creating program", error: error instanceof Error ? error.message : error });
       return;
     }
   };
@@ -57,14 +59,16 @@ class ProgramController {
       }
       const result = this.programService.delete(Number(id));
       if (!result) {
-        res.status(500).json({ message: "Error deleting program" });
+        res.status(500).json({ message: "Error deleting program", error: "Failed to delete program" });
         return;
       }
       res.status(200).json({ message: "Program deleted successfully" });
       return;
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Error deleting program", error });
+      res
+        .status(500)
+        .json({ message: "Error deleting program", error: error instanceof Error ? error.message : error });
       return;
     }
   };
@@ -87,7 +91,9 @@ class ProgramController {
       return;
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Error updating program", error });
+      res
+        .status(500)
+        .json({ message: "Error updating program", error: error instanceof Error ? error.message : error });
       return;
     }
   };
@@ -109,7 +115,9 @@ class ProgramController {
       return;
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Error fetching program", error });
+      res
+        .status(500)
+        .json({ message: "Error fetching program", error: error instanceof Error ? error.message : error });
       return;
     }
   };
@@ -127,10 +135,13 @@ class ProgramController {
       res.status(201).json({ message: "Programs created successfully" });
       return;
     } catch (error) {
-      res.status(500).json({ message: "Error bulk creating programs", error: String(error) });
-      return;
+      if (error) {
+        res
+          .status(500)
+          .json({ message: "Error bulk creating programs", error: error instanceof Error ? error.message : error });
+        return;
+      }
     }
   };
 }
-
 export default ProgramController;
