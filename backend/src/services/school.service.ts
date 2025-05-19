@@ -61,7 +61,7 @@ class SchoolService {
         return { institutionId: newInstitutionId, schoolId };
       });
 
-      return transaction;
+      return transaction();
     } catch (error) {
       throw new Error(`Error adding institution and school: ${error instanceof Error ? error.message : String(error)}`);
     }
