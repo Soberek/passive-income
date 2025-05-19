@@ -126,6 +126,7 @@ class ProgramController {
     console.log("Bulk creating programs");
     try {
       const { programs } = req.body as { programs: Array<Omit<Program, "programId">> };
+
       if (!Array.isArray(programs) || programs.length === 0) {
         res.status(400).json({ message: "Invalid program data" });
         return;
