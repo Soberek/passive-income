@@ -2,10 +2,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
-import { createBrowserRouter, RouterProvider, useNavigate } from "react-router"; // <-- small typo here too
-import SchoolsPage from "./schools/School.tsx";
-import { Contact } from "./contacts/Contact.tsx";
-import IzrzForm from "./Izrz/Izrz.tsx";
+import { createBrowserRouter, RouterProvider, useNavigate } from "react-router";
+import SchoolsPage from "./features/schools/School.tsx";
+import { Contact } from "./features/contacts/Contact.tsx";
+import IzrzForm from "./features/Izrz/Izrz.tsx";
 
 const ErrorElement = () => {
   const navigate = useNavigate();

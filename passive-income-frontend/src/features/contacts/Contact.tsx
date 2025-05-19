@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Contact as Contacts } from "../../../shared/types";
+import { Contact as Contacts } from "../../../../shared/types";
 
 export const Contact = () => {
   const [contacts, setContacts] = useState<Contacts[]>([]);
-  const [newContact, setNewContact] = useState<Omit<Contacts, "id">>({
+  const [newContact, setNewContact] = useState<Omit<Contacts, "contactId">>({
     firstName: "",
     lastName: "",
     email: "",
@@ -98,7 +98,7 @@ export const Contact = () => {
         </thead>
         <tbody>
           {contacts.map((contact) => (
-            <tr key={contact.id}>
+            <tr key={contact.contactId}>
               <td>{contact.firstName}</td>
               <td>{contact.lastName}</td>
               <td>{contact.email}</td>

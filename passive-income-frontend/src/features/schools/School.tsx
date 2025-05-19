@@ -1,6 +1,6 @@
 import React from "react";
 import SchoolInstitutionForm from "./SchoolInstitutionForm";
-import { CreateSchoolWithInstitutionDto } from "../../../shared/types";
+import { CreateSchoolWithInstitutionDto } from "../../../../shared/types";
 
 const SchoolsPage: React.FC = () => {
   const handleSubmit = async (data: CreateSchoolWithInstitutionDto) => {
