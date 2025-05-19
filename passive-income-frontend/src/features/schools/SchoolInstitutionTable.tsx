@@ -39,7 +39,7 @@ const SchoolInstitutionTable: React.FC<SchoolInstitutionTableProps> = ({
   onPageChange,
   onRowsPerPageChange,
 }) => {
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_: unknown, newPage: number) => {
     onPageChange(newPage);
   };
 

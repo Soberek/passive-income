@@ -84,13 +84,27 @@ CREATE TABLE action_types (
     name TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE media_platforms (
-    media_platform_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE CHECK (name IN ('Facebook', 'Instagram', 'YouTube', 'TikTok', 'Twitter', 'LinkedIn', 'Snapchat', 'Pinterest')),
+
+# Materials
+CREATE TABLE materials (
+    material_id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Renamed from 'id_material'
+    name TEXT NOT NULL UNIQUE,
+    description TEXT
 );
+
+CREATE TABLE task_materials (
+  task_id INTEGER NOT NULL,
+  material_id INTEGER NOT NULL,
+  quantity INTEGER NOT NULL DEFAULT 1,
+  PRIMARY KEY (task_id, material_id),
+  FOREIGN KEY (task_id) REFERENCES tasks(task_id),
+  FOREIGN KEY (material_id) REFERENCES materials(material_id)
+);
+
 
 CREATE TABLE tasks (
     task_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    reference_number TEXT NOT NULL UNIQUE,
     task_number TEXT UNIQUE,
     institution_id INTEGER NOT NULL,
     program_id INTEGER NOT NULL,
