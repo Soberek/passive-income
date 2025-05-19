@@ -126,13 +126,15 @@ describe("Contact API", () => {
     expect(res.body).toHaveProperty("message", "Contact not found");
   });
 
+  //bulk
   it.only("should create default contacts", async () => {
-    contacts.forEach(async (contact) => {
-      const res = await request(app).post("/api/contact").send(contact);
+    const res = await request(app).post("/api/contact/bulk").send({ contacts });
 
-      expect(res.status).toBe(201);
-      expect(res.body).toHaveProperty("message", "Contact added successfully");
-    });
+    console.log("Response status:", res.status);
+    console.log("Response body:", res.body);
+
+    expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty("message", "Contacts added successfully");
   });
 });
 

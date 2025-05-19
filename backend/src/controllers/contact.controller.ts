@@ -127,7 +127,8 @@ class ContactController {
   };
 
   public bulkInsert = (req: Request, res: Response): void => {
-    const contacts = req.body.contacts;
+    const { contacts } = req.body;
+    console.log("Received contacts for bulk insert:", req.body);
 
     if (!Array.isArray(contacts) || contacts.length === 0) {
       res.status(400).json({ message: "Invalid contacts data" });
@@ -138,6 +139,7 @@ class ContactController {
       this.contactService.bulkInsert(contacts);
       res.status(201).json({ message: "Contacts added successfully" });
     } catch (error) {
+      console.error("Error in bulkInsert:", error);
       res.status(500).json({ message: "Error adding contacts", error: String(error) });
     }
   };
