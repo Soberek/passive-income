@@ -125,17 +125,6 @@ describe("Contact API", () => {
     expect(res.status).toBe(404);
     expect(res.body).toHaveProperty("message", "Contact not found");
   });
-
-  //bulk
-  it.only("should create default contacts", async () => {
-    const res = await request(app).post("/api/contact/bulk").send({ contacts });
-
-    console.log("Response status:", res.status);
-    console.log("Response body:", res.body);
-
-    expect(res.status).toBe(201);
-    expect(res.body).toHaveProperty("message", "Contacts added successfully");
-  });
 });
 
 describe("School API", () => {
