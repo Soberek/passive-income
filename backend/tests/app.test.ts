@@ -20,7 +20,7 @@ Cheatsheet:
     expect(res.body).toHaveProperty("id");
 */
 
-describe.only("Contact API", () => {
+describe("Contact API", () => {
   let dbService: sqliteDbService;
   let contactId: number;
 
@@ -124,6 +124,15 @@ describe.only("Contact API", () => {
     });
     expect(res.status).toBe(404);
     expect(res.body).toHaveProperty("message", "Contact not found");
+  });
+
+  it.only("should create default contacts", async () => {
+    contacts.forEach(async (contact) => {
+      const res = await request(app).post("/api/contact").send(contact);
+
+      expect(res.status).toBe(201);
+      expect(res.body).toHaveProperty("message", "Contact added successfully");
+    });
   });
 });
 
