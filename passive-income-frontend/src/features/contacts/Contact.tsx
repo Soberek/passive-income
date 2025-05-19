@@ -13,7 +13,18 @@ export const Contact = () => {
   const fetchContacts = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/contact");
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      // Check if the response is empty
+      console.log("1");
       const data = await response.json();
+
+      if (!data || data.length === 0) {
+        console.log("No contacts found");
+        return;
+      }
       setContacts(data);
     } catch (error) {
       console.error("Error fetching contacts:", error);
@@ -39,6 +50,7 @@ export const Contact = () => {
         },
         body: JSON.stringify(newContact),
       });
+
       if (!response.ok) {
         throw new Error("Failed to add contact");
       }
@@ -97,14 +109,15 @@ export const Contact = () => {
           </tr>
         </thead>
         <tbody>
-          {contacts.map((contact) => (
-            <tr key={contact.contactId}>
-              <td>{contact.firstName}</td>
-              <td>{contact.lastName}</td>
-              <td>{contact.email}</td>
-              <td>{contact.phone}</td>
-            </tr>
-          ))}
+          {contacts.length > 0 &&
+            contacts.map((contact) => (
+              <tr key={contact.contactId}>
+                <td>{contact.firstName}</td>
+                <td>{contact.lastName}</td>
+                <td>{contact.email}</td>
+                <td>{contact.phone}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
