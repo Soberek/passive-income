@@ -193,7 +193,8 @@ describe("School API", () => {
 
   it.only("should bulk insert programs", async () => {
     const res = await request(app).post("/api/program/bulk").send({ programs });
-    console.log(res.body);
+    console.log(res.body.message);
+    console.log(res);
     console.log(res.status);
 
     expect(res.status).toBe(201);
