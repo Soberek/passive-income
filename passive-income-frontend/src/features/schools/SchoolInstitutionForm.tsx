@@ -17,7 +17,7 @@ import {
 import Grid from "@mui/material/Grid";
 
 // Import your types (assuming they're in a separate file)
-import { CreateSchoolWithInstitutionDto } from "../../../shared/types";
+import { CreateSchoolWithInstitutionDto } from "../../../../shared/types";
 
 // Define a type for form submission
 type SubmitHandler = (data: CreateSchoolWithInstitutionDto) => Promise<void>;

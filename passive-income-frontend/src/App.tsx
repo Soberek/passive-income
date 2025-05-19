@@ -1,5 +1,4 @@
 import { Outlet } from "react-router";
-import "./App.css";
 import { NavLink } from "react-router";
 
 const routes = [
