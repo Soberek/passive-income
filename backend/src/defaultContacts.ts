@@ -4,14 +4,14 @@ export const contacts: Omit<Contact, "contactId">[] = [
   {
     firstName: "Agata",
     lastName: "Waliłko",
-    phone: "brak",
-    email: "brak",
+    phone: "",
+    email: "",
   },
   {
     firstName: "Agnieszka",
     lastName: "Miśko",
     phone: "660243847",
-    email: "brak",
+    email: "",
   },
   {
     firstName: "Anna",
@@ -29,7 +29,7 @@ export const contacts: Omit<Contact, "contactId">[] = [
     firstName: "Alicja",
     lastName: "Mielimiączka",
     phone: "509054073",
-    email: "brak",
+    email: "",
   },
   {
     firstName: "Alina",
@@ -41,7 +41,7 @@ export const contacts: Omit<Contact, "contactId">[] = [
     firstName: "Anna",
     lastName: "Azarkiewicz",
     phone: "600805282",
-    email: "brak",
+    email: "",
   },
   {
     firstName: "Anna",
@@ -52,7 +52,7 @@ export const contacts: Omit<Contact, "contactId">[] = [
   {
     firstName: "Anna",
     lastName: "Michalska",
-    phone: "brak",
+    phone: "",
     email: "anna.michalska@zpokarsko.pl",
   },
   {
@@ -71,7 +71,7 @@ export const contacts: Omit<Contact, "contactId">[] = [
     firstName: "Dorota",
     lastName: "Sytek",
     phone: "695744153",
-    email: "brak",
+    email: "",
   },
   {
     firstName: "Dariusz",
@@ -82,14 +82,14 @@ export const contacts: Omit<Contact, "contactId">[] = [
   {
     firstName: "Dominika Daniel",
     lastName: "Kosiorek",
-    phone: "brak",
+    phone: "",
     email: "dominikaboczek@wp.pl",
   },
   {
     firstName: "Dorota",
     lastName: "Deja",
-    phone: "brak",
-    email: "brak",
+    phone: "",
+    email: "",
   },
   {
     firstName: "Edyta",
@@ -107,13 +107,13 @@ export const contacts: Omit<Contact, "contactId">[] = [
     firstName: "Ewa",
     lastName: "Galicka",
     phone: "505110047",
-    email: "brak",
+    email: "",
   },
   {
     firstName: "Iwona",
     lastName: "Kucharska",
     phone: "508462919",
-    email: "brak",
+    email: "",
   },
   {
     firstName: "Iwona",
@@ -130,7 +130,7 @@ export const contacts: Omit<Contact, "contactId">[] = [
   {
     firstName: "Iwona",
     lastName: "Stasiak",
-    phone: "brak",
+    phone: "",
     email: "szkoły",
   },
   {
@@ -167,7 +167,7 @@ export const contacts: Omit<Contact, "contactId">[] = [
     firstName: "Julita",
     lastName: "Witkowska",
     phone: "510924070",
-    email: "brak",
+    email: "",
   },
   {
     firstName: "Justyna",
@@ -190,14 +190,14 @@ export const contacts: Omit<Contact, "contactId">[] = [
   {
     firstName: "Karolina",
     lastName: "Stoparek",
-    phone: "brak",
+    phone: "",
     email: "karolka448@wp.pl",
   },
   {
     firstName: "Karolina",
     lastName: "Tomiałojć",
     phone: "783860422",
-    email: "brak",
+    email: "",
   },
   {
     firstName: "Katarzyna",
@@ -214,7 +214,7 @@ export const contacts: Omit<Contact, "contactId">[] = [
   {
     firstName: "Magdalena",
     lastName: "Remian-Wieczorek",
-    phone: "brak",
+    phone: "",
     email: "magda.remian@gmail.com",
   },
   {
@@ -226,7 +226,7 @@ export const contacts: Omit<Contact, "contactId">[] = [
   {
     firstName: "Magdalena",
     lastName: "Moszkowska",
-    phone: "brak",
+    phone: "",
     email: "moszkowskam@o2.pl",
   },
   {
@@ -244,32 +244,32 @@ export const contacts: Omit<Contact, "contactId">[] = [
   {
     firstName: "Małgorzata",
     lastName: "Kuszyk",
-    phone: "brak",
+    phone: "",
     email: "malgorzatak@sp1smolnica.pl",
   },
   {
     firstName: "Małgorzata",
     lastName: "Rutkowska",
-    phone: "brak",
+    phone: "",
     email: "trutkowski171@wp.pl",
   },
   {
     firstName: "Marcin",
     lastName: "Churski",
-    phone: "brak",
-    email: "brak",
+    phone: "",
+    email: "",
   },
   {
     firstName: "Marika",
     lastName: "Horyń-Kowalik",
-    phone: "brak",
+    phone: "",
     email: "m.horyn-kowalik@zsnoblistow.pl",
   },
   {
     firstName: "Marta",
     lastName: "Kostowska",
     phone: "518513567",
-    email: "brak",
+    email: "",
   },
   {
     firstName: "Martyna",
@@ -280,13 +280,13 @@ export const contacts: Omit<Contact, "contactId">[] = [
   {
     firstName: "Monika",
     lastName: "Bijak",
-    phone: "brak",
+    phone: "",
     email: "monikabijak33@wp.pl",
   },
   {
     firstName: "Monika",
     lastName: "Franków-Śniadała",
-    phone: "brak",
+    phone: "",
     email: "frania921@gmail.com",
   },
   {
@@ -298,14 +298,14 @@ export const contacts: Omit<Contact, "contactId">[] = [
   {
     firstName: "Oliwia",
     lastName: "Kicińska-Sawicka",
-    phone: "brak",
-    email: "brak",
+    phone: "",
+    email: "",
   },
   {
     firstName: "Paulina",
     lastName: "Dwojewska",
-    phone: "brak",
-    email: "brak",
+    phone: "",
+    email: "",
   },
   {
     firstName: "Paweł",
@@ -322,31 +322,31 @@ export const contacts: Omit<Contact, "contactId">[] = [
   {
     firstName: "Sylwia",
     lastName: "Lewandowska",
-    phone: "brak",
+    phone: "",
     email: "s.lewandowska@zsnoblistow.pl",
   },
   {
     firstName: "Zofia",
     lastName: "Cynarska",
     phone: "509606869",
-    email: "brak",
+    email: "",
   },
   {
     firstName: "Iwona",
     lastName: "Kuchcińska",
-    phone: "brak",
-    email: "brak",
+    phone: "",
+    email: "",
   },
   {
     firstName: "Jolanta",
     lastName: "Szczepanowska",
-    phone: "brak",
+    phone: "",
     email: "szczepanowska@sp2mysliborz.pl",
   },
   {
     firstName: "Jerzy",
     lastName: "Warachowski",
-    phone: "brak",
-    email: "brak",
+    phone: "",
+    email: "",
   },
 ];
