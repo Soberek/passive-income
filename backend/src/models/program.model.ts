@@ -6,8 +6,8 @@ export class ProgramModel {
     if (!entity.name) {
       errors.push("Name is required");
     }
-    if (!entity.description) {
-      errors.push("Description is required");
+    if (!entity.referenceNumber) {
+      errors.push("Reference number is required");
     }
     if (!entity.programType) {
       errors.push("Program type is required");
