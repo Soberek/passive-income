@@ -60,16 +60,6 @@ export const Contact = () => {
     }
   };
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const handlePageChange = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   return (
     <div>
       <h1>Contact List</h1>
@@ -108,39 +98,12 @@ export const Contact = () => {
         <button type="submit">Add Contact</button>
       </form>
 
-      {/* <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody>
-          {contacts.length > 0 &&
-            contacts.map((contact) => (
-              <tr key={contact.contactId}>
-                <td>{contact.firstName}</td>
-                <td>{contact.lastName}</td>
-                <td>{contact.email}</td>
-                <td>{contact.phone}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table> */}
-
       <ContactsTable
         contacts={contacts}
-        onPageChange={(_, newPage) => {
-          setPage(newPage);
-        }}
-        onRowsPerPageChange={(event) => {
-          setRowsPerPage(parseInt(event.target.value, 10));
-          setPage(0);
-        }}
-        page={page}
-        rowsPerPage={rowsPerPage}
+        onPageChange={() => {}}
+        onRowsPerPageChange={() => {}}
+        page={0}
+        rowsPerPage={5}
         totalCount={contacts.length}
       />
     </div>
