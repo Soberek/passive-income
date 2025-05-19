@@ -33,10 +33,10 @@ Przykład wysłanego ządania
 CREATE TABLE institutions (
     institution_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    address TEXT,
-    postal_code TEXT,
-    municipality TEXT,
-    city TEXT,
+    address TEXT NOT NULL,
+    postal_code TEXT NOT NULL,
+    municipality TEXT NOT NULL,
+    city TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     email TEXT,
     phone TEXT
