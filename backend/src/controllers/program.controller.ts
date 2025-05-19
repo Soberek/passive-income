@@ -125,12 +125,12 @@ class ProgramController {
   bulkCreatePrograms = (req: Request, res: Response): void => {
     console.log("Bulk creating programs");
     try {
-      const programs = req.body as Array<Omit<Program, "programId">>;
+      const { programs } = req.body as { programs: Array<Omit<Program, "programId">> };
       if (!Array.isArray(programs) || programs.length === 0) {
         res.status(400).json({ message: "Invalid program data" });
         return;
       }
-      const createdPrograms = this.programService.bulkInsert(programs);
+      // const createdPrograms = this.programService.bulkInsert(programs);
 
       res.status(201).json({ message: "Programs created successfully" });
       return;
