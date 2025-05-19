@@ -67,19 +67,20 @@ const SchoolInstitutionTable: React.FC<SchoolInstitutionTableProps> = ({
 
         {/* Table Body */}
         <TableBody>
-          {data.map((institution) => (
-            <TableRow key={institution.institutionId.toString()}>
-              <TableCell>{institution.institutionId}</TableCell>
-              <TableCell>{institution.name}</TableCell>
-              <TableCell>{institution.address || "N/A"}</TableCell>
-              <TableCell>{institution.postalCode || "N/A"}</TableCell>
-              <TableCell>{institution.municipality || "N/A"}</TableCell>
-              <TableCell>{institution.city || "N/A"}</TableCell>
-              <TableCell>{institution.email || "N/A"}</TableCell>
-              <TableCell>{institution.phone || "N/A"}</TableCell>
-              <TableCell>{institution.createdAt ? institution.createdAt.toLocaleDateString() : "N/A"}</TableCell>
-            </TableRow>
-          ))}
+          {data.length &&
+            data.map((institution) => (
+              <TableRow key={institution.institutionId.toString()}>
+                <TableCell>{institution.institutionId}</TableCell>
+                <TableCell>{institution.name}</TableCell>
+                <TableCell>{institution.address || "N/A"}</TableCell>
+                <TableCell>{institution.postalCode || "N/A"}</TableCell>
+                <TableCell>{institution.municipality || "N/A"}</TableCell>
+                <TableCell>{institution.city || "N/A"}</TableCell>
+                <TableCell>{institution.email || "N/A"}</TableCell>
+                <TableCell>{institution.phone || "N/A"}</TableCell>
+                <TableCell>{institution.createdAt && "N/A"}</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
 

@@ -1,8 +1,13 @@
 import React from "react";
 import SchoolInstitutionForm from "./SchoolInstitutionForm";
 import { Institution, School } from "../../../../shared/types";
+import SchoolInstitutionTable from "./SchoolInstitutionTable";
+import { useInstitutions } from "../../hooks/useInstitutions";
 
 const SchoolsPage: React.FC = () => {
+  // Fetch data from the API
+  const { institutions, loading } = useInstitutions();
+
   const handleSubmit = async (
     data: Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">
   ) => {
@@ -37,6 +42,20 @@ const SchoolsPage: React.FC = () => {
   return (
     <div>
       <SchoolInstitutionForm onSubmit={handleSubmit} />
+      {loading && <p>Loading...</p>}
+      {!loading && institutions.length === 0 && <p>No institutions found.</p>}
+      {!loading && institutions.length > 0 && <h2>Institutions</h2>}
+
+      {!loading && institutions.length > 0 && (
+        <SchoolInstitutionTable
+          data={institutions}
+          rowsPerPage={5}
+          page={0}
+          totalCount={institutions.length}
+          onPageChange={() => {}}
+          onRowsPerPageChange={() => {}}
+        />
+      )}
     </div>
   );
 };

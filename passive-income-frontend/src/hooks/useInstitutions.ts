@@ -17,6 +17,8 @@ export const useInstitutions = () => {
         const data = await response.json();
 
         setInstitutions(data);
+
+        console.log("Institutions data:", data);
       } catch (error) {
         console.error("Error fetching institutions:", error);
       } finally {
