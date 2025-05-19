@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Contact as Contacts } from "../../../../shared/types";
+import ContactsTable from "./ContactTable";
 
 export const Contact = () => {
   const [contacts, setContacts] = useState<Contacts[]>([]);
@@ -59,6 +60,16 @@ export const Contact = () => {
     }
   };
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const handlePageChange = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <div>
       <h1>Contact List</h1>
@@ -97,7 +108,7 @@ export const Contact = () => {
         <button type="submit">Add Contact</button>
       </form>
 
-      <table>
+      {/* <table>
         <thead>
           <tr>
             <th>First Name</th>
@@ -117,7 +128,21 @@ export const Contact = () => {
               </tr>
             ))}
         </tbody>
-      </table>
+      </table> */}
+
+      <ContactsTable
+        contacts={contacts}
+        onPageChange={(_, newPage) => {
+          setPage(newPage);
+        }}
+        onRowsPerPageChange={(event) => {
+          setRowsPerPage(parseInt(event.target.value, 10));
+          setPage(0);
+        }}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        totalCount={contacts.length}
+      />
     </div>
   );
 };
