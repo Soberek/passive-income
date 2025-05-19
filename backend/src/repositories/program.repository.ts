@@ -92,7 +92,7 @@ export class ProgramRepository implements ProgramRepositoryI {
       transaction();
       return true;
     } catch (error) {
-      console.error("Error during bulk insert transaction", error);
+      console.error("Error during bulk insert transaction", String(error));
       return false;
     }
   };

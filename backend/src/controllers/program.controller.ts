@@ -127,8 +127,7 @@ class ProgramController {
       res.status(201).json({ message: "Programs created successfully" });
       return;
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error bulk creating programs", error });
+      res.status(500).json({ message: "Error bulk creating programs", error: String(error) });
       return;
     }
   };
