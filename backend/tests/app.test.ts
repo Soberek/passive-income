@@ -190,14 +190,4 @@ describe("School API", () => {
     expect(res.status).toBe(404);
     expect(res.body).toHaveProperty("message", "School not found");
   });
-
-  it.only("should bulk insert programs", async () => {
-    const res = await request(app).post("/api/program/bulk").send({ programs });
-    console.log(res.body.message);
-    console.log(res);
-    console.log(res.status);
-
-    expect(res.status).toBe(201);
-    expect(res.body).toHaveProperty("message", "Programs created successfully");
-  });
 });

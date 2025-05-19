@@ -7,6 +7,7 @@ import izrzRouter from "./routes/izrz.router";
 import multer from "multer";
 import helmet from "helmet";
 import { institutionRouter } from "./routes/institution.router";
+import programRouter from "./routes/program.router";
 
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
@@ -99,6 +100,8 @@ export default class ExpressApp {
     this.app.use("/api", this.multer.single("templateFile"), izrzRouter);
 
     this.app.use("/api", institutionRouter);
+
+    this.app.use("/api", programRouter);
   }
 
   // Initialize error handling
