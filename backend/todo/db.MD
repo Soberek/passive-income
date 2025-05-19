@@ -2,6 +2,11 @@
 -- It includes tables for users, roles, permissions, institutions, and schools.
 -- The script uses SQLite syntax and includes foreign key constraints for data integrity.
 
+- Czy inne instytucje mi będą potrzebne tak bardzo prócz nazwy i adresu, okazjonalnie przy prelekcjach, które i tak są rzadko
+- Koniec koncow to aplikacja do
+- Jeżeli będę mial programy z opisami + szkoły (instytucje) to mogę szybciej tworzyć IZRZ
+- Jeżeli bede mial kontakty + programy + instytucje powiązane to mogę wyciągnąć mail-e koordynatorów i szkol jednocześnie
+
 ```json
 Przykład wysłanego ządania
 {
