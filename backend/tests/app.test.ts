@@ -3,6 +3,7 @@ import ExpressApp from "../src/app";
 import { describe, it, expect, beforeEach, beforeAll } from "@jest/globals";
 import sqliteDbService from "../src/services/sqliteDbService";
 import { contacts } from "../src/defaultContacts";
+import { programs } from "../src/defaultPrograms";
 const expressAppInstance = new ExpressApp();
 const app = expressAppInstance.app;
 expressAppInstance.initMiddlewares();
@@ -188,5 +189,11 @@ describe("School API", () => {
     const res = await request(app).get("/api/school/99999");
     expect(res.status).toBe(404);
     expect(res.body).toHaveProperty("message", "School not found");
+  });
+
+  it.only("should bulk insert programs", async () => {
+    const res = await request(app).post("/api/program/bulk").send(programs);
+    expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty("message", "Programs created successfully");
   });
 });

@@ -124,7 +124,7 @@ class ProgramController {
       }
       const createdPrograms = this.programService.bulkInsert(programs);
 
-      res.status(201).json({ message: "Programs created successfully", createdPrograms });
+      res.status(201).json({ message: "Programs created successfully" });
       return;
     } catch (error) {
       console.log(error);
