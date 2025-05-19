@@ -113,7 +113,24 @@ class ProgramController {
     }
   };
 
-  bulkCreatePrograms = (req: Request, res: Response): void => {};
+  bulkCreatePrograms = (req: Request, res: Response): void => {
+    console.log("Bulk creating programs");
+    try {
+      const programs = req.body;
+      if (!Array.isArray(programs) || programs.length === 0) {
+        res.status(400).json({ message: "Invalid program data" });
+        return;
+      }
+      const createdPrograms = this.programService.bulkInsert(programs);
+
+      res.status(201).json({ message: "Programs created successfully", createdPrograms });
+      return;
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error bulk creating programs", error });
+      return;
+    }
+  };
 }
 
 export default ProgramController;
