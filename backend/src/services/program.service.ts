@@ -55,6 +55,18 @@ export class ProgramService implements ServiceI<Program, "programId"> {
 
     return true;
   };
+
+  bulkInsert = (programs: Omit<Program, "programId">[]): boolean => {
+    const validationErrors = programs.map((program) => ProgramModel.validate(program)).flat();
+    if (validationErrors.length > 0) {
+      throw new Error("Validation errors: " + validationErrors.join(", "));
+    }
+    const result = this.programRepository.bulkInsert(programs);
+    if (!result) {
+      throw new Error("Error bulk inserting programs");
+    }
+    return true;
+  };
 }
 
 export default ProgramService;

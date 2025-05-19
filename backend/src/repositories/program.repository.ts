@@ -74,7 +74,9 @@ export class ProgramRepository implements ProgramRepositoryI {
   };
 
   bulkInsert = (programs: Omit<Program, "programId">[]): boolean => {
-    const stmt = this.dbService.prepare("INSERT INTO programs (name, description, program_type) VALUES (?, ?, ?)");
+    const stmt = this.dbService.prepare(
+      "INSERT INTO programs (name, description, program_type, reference_number) VALUES (?, ?, ?, ?)"
+    );
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
@@ -83,7 +85,7 @@ export class ProgramRepository implements ProgramRepositoryI {
     // Use a transaction for bulk insert
     const transaction = this.dbService.transaction(() => {
       for (const program of programs) {
-        stmt.run(program.name, program.description, program.programType);
+        stmt.run(program.name, program.description, program.programType, program.referenceNumber);
       }
     });
     try {
