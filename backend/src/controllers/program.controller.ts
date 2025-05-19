@@ -1,3 +1,4 @@
+import { Program } from "../../../shared/types";
 import ProgramService from "../services/program.service";
 import { Request, Response } from "express";
 
@@ -116,7 +117,7 @@ class ProgramController {
   bulkCreatePrograms = (req: Request, res: Response): void => {
     console.log("Bulk creating programs");
     try {
-      const programs = req.body;
+      const programs = req.body as Array<Omit<Program, "programId">>;
       if (!Array.isArray(programs) || programs.length === 0) {
         res.status(400).json({ message: "Invalid program data" });
         return;
