@@ -24,13 +24,6 @@ describe.only("Contact API", () => {
   let dbService: sqliteDbService;
   let contactId: number;
 
-  beforeAll(() => {
-    // Reset the database instance before each test
-    sqliteDbService.resetInstance();
-    // Initialize the database service with test mode
-    dbService = sqliteDbService.getInstance(true);
-  });
-
   it("should create a new contact", async () => {
     const newContact = {
       firstName: "John",
