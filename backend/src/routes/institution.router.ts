@@ -9,10 +9,10 @@ const institutionRepository = new InstitutionRepository(dbService);
 const institutionsService = new InstitutionsService(institutionRepository);
 const institutionController = new InstitutionController(institutionsService);
 
-router.get("/institution", institutionController.getAllInstitutions);
-router.get("/institution/:id", institutionController.getInstitutionById);
-router.post("/institution", institutionController.createInstitution);
-router.put("/institution/:id", institutionController.updateInstitution);
-router.delete("/institution/:id", institutionController.deleteInstitution);
+router.get("/institutions", institutionController.getAllInstitutions);
+router.get("/institutions/:id", institutionController.getInstitutionById);
+router.post("/institutions", institutionController.createInstitution);
+router.put("/institutions/:id", institutionController.updateInstitution);
+router.delete("/institutions/:id", institutionController.deleteInstitution);
 
 export { router as institutionRouter };
