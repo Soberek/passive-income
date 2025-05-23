@@ -110,6 +110,7 @@ export class IzrzRepository {
       numer_izrz: reportNumber,
       nazwa_programu: programName,
       typ_zadania: taskType,
+      miasto: address.split(" ")[address.split(" ").length - 1],
       adres: address,
       liczba_osob: viewerCount,
       liczba_osob_opis: viewerCountDescription,
@@ -138,7 +139,9 @@ export class IzrzRepository {
 
     const buffer = Buffer.from(arrayBuffer);
 
-    let fileName = `${caseNumber} - ${reportNumber} - ${date} - ${taskType} - ${programName} - ${address}`;
+    let fileName = `${reportNumber} - ${caseNumber} - ${date} - ${taskType} - ${programName} - ${
+      address.split(",")[0]
+    } - ${address.split(" ")[address.split(" ").length - 1]}`;
 
     fileName = sanitizeFileName(fileName);
 
