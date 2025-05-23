@@ -18,7 +18,8 @@ export class MediaPlatformController {
     try {
       const mediaPlatform = this.mediaPlatformService.getById(Number(id));
       if (!mediaPlatform) {
-        return res.status(404).json({ error: "Media platform not found" });
+        res.status(404).json({ error: "Media platform not found" });
+        return;
       }
       res.status(200).json(mediaPlatform);
     } catch (error) {
@@ -41,7 +42,8 @@ export class MediaPlatformController {
     try {
       const updated = this.mediaPlatformService.update(Number(id), mediaPlatformData);
       if (!updated) {
-        return res.status(404).json({ error: "Media platform not found" });
+        res.status(404).json({ error: "Media platform not found" });
+        return;
       }
       res.status(200).json({ message: "Media platform updated successfully" });
     } catch (error) {
@@ -53,7 +55,8 @@ export class MediaPlatformController {
     try {
       const deleted = this.mediaPlatformService.delete(Number(id));
       if (!deleted) {
-        return res.status(404).json({ error: "Media platform not found" });
+        res.status(404).json({ error: "Media platform not found" });
+        return;
       }
       res.status(200).json({ message: "Media platform deleted successfully" });
     } catch (error) {
