@@ -10,7 +10,7 @@ export const useInstitutions = () => {
     const fetchInstitutions = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:3000/api/institution");
+        const response = await fetch("http://localhost:3000/api/institutions");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
