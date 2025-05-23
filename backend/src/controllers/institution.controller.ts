@@ -44,10 +44,10 @@ export class InstitutionController {
     }
   };
 
-  updateInstitution = async (req: Request, res: Response) => {
+  updateInstitution = (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-      const updatedInstitution = await this.institutionService.update(Number(id), req.body);
+      const updatedInstitution = this.institutionService.update(Number(id), req.body);
       if (!updatedInstitution) {
         res.status(404).json({ error: "Institution not found" });
         return;
@@ -60,7 +60,7 @@ export class InstitutionController {
     }
   };
 
-  deleteInstitution = async (req: Request, res: Response) => {
+  deleteInstitution = (req: Request, res: Response) => {
     const { id } = req.params;
     try {
       this.institutionService.delete(Number(id));
