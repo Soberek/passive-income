@@ -55,7 +55,7 @@ export default function MenuAppBar() {
             🍔
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Photos
+            Czy się stoi, czy się leży, to wypłata się należy
           </Typography>
           {auth && (
             <div>
