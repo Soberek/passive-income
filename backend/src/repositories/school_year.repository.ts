@@ -21,7 +21,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
   };
   getAll = (): SchoolYear[] => {
     const stmt = this.db.prepare(`
-            SELECT school_year_id as schoolYearId, year FROM school_year
+            SELECT school_year_id as schoolYearId, year FROM school_years
         `);
     const result = (stmt.all() as SchoolYear[]) || [];
     if (!result || result.length === 0) {
@@ -32,7 +32,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
   };
   getById: (id: number) => SchoolYear | null = (id) => {
     const stmt = this.db.prepare(`
-            SELECT school_year_id as schoolYearId, year FROM school_year WHERE school_year_id = ?
+            SELECT school_year_id as schoolYearId, year FROM school_years WHERE school_year_id = ?
         `);
     const result = stmt.get(id) as SchoolYear | undefined;
     if (!result) {
@@ -43,7 +43,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
   };
   delete = (id: number): boolean => {
     const stmt = this.db.prepare(`
-            DELETE FROM school_year WHERE school_year_id = ?
+            DELETE FROM school_years WHERE school_year_id = ?
         `);
     const result = stmt.run(id);
     return result.changes > 0;
@@ -56,7 +56,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
       values.push(entity.year);
     }
     const stmt = this.db.prepare(`
-            UPDATE school_year
+            UPDATE school_years
             SET ${fieldsToUpdate.join(", ")}
             WHERE school_year_id = ?
         `);
