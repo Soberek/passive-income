@@ -1,0 +1,70 @@
+import { RepositoryI } from "../types/index.type";
+import sqliteDbService from "../services/sqliteDbService";
+import { SchoolYear } from "../../../shared/types";
+
+export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYearId"> {
+  private db: sqliteDbService;
+  constructor(db: sqliteDbService) {
+    this.db = db;
+  }
+  add = (entity: Partial<SchoolYear>): number | BigInt | null => {
+    const { year } = entity;
+    const stmt = this.db.prepare(`
+            INSERT INTO school_year (year)
+            VALUES (?)
+        `);
+    const result = stmt.run(year);
+    if (result.changes > 0) {
+      return result.lastInsertRowid;
+    }
+    return null;
+  };
+  getAll = (): SchoolYear[] => {
+    const stmt = this.db.prepare(`
+            SELECT school_year_id as schoolYearId, year FROM school_year
+        `);
+    const result = (stmt.all() as SchoolYear[]) || [];
+    if (!result || result.length === 0) {
+      console.error("Failed to execute query or no results found");
+      return [];
+    }
+    return result;
+  };
+  getById: (id: number | BigInt) => SchoolYear | null = (id) => {
+    const stmt = this.db.prepare(`
+            SELECT school_year_id as schoolYearId, year FROM school_year WHERE school_year_id = ?
+        `);
+    const result = stmt.get(id) as SchoolYear | undefined;
+    if (!result) {
+      console.error(`Failed to execute query or no results found for id: ${id}`);
+      return null;
+    }
+    return result;
+  };
+  delete = (id: number | BigInt): boolean => {
+    const stmt = this.db.prepare(`
+            DELETE FROM school_year WHERE school_year_id = ?
+        `);
+    const result = stmt.run(id);
+    return result.changes > 0;
+  };
+  update = (id: number | BigInt, entity: Partial<SchoolYear>): boolean => {
+    const values = [];
+    const fieldsToUpdate = [];
+    if (entity.year) {
+      fieldsToUpdate.push("year = ?");
+      values.push(entity.year);
+    }
+    const stmt = this.db.prepare(`
+            UPDATE school_year
+            SET ${fieldsToUpdate.join(", ")}
+            WHERE school_year_id = ?
+        `);
+    values.push(id);
+    const result = stmt.run(...values);
+    if (result.changes > 0) {
+      return true;
+    }
+    return false;
+  };
+}
