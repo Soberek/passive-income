@@ -13,7 +13,7 @@ export class ProgramRepository implements ProgramRepositoryI {
 
   getAll = (): Program[] => {
     const stmt = this.dbService.prepare(
-      "SELECT program_id as programId, name, description, program_type as programType FROM programs"
+      "SELECT program_id as programId, name, description, program_type as programType, reference_number as referenceNumber FROM programs"
     );
     if (!stmt) {
       console.error("Error preparing SQL statement");
