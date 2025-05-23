@@ -11,12 +11,12 @@ const contactRepository = new ContactRepository(dbService);
 const contactService = new ContactService(contactRepository);
 const contactController = new ContactController(contactService);
 
-contactRouter.get("/contact", contactController.getContacts);
-contactRouter.post("/contact", contactController.addContact);
-contactRouter.get("/contact/:id", contactController.getContactById);
-contactRouter.put("/contact/:id", contactController.updateContact);
-contactRouter.delete("/contact/:id", contactController.deleteContact);
-contactRouter.post("/contact/bulk", contactController.bulkInsert);
+contactRouter.get("/contacts", contactController.getContacts);
+contactRouter.post("/contacts", contactController.addContact);
+contactRouter.get("/contacts/:id", contactController.getContactById);
+contactRouter.put("/contacts/:id", contactController.updateContact);
+contactRouter.delete("/contacts/:id", contactController.deleteContact);
+contactRouter.post("/contacts/bulk", contactController.bulkInsert);
 
 // contactRouter.post("/contact/create", contactController.createContactTable);
 
