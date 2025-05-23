@@ -35,16 +35,16 @@ const ContactsTable = ({
         <TableHead>
           <TableRow>
             <TableCell>
-              <TableSortLabel>First Name</TableSortLabel>
+              <TableSortLabel>Imię</TableSortLabel>
             </TableCell>
             <TableCell>
-              <TableSortLabel>Last Name</TableSortLabel>
+              <TableSortLabel>Nazwisko</TableSortLabel>
             </TableCell>
             <TableCell>
               <TableSortLabel>Email</TableSortLabel>
             </TableCell>
             <TableCell>
-              <TableSortLabel>Phone</TableSortLabel>
+              <TableSortLabel>Telefon</TableSortLabel>
             </TableCell>
           </TableRow>
         </TableHead>

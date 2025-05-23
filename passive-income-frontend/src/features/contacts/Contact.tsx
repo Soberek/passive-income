@@ -13,7 +13,7 @@ export const Contact = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/contact");
+      const response = await fetch("http://localhost:3000/api/contacts");
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -61,29 +61,29 @@ export const Contact = () => {
   };
 
   return (
-    <div>
-      <h1>Contact List</h1>
+    <div style={{ margin: "20px" }}>
+      <h3>Lista kontaktów</h3>
 
       <form onSubmit={handleSubmit}>
         <label>
-          First Name:
+          Imię:
           <input
             type="text"
             name="firstName"
             value={newContact.firstName}
             onChange={handleInputChange}
-            placeholder="First Name"
+            placeholder="Imię"
           />
         </label>
 
         <label>
-          Last Name:
+          Nazwisko:
           <input
             type="text"
             name="lastName"
             value={newContact.lastName}
             onChange={handleInputChange}
-            placeholder="Last Name"
+            placeholder="Nazwisko"
           />
         </label>
         <label>
@@ -91,11 +91,11 @@ export const Contact = () => {
           <input type="email" name="email" value={newContact.email} onChange={handleInputChange} placeholder="Email" />
         </label>
         <label>
-          Phone:
-          <input type="text" name="phone" value={newContact.phone} onChange={handleInputChange} placeholder="Phone" />
+          Telefon:
+          <input type="text" name="phone" value={newContact.phone} onChange={handleInputChange} placeholder="Telefon" />
         </label>
 
-        <button type="submit">Add Contact</button>
+        <button type="submit">Dodaj kontakt</button>
       </form>
 
       <ContactsTable
