@@ -54,7 +54,7 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
       console.error("Error executing SQL statement");
       return -1;
     }
-    return info.lastInsertRowid;
+    return Number(info.lastInsertRowid);
   };
 
   delete = (id: School["schoolId"]) => {
