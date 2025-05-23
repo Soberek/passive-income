@@ -11,10 +11,10 @@ const schoolYearRepository = new SchoolYearRepository(dbService);
 const schoolYearService = new SchoolYearService(schoolYearRepository);
 const schoolYearController = new SchoolYearController(schoolYearService);
 
-schoolYearRouter.get("/schoolYears", schoolYearController.getAllSchoolYears);
-schoolYearRouter.get("/schoolYears/:id", schoolYearController.getSchoolYearById);
-schoolYearRouter.post("/schoolYears", schoolYearController.createSchoolYear);
-schoolYearRouter.put("/schoolYears/:id", schoolYearController.updateSchoolYear);
-schoolYearRouter.delete("/schoolYears/:id", schoolYearController.deleteSchoolYear);
+schoolYearRouter.get("/school-years", schoolYearController.getAllSchoolYears);
+schoolYearRouter.get("/school-years/:id", schoolYearController.getSchoolYearById);
+schoolYearRouter.post("/school-years", schoolYearController.createSchoolYear);
+schoolYearRouter.put("/school-years/:id", schoolYearController.updateSchoolYear);
+schoolYearRouter.delete("/school-years/:id", schoolYearController.deleteSchoolYear);
 
 export { schoolYearRouter };
