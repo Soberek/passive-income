@@ -79,7 +79,7 @@ export class InstitutionRepository implements InstitutionRepositoryI {
     const result = stmt.run(entity);
     if (result.changes > 0) {
       console.log("Institution added successfully");
-      return result.lastInsertRowid; // Return the ID of the newly inserted row
+      return Number(result.lastInsertRowid); // Return the ID of the newly inserted row
     }
     console.error("Error adding institution");
     return null; // Return null to indicate failure
