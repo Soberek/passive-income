@@ -13,12 +13,12 @@ const schoolService = new SchoolService(schoolRepository, institutionRepository)
 const schoolController = new SchoolController(schoolService);
 
 // Implementing the updateSchool route
-schoolRouter.post("/school", schoolController.createSchool); // Route: /api/school - POST - Create a new school
-schoolRouter.get("/school", schoolController.getAllSchools); // Route: /api/school - GET - Get all schools
-schoolRouter.delete("/school/:id", schoolController.deleteSchool); // Route: /api/school/:id - DELETE - Delete a school by ID
-schoolRouter.get("/school/:id", schoolController.getSchoolById); // Route: /api/school/:id - GET - Get a school by ID
-schoolRouter.patch("/school/:id", schoolController.updateSchool); // Route: /api/school/:id - PATCH - Update a school by ID
+schoolRouter.post("/schools", schoolController.createSchool); // Route: /api/schools - POST - Create a new school
+schoolRouter.get("/schools", schoolController.getAllSchools); // Route: /api/schools - GET - Get all schools
+schoolRouter.delete("/schools/:id", schoolController.deleteSchool); // Route: /api/schools/:id - DELETE - Delete a school by ID
+schoolRouter.get("/schools/:id", schoolController.getSchoolById); // Route: /api/schools/:id - GET - Get a school by ID
+schoolRouter.patch("/schools/:id", schoolController.updateSchool); // Route: /api/schools/:id - PATCH - Update a school by ID
 
-schoolRouter.get("/school/institution/:institutionId", schoolController.getSchoolByInstitutionId); // Route: /api/school/institution/:institutionId - GET - Get a school by institution ID
+schoolRouter.get("/schools/institution/:institutionId", schoolController.getSchoolByInstitutionId); // Route: /api/schools/institution/:institutionId - GET - Get a school by institution ID
 
 export default schoolRouter;
