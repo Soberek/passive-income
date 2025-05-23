@@ -101,6 +101,8 @@ export class IzrzRepository {
     const doc = new docxtemplater(zip);
 
     const date = new Date(dateInput).toISOString().split("T")[0];
+    // change date format dd.mm.yyyy
+    const formattedDate = date.split("-").reverse().join(".");
 
     console.log(date);
     doc.setData({
@@ -113,7 +115,7 @@ export class IzrzRepository {
       liczba_osob_opis: viewerCountDescription,
       opis_zadania: taskDescription,
       dodatkowe_informacje: additionalInfo,
-      data: date,
+      data: formattedDate,
     });
 
     // This is the line that renders the document

@@ -227,6 +227,7 @@ const IzrzForm = () => {
                 value={formData.viewerCountDescription}
                 onChange={handleChange}
                 required
+                multiline
                 fullWidth
               />
             </Grid>
