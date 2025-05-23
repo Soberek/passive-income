@@ -10,11 +10,11 @@ const programService = new ProgramService(programRepository);
 const programController = new ProgramController(programService);
 
 // Implementing the updateProgram route
-programRouter.post("/program", programController.createProgram); // Route: /api/program - POST - Create a new program
-programRouter.get("/program", programController.getAllPrograms); // Route: /api/program - GET - Get all programs
-programRouter.delete("/program/:id", programController.deleteProgram); // Route: /api/program/:id - DELETE - Delete a program by ID
-programRouter.get("/program/:id", programController.getProgramById); // Route: /api/program/:id - GET - Get a program by ID
-programRouter.put("/program/:id", programController.updateProgram); // Route: /api/program/:id - PUT - Update a program by ID
-programRouter.post("/program/bulk", programController.bulkCreatePrograms); // Route: /api/program/bulk - POST - Create multiple programs
+programRouter.post("/programs", programController.createProgram); // Route: /api/programs - POST - Create a new program
+programRouter.get("/programs", programController.getAllPrograms); // Route: /api/programs - GET - Get all programs
+programRouter.delete("/programs/:id", programController.deleteProgram); // Route: /api/programs/:id - DELETE - Delete a program by ID
+programRouter.get("/programs/:id", programController.getProgramById); // Route: /api/programs/:id - GET - Get a program by ID
+programRouter.put("/programs/:id", programController.updateProgram); // Route: /api/programs/:id - PUT - Update a program by ID
+programRouter.post("/programs/bulk", programController.bulkCreatePrograms); // Route: /api/programs/bulk - POST - Create multiple programs
 
 export default programRouter;
