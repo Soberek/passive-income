@@ -34,3 +34,13 @@ export interface Program {
   programType: "programowy" | "nieprogramowy";
   referenceNumber: string;
 }
+
+export interface MediaPlatform {
+  mediaPlatformId: number | BigInt;
+  name: string;
+}
+
+export interface ActionType {
+  actionTypeId: number | BigInt;
+  name: string;
+}
