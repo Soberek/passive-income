@@ -3,6 +3,13 @@ import { School } from "../../../shared/types";
 import { SchoolRepository } from "../repositories/school.repository";
 import { InstitutionRepository } from "../repositories/institution.repository";
 import sqliteDbService from "./sqliteDbService";
+import { z } from "zod";
+
+const schoolSchema = z.object({
+  schoolId: z.number().min(1).optional(),
+  institutionId: z.number().min(1).optional(),
+  director: z.string().min(2).max(100),
+});
 
 class SchoolService {
   constructor(private schoolRepository: SchoolRepository, private institutionRepository: InstitutionRepository) {}
@@ -17,6 +24,10 @@ class SchoolService {
   };
 
   getSchoolById = (id: number) => {
+    const validation = z.number().min(1).safeParse(id);
+    if (!validation.success) {
+      throw new Error("Invalid school ID " + JSON.stringify(validation.error.issues));
+    }
     const school = this.schoolRepository.getById(id);
 
     return school || null;
@@ -37,6 +48,8 @@ class SchoolService {
       email: schoolInstitutionData.email,
       municipality: schoolInstitutionData.municipality,
     };
+
+    // Validate the institution data
 
     // Check if the required fields are provided
     if (!institution.name || !institution.address || !institution.postalCode || !institution.city) {
