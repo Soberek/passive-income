@@ -1,8 +1,16 @@
 import { Program } from "../../../shared/types";
 import { ProgramModel } from "../models/program.model";
 import { ProgramRepository } from "../repositories/program.repository";
-
 import { ServiceI } from "../types/index.type";
+import { z } from "zod";
+
+const programSchema = z.object({
+  programId: z.number().min(1).optional(),
+  name: z.string().min(2).max(100),
+  description: z.string().optional(),
+  mediaPlatformId: z.number().min(1),
+  actionTypeId: z.number().min(1),
+});
 export class ProgramService implements ServiceI<Program, "programId"> {
   constructor(private programRepository: ProgramRepository) {}
 
@@ -15,7 +23,12 @@ export class ProgramService implements ServiceI<Program, "programId"> {
   };
 
   getById = (id: Program["programId"]): Program | null => {
+    const validation = z.number().min(1).safeParse(id);
+    if (!validation.success) {
+      throw new Error("Invalid program ID " + JSON.stringify(validation.error.issues));
+    }
     const program = this.programRepository.getById(id);
+
     if (!program) {
       throw new Error("Program not found or invalid ID");
     }
@@ -23,11 +36,12 @@ export class ProgramService implements ServiceI<Program, "programId"> {
   };
 
   add = (entity: Omit<Program, "programId">): number => {
-    const validationErrors = ProgramModel.validate(entity);
-
-    if (validationErrors.length > 0) {
-      throw new Error("Validation errors: " + validationErrors.join(", "));
+    const validation = programSchema.safeParse(entity);
+    if (!validation.success) {
+      const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+      throw new Error("Invalid data: " + errors.join(", "));
     }
+
     const programId = this.programRepository.add(entity);
     if (programId === -1) {
       throw new Error("Error adding program");
@@ -44,9 +58,10 @@ export class ProgramService implements ServiceI<Program, "programId"> {
   };
 
   update = (id: Program["programId"], entity: Partial<Program>): boolean => {
-    const validationErrors = ProgramModel.validate(entity);
-    if (validationErrors.length > 0) {
-      throw new Error("Validation errors: " + validationErrors.join(", "));
+    const validation = programSchema.safeParse(entity);
+    if (!validation.success) {
+      const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+      throw new Error("Invalid data: " + errors.join(", "));
     }
     const result = this.programRepository.update(id, entity);
     if (!result) {
@@ -57,9 +72,10 @@ export class ProgramService implements ServiceI<Program, "programId"> {
   };
 
   bulkInsert = (programs: Omit<Program, "programId">[]): boolean => {
-    const validationErrors = programs.map((program) => ProgramModel.validate(program)).flat();
-    if (validationErrors.length > 0) {
-      throw new Error("Validation errors: " + validationErrors.join(", "));
+    const validation = z.array(programSchema).safeParse(programs);
+    if (!validation.success) {
+      const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+      throw new Error("Invalid data: " + errors.join(", "));
     }
     const result = this.programRepository.bulkInsert(programs);
     if (!result) {
