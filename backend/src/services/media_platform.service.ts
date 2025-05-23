@@ -7,7 +7,7 @@ const mediaPlatformSchema = z.object({
   mediaPlatformId: z.number().min(1).optional(),
   name: z.string().min(2).max(100),
 });
-class MediaPlatformService implements ServiceI<MediaPlatform, "mediaPlatformId"> {
+export class MediaPlatformService implements ServiceI<MediaPlatform, "mediaPlatformId"> {
   private mediaPlatformRepository: MediaPlatformRepository;
 
   constructor(mediaPlatformRepository: MediaPlatformRepository) {
