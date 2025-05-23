@@ -1,14 +1,26 @@
 import { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { Contact as Contacts } from "../../../../shared/types";
 import ContactsTable from "./ContactTable";
+import { Box, Button, TextField, Typography, Paper, Stack } from "@mui/material";
+
+type ContactFormFields = Omit<Contacts, "contactId">;
 
 export const Contact = () => {
   const [contacts, setContacts] = useState<Contacts[]>([]);
-  const [newContact, setNewContact] = useState<Omit<Contacts, "contactId">>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<ContactFormFields>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+    },
   });
 
   const fetchContacts = async () => {
@@ -20,11 +32,7 @@ export const Contact = () => {
       }
 
       const data = await response.json();
-      if (!data || data.length === 0) {
-        console.log("No contacts found");
-        return;
-      }
-      setContacts(data.contacts);
+      setContacts(data.contacts || []);
     } catch (error) {
       console.error("Error fetching contacts:", error);
     }
@@ -34,26 +42,20 @@ export const Contact = () => {
     fetchContacts();
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewContact({ ...newContact, [name]: value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: ContactFormFields) => {
     try {
       const response = await fetch("http://localhost:3000/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newContact),
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) {
         throw new Error("Failed to add contact");
       }
-      setNewContact({ firstName: "", lastName: "", email: "", phone: "" });
+      reset();
       fetchContacts();
     } catch (error) {
       console.error("Error adding contact:", error);
@@ -61,42 +63,90 @@ export const Contact = () => {
   };
 
   return (
-    <div style={{ margin: "20px" }}>
-      <h3>Lista kontaktów</h3>
+    <Box sx={{ marginY: 2, marginX: 2 }}>
+      <Typography variant="h5" gutterBottom>
+        ☎️ Lista kontaktów
+      </Typography>
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Imię:
-          <input
-            type="text"
-            name="firstName"
-            value={newContact.firstName}
-            onChange={handleInputChange}
-            placeholder="Imię"
-          />
-        </label>
+      <Paper sx={{ p: 3, mx: "auto", mb: 2, maxWidth: 480 }}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <Stack spacing={2}>
+            <Controller
+              name="firstName"
+              control={control}
+              rules={{ required: "Imię jest wymagane" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Imię"
+                  error={!!errors.firstName}
+                  helperText={errors.firstName?.message}
+                  fullWidth
+                />
+              )}
+            />
 
-        <label>
-          Nazwisko:
-          <input
-            type="text"
-            name="lastName"
-            value={newContact.lastName}
-            onChange={handleInputChange}
-            placeholder="Nazwisko"
-          />
-        </label>
-        <label>
-          Email:
-          <input type="email" name="email" value={newContact.email} onChange={handleInputChange} placeholder="Email" />
-        </label>
-        <label>
-          Telefon:
-          <input type="text" name="phone" value={newContact.phone} onChange={handleInputChange} placeholder="Telefon" />
-        </label>
+            <Controller
+              name="lastName"
+              control={control}
+              rules={{ required: "Nazwisko jest wymagane" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Nazwisko"
+                  error={!!errors.lastName}
+                  helperText={errors.lastName?.message}
+                  fullWidth
+                />
+              )}
+            />
 
-        <button type="submit">Dodaj kontakt</button>
-      </form>
+            <Controller
+              name="email"
+              control={control}
+              rules={{
+                pattern: {
+                  value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                  message: "Nieprawidłowy email",
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Email"
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                  fullWidth
+                />
+              )}
+            />
+
+            <Controller
+              name="phone"
+              control={control}
+              rules={{
+                minLength: {
+                  value: 9,
+                  message: "Telefon powinien mieć co najmniej 9 znaków",
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Telefon"
+                  error={!!errors.phone}
+                  helperText={errors.phone?.message}
+                  fullWidth
+                />
+              )}
+            />
+
+            <Button variant="contained" color="primary" type="submit">
+              Dodaj kontakt
+            </Button>
+          </Stack>
+        </form>
+      </Paper>
 
       <ContactsTable
         contacts={contacts}
@@ -106,6 +156,6 @@ export const Contact = () => {
         rowsPerPage={5}
         totalCount={contacts.length}
       />
-    </div>
+    </Box>
   );
 };
