@@ -18,7 +18,7 @@ export class ActionTypeService implements ServiceI<ActionType, "actionTypeId"> {
   add = (entity: Partial<ActionType>): number | null => {
     const validation = actionTypeSchema.safeParse(entity);
     if (!validation.success) {
-      throw new Error("Invalid action type data");
+      throw new Error("Invalid action type data " + JSON.stringify(validation.error.issues));
     }
     return this.actionTypeRepository.add(entity);
   };
@@ -30,7 +30,8 @@ export class ActionTypeService implements ServiceI<ActionType, "actionTypeId"> {
   getById = (id: number): ActionType | null => {
     const validation = z.number().min(1).safeParse(id);
     if (!validation.success) {
-      throw new Error("Invalid action type ID");
+      // error with zod issues
+      throw new Error("Invalid action type ID " + JSON.stringify(validation.error.issues));
     }
     return this.actionTypeRepository.getById(id);
   };
@@ -38,7 +39,7 @@ export class ActionTypeService implements ServiceI<ActionType, "actionTypeId"> {
   delete = (id: ActionType["actionTypeId"]): boolean => {
     const validation = z.number().min(1).safeParse(id);
     if (!validation.success) {
-      throw new Error("Invalid action type ID");
+      throw new Error("Invalid action type ID " + JSON.stringify(validation.error.issues));
     }
     return this.actionTypeRepository.delete(id);
   };
@@ -46,7 +47,7 @@ export class ActionTypeService implements ServiceI<ActionType, "actionTypeId"> {
   update = (id: ActionType["actionTypeId"], entity: Partial<ActionType>): boolean => {
     const validation = actionTypeSchema.safeParse(entity);
     if (!validation.success) {
-      throw new Error("Invalid action type data");
+      throw new Error("Invalid action type data " + JSON.stringify(validation.error.issues));
     }
     return this.actionTypeRepository.update(id, entity);
   };
