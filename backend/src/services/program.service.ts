@@ -58,9 +58,13 @@ export class ProgramService implements ServiceI<Program, "programId"> {
   };
 
   update = (id: Program["programId"], entity: Partial<Program>): boolean => {
-    const validation = programSchema.safeParse(entity);
-    if (!validation.success) {
-      const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+    const entityValidation = programSchema.partial().safeParse(entity);
+    const idValidation = z.number().min(1).safeParse(id);
+    if (!idValidation.success) {
+      throw new Error("Invalid program ID: " + JSON.stringify(idValidation.error.issues));
+    }
+    if (!entityValidation.success) {
+      const errors = entityValidation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
       throw new Error("Invalid data: " + errors.join(", "));
     }
     const result = this.programRepository.update(id, entity);

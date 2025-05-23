@@ -35,9 +35,13 @@ export class ContactService implements ServiceI<Contact, "contactId", number> {
   };
 
   public update = (id: number, entity: Partial<Contact>) => {
-    const validate = contactSchema.safeParse(entity);
-    if (!validate.success) {
-      const errors = validate.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+    const validateEntity = contactSchema.partial().safeParse(entity);
+    const validateId = z.number().min(1).safeParse(id);
+    if (!validateId.success) {
+      throw new Error("Invalid contact ID: " + JSON.stringify(validateId.error.issues));
+    }
+    if (!validateEntity.success) {
+      const errors = validateEntity.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
       throw new Error("Invalid data: " + errors.join(", "));
     }
 

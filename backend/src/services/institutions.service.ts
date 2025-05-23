@@ -66,14 +66,18 @@ class InstitutionsService implements ServiceI<Institution, "institutionId", numb
     return true;
   };
 
-  update = (id: Institution["institutionId"], input: Partial<Institution>) => {
-    const validation = institutionSchema.safeParse(input);
-    if (!validation.success) {
-      const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+  update = (id: Institution["institutionId"], entity: Partial<Institution>) => {
+    const entityValidation = institutionSchema.partial().safeParse(entity);
+    const idValidation = z.number().min(1).safeParse(id);
+    if (!idValidation.success) {
+      throw new Error("Invalid institution ID " + JSON.stringify(idValidation.error.issues));
+    }
+    if (!entityValidation.success) {
+      const errors = entityValidation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
       throw new Error("Invalid data: " + errors.join(", "));
     }
 
-    const result = this.institutionRepository.update(id, input);
+    const result = this.institutionRepository.update(id, entity);
     if (!result) {
       throw new Error("Error updating institution");
     }

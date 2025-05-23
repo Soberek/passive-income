@@ -44,9 +44,14 @@ export class SchoolYearService implements ServiceI<SchoolYear, "schoolYearId"> {
     return this.schoolYearRepo.delete(id);
   };
   update = (id: number, entity: Partial<SchoolYear>): boolean => {
-    const validation = z.number().min(1).safeParse(id);
-    if (!validation.success) {
-      throw new Error("Invalid schoolYearId " + JSON.stringify(validation.error.issues));
+    const entityValidation = schoolYearSchema.partial().safeParse(entity);
+    const idValidation = z.number().min(1).safeParse(id);
+    if (!idValidation.success) {
+      const errors = idValidation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+      throw new Error("Invalid data: " + errors.join(", "));
+    }
+    if (!entityValidation.success) {
+      throw new Error("Invalid schoolYearId " + JSON.stringify(entityValidation.error.issues));
     }
     return this.schoolYearRepo.update(id, entity);
   };

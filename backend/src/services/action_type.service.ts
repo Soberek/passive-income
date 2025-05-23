@@ -28,10 +28,14 @@ export class ActionTypeService implements ServiceI<ActionType, "actionTypeId"> {
   };
 
   getById = (id: number): ActionType | null => {
-    const validation = z.number().min(1).safeParse(id);
-    if (!validation.success) {
+    const validateId = z.number().min(1).safeParse(id);
+    const validateEntity = actionTypeSchema.safeParse(id);
+    if (!validateEntity.success) {
+      throw new Error("Invalid action type data " + JSON.stringify(validateEntity.error.issues));
+    }
+    if (!validateId.success) {
       // error with zod issues
-      throw new Error("Invalid action type ID " + JSON.stringify(validation.error.issues));
+      throw new Error("Invalid action type ID " + JSON.stringify(validateId.error.issues));
     }
     return this.actionTypeRepository.getById(id);
   };

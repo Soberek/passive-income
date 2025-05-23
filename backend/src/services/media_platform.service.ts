@@ -45,6 +45,12 @@ class MediaPlatformService implements ServiceI<MediaPlatform, "mediaPlatformId">
 
   update = (id: MediaPlatform["mediaPlatformId"], entity: Partial<MediaPlatform>): boolean => {
     const validation = z.number().min(1).safeParse(id);
+    const entityValidation = mediaPlatformSchema.partial().safeParse(entity);
+    if (!entityValidation.success) {
+      const errors = entityValidation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+      throw new Error("Invalid data: " + errors.join(", "));
+    }
+
     if (!validation.success) {
       throw new Error("Invalid media platform ID " + JSON.stringify(validation.error.issues));
     }

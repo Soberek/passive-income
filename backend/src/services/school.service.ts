@@ -125,6 +125,15 @@ class SchoolService {
   };
 
   updateSchool = (schoolId: School["schoolId"], school: Partial<School>) => {
+    const schoolValidation = schoolSchema.partial().safeParse(school);
+    const idValidation = z.number().min(1).safeParse(schoolId);
+    if (!idValidation.success) {
+      throw new Error("Invalid school ID " + JSON.stringify(idValidation.error.issues));
+    }
+    if (!schoolValidation.success) {
+      const errors = schoolValidation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+      throw new Error("Invalid data: " + errors.join(", "));
+    }
     const result = this.schoolRepository.update(schoolId, school);
     if (!result) {
       throw new Error("Error updating school");
