@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import indexRouter from "./routes/index";
 import schoolRouter from "./routes/school.router";
 import cors from "cors";
@@ -8,6 +8,7 @@ import multer from "multer";
 import helmet from "helmet";
 import { institutionRouter } from "./routes/institution.router";
 import programRouter from "./routes/program.router";
+import { schoolYearRouter } from "./routes/school_year.router";
 
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
@@ -102,6 +103,8 @@ export default class ExpressApp {
     this.app.use("/api", institutionRouter);
 
     this.app.use("/api", programRouter);
+
+    this.app.use("/api", schoolYearRouter);
   }
 
   // Initialize error handling
