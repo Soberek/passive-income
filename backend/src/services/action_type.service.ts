@@ -45,7 +45,7 @@ export class ActionTypeService implements ServiceI<ActionType, "actionTypeId"> {
   };
 
   update = (id: ActionType["actionTypeId"], entity: Partial<ActionType>): boolean => {
-    const validation = actionTypeSchema.safeParse(entity);
+    const validation = actionTypeSchema.partial().safeParse(entity);
     if (!validation.success) {
       throw new Error("Invalid action type data " + JSON.stringify(validation.error.issues));
     }
