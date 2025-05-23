@@ -1,7 +1,15 @@
 import { Contact } from "../../../shared/types";
-import { ContactModel } from "../models/contact.model";
 import { ContactRepository } from "../repositories/contact.repository";
 import { ServiceI } from "../types/index.type";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  contactId: z.number().min(1).optional(),
+  firstName: z.string().min(2).max(100),
+  lastName: z.string().min(2).max(100),
+  email: z.string().email(),
+  phone: z.string().optional(),
+});
 
 export class ContactService implements ServiceI<Contact, "contactId", number> {
   constructor(private contactRepository: ContactRepository) {
@@ -13,10 +21,10 @@ export class ContactService implements ServiceI<Contact, "contactId", number> {
   };
 
   public add = (entity: Omit<Contact, "contactId">) => {
-    const validationErrors = ContactModel.validate(entity);
-
-    if (validationErrors.length) {
-      throw new Error("Invalid data: " + validationErrors.join(", "));
+    const validate = contactSchema.safeParse(entity);
+    if (!validate.success) {
+      const errors = validate.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+      throw new Error("Invalid data: " + errors.join(", "));
     }
 
     return this.contactRepository.add(entity);
@@ -27,16 +35,21 @@ export class ContactService implements ServiceI<Contact, "contactId", number> {
   };
 
   public update = (id: number, entity: Partial<Contact>) => {
-    const validationErrors = ContactModel.validate(entity);
-
-    if (validationErrors.length) {
-      throw new Error("Invalid data: " + validationErrors.join(", "));
+    const validate = contactSchema.safeParse(entity);
+    if (!validate.success) {
+      const errors = validate.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+      throw new Error("Invalid data: " + errors.join(", "));
     }
 
     return this.contactRepository.update(id, entity);
   };
 
   public delete = (id: number) => {
+    const validate = z.number().min(1).safeParse(id);
+    if (!validate.success) {
+      throw new Error("Invalid contact ID: " + JSON.stringify(validate.error.issues));
+    }
+
     return this.contactRepository.delete(id);
   };
 
@@ -45,6 +58,11 @@ export class ContactService implements ServiceI<Contact, "contactId", number> {
   };
 
   public bulkInsert = (contacts: Omit<Contact, "contactId">[]) => {
+    const validate = z.array(contactSchema).safeParse(contacts);
+    if (!validate.success) {
+      const errors = validate.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+      throw new Error("Invalid data: " + errors.join(", "));
+    }
     return this.contactRepository.bulkInsert(contacts);
   };
 }
