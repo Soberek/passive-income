@@ -2,6 +2,16 @@ import { Institution } from "../../../shared/types";
 import { InstitutionRepository } from "../repositories/institution.repository";
 import { ServiceI } from "../types/index.type";
 
+import { z } from "zod";
+
+const institutionSchema = z.object({
+  institutionId: z.number().min(1).optional(),
+  name: z.string().min(2).max(100),
+  address: z.string().min(2).max(100),
+  postalCode: z.string().min(2).max(10),
+  city: z.string().min(2).max(100),
+});
+
 class InstitutionsService implements ServiceI<Institution, "institutionId", number> {
   constructor(private institutionRepository: InstitutionRepository) {
     this.institutionRepository = institutionRepository;
@@ -10,13 +20,17 @@ class InstitutionsService implements ServiceI<Institution, "institutionId", numb
   // Fetches all institutions from the database.
   getAll = () => {
     const institutions = this.institutionRepository.getAll();
-    if (!institutions) {
+    if (!institutions || institutions.length === 0) {
       throw new Error("Error fetching all institutions");
     }
     return institutions;
   };
 
-  getById = (id: number) => {
+  getById = (id: Institution["institutionId"]) => {
+    const validation = z.number().min(1).safeParse(id);
+    if (!validation.success) {
+      throw new Error("Invalid institution ID " + JSON.stringify(validation.error.issues));
+    }
     const institution = this.institutionRepository.getById(id);
     if (!institution) {
       throw new Error("Institution not found or invalid ID");
@@ -26,8 +40,10 @@ class InstitutionsService implements ServiceI<Institution, "institutionId", numb
 
   // Adds a new institution to the database.
   add = (entity: Omit<Institution, "institutionId">) => {
-    if (!entity.name || !entity.address || !entity.postalCode || !entity.city) {
-      throw new Error("Missing required fields");
+    const validation = institutionSchema.safeParse(entity);
+    if (!validation.success) {
+      const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+      throw new Error("Invalid data: " + errors.join(", "));
     }
     const result = this.institutionRepository.add(entity);
     if (!result) {
@@ -37,6 +53,10 @@ class InstitutionsService implements ServiceI<Institution, "institutionId", numb
   };
 
   delete = (id: Institution["institutionId"]) => {
+    const validation = z.number().min(1).safeParse(id);
+    if (!validation.success) {
+      throw new Error("Invalid institution ID " + JSON.stringify(validation.error.issues));
+    }
     const result = this.institutionRepository.delete(id);
 
     // result is null if the institution was not found
@@ -47,8 +67,10 @@ class InstitutionsService implements ServiceI<Institution, "institutionId", numb
   };
 
   update = (id: Institution["institutionId"], input: Partial<Institution>) => {
-    if (!input.name || !input.address || !input.postalCode || !input.city) {
-      throw new Error("Missing required fields");
+    const validation = institutionSchema.safeParse(input);
+    if (!validation.success) {
+      const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
+      throw new Error("Invalid data: " + errors.join(", "));
     }
 
     const result = this.institutionRepository.update(id, input);
