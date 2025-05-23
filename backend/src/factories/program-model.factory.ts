@@ -5,7 +5,7 @@
 //     name: string,
 //     description: string,
 //     programType: "programowy" | "nieprogramowy",
-//     programId?: number | BigInt
+//     programId?: number
 //   ): ProgramModel {
 //     return new ProgramModel();
 //   }

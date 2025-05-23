@@ -9,7 +9,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
     this.db = db;
   }
 
-  add = (entity: Partial<Task>): number | BigInt | null => {
+  add = (entity: Partial<Task>): number | null => {
     const {
       referenceNumber,
       taskNumber,
@@ -44,7 +44,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
     );
 
     if (result.changes > 0) {
-      return result.lastInsertRowid;
+      return Number(result.lastInsertRowid);
     }
     return null;
   };
@@ -68,7 +68,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
     return result;
   };
 
-  getById = (id: number | BigInt): Task | null => {
+  getById = (id: Task["taskId"]): Task | null => {
     const stmt = this.db.prepare(`
       SELECT task_id as taskId, reference_number as referenceNumber, task_number as taskNumber, institution_id as institutionId, program_id as programId, action_type_id as actionTypeId, description, date, actions_count as actionsCount, audience_count as audienceCount, media_platform_id as mediaPlatformId
       FROM tasks
@@ -82,7 +82,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
     return result;
   };
 
-  delete = (id: number | BigInt): boolean => {
+  delete = (id: Task["taskId"]): boolean => {
     const stmt = this.db.prepare(`
       DELETE FROM tasks WHERE task_id = ?
     `);
@@ -90,7 +90,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
     return result.changes > 0;
   };
 
-  update = (id: number | BigInt, entity: Partial<Task>): boolean => {
+  update = (id: Task["taskId"], entity: Partial<Task>): boolean => {
     const values = [];
     const fieldsToUpdate = [];
 

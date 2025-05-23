@@ -9,7 +9,7 @@ class MediaPlatformService implements ServiceI<MediaPlatform, "mediaPlatformId">
     this.mediaPlatformRepository = mediaPlatformRepository;
   }
 
-  add = (entity: Partial<MediaPlatform>): number | BigInt | null => {
+  add = (entity: Partial<MediaPlatform>): number | null => {
     return this.mediaPlatformRepository.add(entity);
   };
 
@@ -17,15 +17,15 @@ class MediaPlatformService implements ServiceI<MediaPlatform, "mediaPlatformId">
     return this.mediaPlatformRepository.getAll();
   };
 
-  getById = (id: number | BigInt): MediaPlatform | null => {
+  getById = (id: MediaPlatform["mediaPlatformId"]): MediaPlatform | null => {
     return this.mediaPlatformRepository.getById(id);
   };
 
-  delete = (id: number | BigInt): boolean => {
+  delete = (id: MediaPlatform["mediaPlatformId"]): boolean => {
     return this.mediaPlatformRepository.delete(id);
   };
 
-  update = (id: number | BigInt, entity: Partial<MediaPlatform>): boolean => {
+  update = (id: MediaPlatform["mediaPlatformId"], entity: Partial<MediaPlatform>): boolean => {
     return this.mediaPlatformRepository.update(id, entity);
   };
 }

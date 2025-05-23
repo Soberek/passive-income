@@ -1,10 +1,9 @@
 import sqliteDbService from "../services/sqliteDbService";
 import { Institution } from "../../../shared/types";
-
 import { RepositoryI } from "../types/index.type";
 
 interface InstitutionRepositoryI extends RepositoryI<Institution, "institutionId"> {
-  // addSchoolInstitution: (entity: Partial<Institution>) => number | BigInt | null;
+  // addSchoolInstitution: (entity: Partial<Institution>) => number | null;
 }
 export class InstitutionRepository implements InstitutionRepositoryI {
   private dbService: sqliteDbService;
@@ -92,6 +91,7 @@ export class InstitutionRepository implements InstitutionRepositoryI {
       console.error("Error preparing SQL statement");
       return null;
     }
+
     const institution = stmt.get(id) as Institution;
     return institution || null;
   };

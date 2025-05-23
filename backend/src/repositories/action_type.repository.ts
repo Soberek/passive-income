@@ -8,7 +8,7 @@ export class ActionTypeRepository implements RepositoryI<ActionType, "actionType
     this.db = sqliteDbService;
   }
 
-  add = (entity: Partial<ActionType>): number | BigInt | null => {
+  add = (entity: Partial<ActionType>): number | null => {
     const stmt = this.db.prepare(`
             INSERT INTO action_types (name)
             VALUES (?);
@@ -17,7 +17,7 @@ export class ActionTypeRepository implements RepositoryI<ActionType, "actionType
     const info = stmt.run(entity.name);
 
     if (info.lastInsertRowid) {
-      return info.lastInsertRowid;
+      return Number(info.lastInsertRowid);
     } else {
       console.error("Error inserting action type");
       return null;
@@ -42,7 +42,7 @@ export class ActionTypeRepository implements RepositoryI<ActionType, "actionType
       name: row.name,
     }));
   };
-  getById = (id: number | BigInt): ActionType | null => {
+  getById = (id: number): ActionType | null => {
     const stmt = this.db.prepare(`
                 SELECT 
                     action_type_id as actionTypeId, 
@@ -62,7 +62,7 @@ export class ActionTypeRepository implements RepositoryI<ActionType, "actionType
       name: row.name,
     };
   };
-  delete = (id: number | BigInt): boolean => {
+  delete = (id: number): boolean => {
     const stmt = this.db.prepare(`
             DELETE FROM action_types
             WHERE action_type_id = ?;
@@ -77,7 +77,7 @@ export class ActionTypeRepository implements RepositoryI<ActionType, "actionType
       return false;
     }
   };
-  update = (id: number | BigInt, entity: Partial<ActionType>): boolean => {
+  update = (id: number, entity: Partial<ActionType>): boolean => {
     const fieldsToUpdate = [];
     const values = [];
     if (entity.name) {

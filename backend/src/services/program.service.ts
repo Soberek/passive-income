@@ -14,7 +14,7 @@ export class ProgramService implements ServiceI<Program, "programId"> {
     return programs;
   };
 
-  getById = (id: number | BigInt): Program | null => {
+  getById = (id: Program["programId"]): Program | null => {
     const program = this.programRepository.getById(id);
     if (!program) {
       throw new Error("Program not found or invalid ID");
@@ -35,7 +35,7 @@ export class ProgramService implements ServiceI<Program, "programId"> {
     return programId;
   };
 
-  delete = (id: number | BigInt): boolean => {
+  delete = (id: Program["programId"]): boolean => {
     const result = this.programRepository.delete(id);
     if (!result) {
       throw new Error("Error deleting program");
@@ -43,7 +43,7 @@ export class ProgramService implements ServiceI<Program, "programId"> {
     return true;
   };
 
-  update = (id: number | BigInt, entity: Partial<Program>): boolean => {
+  update = (id: Program["programId"], entity: Partial<Program>): boolean => {
     const validationErrors = ProgramModel.validate(entity);
     if (validationErrors.length > 0) {
       throw new Error("Validation errors: " + validationErrors.join(", "));

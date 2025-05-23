@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 type SchoolInstitution = {
-  institutionId: number | bigint;
+  institutionId: number;
   name: string;
   address?: string;
   postalCode?: string;

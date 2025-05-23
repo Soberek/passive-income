@@ -8,7 +8,7 @@ export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "medi
     this.db = sqliteDbService;
   }
 
-  add = (entity: Partial<MediaPlatform>): number | BigInt | null => {
+  add = (entity: Partial<MediaPlatform>): number | null => {
     const stmt = this.db.prepare(`
             INSERT INTO media_platforms (name)
             VALUES (?);
@@ -17,7 +17,7 @@ export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "medi
     const info = stmt.run(entity.name);
 
     if (info.lastInsertRowid) {
-      return info.lastInsertRowid;
+      return Number(info.lastInsertRowid);
     } else {
       console.error("Error inserting media platform");
       return null;
@@ -44,7 +44,7 @@ export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "medi
     }));
   };
 
-  getById = (id: number | BigInt): MediaPlatform | null => {
+  getById = (id: MediaPlatform["mediaPlatformId"]): MediaPlatform | null => {
     const stmt = this.db.prepare(`
                 SELECT 
                     media_platform_id as mediaPlatformId, 
@@ -65,7 +65,7 @@ export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "medi
     };
   };
 
-  update = (id: number | BigInt, entity: Partial<MediaPlatform>): boolean => {
+  update = (id: MediaPlatform["mediaPlatformId"], entity: Partial<MediaPlatform>): boolean => {
     const fieldsToUpdate = [];
     const values = [];
 
@@ -97,7 +97,7 @@ export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "medi
     }
   };
 
-  delete: (id: number | BigInt) => boolean = (id: number | BigInt): boolean => {
+  delete = (id: MediaPlatform["mediaPlatformId"]): boolean => {
     const stmt = this.db.prepare(`
             DELETE FROM media_platforms
             WHERE media_platform_id = ?;

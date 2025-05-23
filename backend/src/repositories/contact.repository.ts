@@ -65,14 +65,14 @@ export class ContactRepository implements ContactRepositoryI {
     }
     const result = stmt.run(entity.firstName, entity.lastName, entity.email, entity.phone);
     if (result.changes > 0) {
-      return result.lastInsertRowid;
+      return Number(result.lastInsertRowid);
     } else {
       console.error("Error adding contact");
       return null;
     }
   };
 
-  public getById = (id: number | BigInt): Contact | null => {
+  public getById = (id: number): Contact | null => {
     const stmt = this.dbService.prepare(
       "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts WHERE contact_id = ?"
     );
@@ -92,7 +92,7 @@ export class ContactRepository implements ContactRepositoryI {
     return row;
   };
 
-  public update = (id: number | BigInt, entity: Partial<Contact>) => {
+  public update = (id: number, entity: Partial<Contact>) => {
     // This SQL statement updates the contact with the given ID
     // It sets the first name, last name, email, and phone number to the new values
     // if some of them are not provided, it will not update them
@@ -139,7 +139,7 @@ export class ContactRepository implements ContactRepositoryI {
     }
   };
 
-  public delete = (id: number | BigInt) => {
+  public delete = (id: number) => {
     const stmt = this.dbService.prepare("DELETE FROM contacts WHERE contact_id = ?");
 
     if (!stmt) {

@@ -2,14 +2,14 @@ import { RepositoryI } from "../types/index.type";
 import { Material } from "../../../shared/types";
 import sqliteDbService from "../services/sqliteDbService";
 
-class MaterialRepository implements RepositoryI<Material, "materialId"> {
+export class MaterialRepository implements RepositoryI<Material, "materialId"> {
   private db: sqliteDbService;
 
   constructor(db: sqliteDbService) {
     this.db = db;
   }
 
-  add = (entity: Partial<Material>): number | BigInt | null => {
+  add = (entity: Partial<Material>): number | null => {
     const { name, type, description } = entity;
     const stmt = this.db.prepare(`
             INSERT INTO material (name, type, description)
@@ -17,7 +17,7 @@ class MaterialRepository implements RepositoryI<Material, "materialId"> {
         `);
     const result = stmt.run(name, type, description);
     if (result.changes > 0) {
-      return result.lastInsertRowid;
+      return Number(result.lastInsertRowid);
     }
     return null;
   };
@@ -40,7 +40,7 @@ class MaterialRepository implements RepositoryI<Material, "materialId"> {
     return result;
   };
 
-  getById: (id: number | BigInt) => Material | null = (id) => {
+  getById: (id: Material["materialId"]) => Material | null = (id) => {
     const stmt = this.db.prepare(`
             SELECT material_id as materialId, name, type, description FROM material WHERE material_id = ?
         `);
@@ -52,7 +52,7 @@ class MaterialRepository implements RepositoryI<Material, "materialId"> {
     return result;
   };
 
-  delete = (id: number | BigInt): boolean => {
+  delete = (id: Material["materialId"]): boolean => {
     const stmt = this.db.prepare(`
                 DELETE FROM material WHERE material_id = ?
             `);
@@ -60,7 +60,7 @@ class MaterialRepository implements RepositoryI<Material, "materialId"> {
     return result.changes > 0;
   };
 
-  update = (id: number | BigInt, entity: Partial<Material>): boolean => {
+  update = (id: Material["materialId"], entity: Partial<Material>): boolean => {
     const values = [];
     const fieldsToUpdate = [];
 
@@ -90,7 +90,7 @@ class MaterialRepository implements RepositoryI<Material, "materialId"> {
     return result.changes > 0;
   };
 
-  getByType = (type: string): Material[] => {
+  getByType = (type: Material["type"]): Material[] => {
     const stmt = this.db.prepare(`
             SELECT material_id as materialId, name, type, description FROM material WHERE type = ?
         `);

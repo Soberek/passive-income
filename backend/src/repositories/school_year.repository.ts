@@ -7,7 +7,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
   constructor(db: sqliteDbService) {
     this.db = db;
   }
-  add = (entity: Partial<SchoolYear>): number | BigInt | null => {
+  add = (entity: Partial<SchoolYear>): number | null => {
     const { year } = entity;
     const stmt = this.db.prepare(`
             INSERT INTO school_year (year)
@@ -15,7 +15,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
         `);
     const result = stmt.run(year);
     if (result.changes > 0) {
-      return result.lastInsertRowid;
+      return Number(result.lastInsertRowid);
     }
     return null;
   };
@@ -30,7 +30,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
     }
     return result;
   };
-  getById: (id: number | BigInt) => SchoolYear | null = (id) => {
+  getById: (id: number) => SchoolYear | null = (id) => {
     const stmt = this.db.prepare(`
             SELECT school_year_id as schoolYearId, year FROM school_year WHERE school_year_id = ?
         `);
@@ -41,14 +41,14 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
     }
     return result;
   };
-  delete = (id: number | BigInt): boolean => {
+  delete = (id: number): boolean => {
     const stmt = this.db.prepare(`
             DELETE FROM school_year WHERE school_year_id = ?
         `);
     const result = stmt.run(id);
     return result.changes > 0;
   };
-  update = (id: number | BigInt, entity: Partial<SchoolYear>): boolean => {
+  update = (id: number, entity: Partial<SchoolYear>): boolean => {
     const values = [];
     const fieldsToUpdate = [];
     if (entity.year) {

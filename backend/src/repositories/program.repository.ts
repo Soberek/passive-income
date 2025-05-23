@@ -22,7 +22,7 @@ export class ProgramRepository implements ProgramRepositoryI {
     return stmt.all() as Program[];
   };
 
-  getById = (id: number | BigInt): Program | null => {
+  getById = (id: Program["programId"]): Program | null => {
     const stmt = this.dbService.prepare(
       "SELECT program_id as programId, name, description, program_type as programType FROM programs WHERE program_id = ?"
     );
@@ -50,7 +50,7 @@ export class ProgramRepository implements ProgramRepositoryI {
     }
   };
 
-  delete = (id: number | BigInt): boolean => {
+  delete = (id: Program["programId"]): boolean => {
     const stmt = this.dbService.prepare("DELETE FROM programs WHERE program_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -60,7 +60,7 @@ export class ProgramRepository implements ProgramRepositoryI {
     return info.changes > 0;
   };
 
-  update = (id: number | BigInt, entity: Partial<Program>): boolean => {
+  update = (id: Program["programId"], entity: Partial<Program>): boolean => {
     const { name, description, programType } = entity;
     const stmt = this.dbService.prepare(
       "UPDATE programs SET name = ?, description = ?, program_type = ? WHERE program_id = ?"

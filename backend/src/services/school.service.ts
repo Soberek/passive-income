@@ -80,7 +80,7 @@ class SchoolService {
       throw new Error("Institution not found");
     }
 
-    if (typeof institutionId !== "bigint" && typeof institutionId !== "number") {
+    if (typeof institutionId !== "number") {
       throw new Error("Invalid institution ID");
     }
 

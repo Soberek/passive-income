@@ -2,15 +2,6 @@ import { Institution } from "../../../shared/types";
 import { InstitutionRepository } from "../repositories/institution.repository";
 import { ServiceI } from "../types/index.type";
 
-// TODO: Add institution type foreign key
-//  id_institution_type INTEGER NOT NULL,
-//  FOREIGN KEY (id_institution_type) REFERENCES institution_type(id_institution_type)
-
-// Model for the Institution
-// This interface defines the structure of an institution object.
-
-// This class is responsible for managing institutions in the database.
-
 class InstitutionsService implements ServiceI<Institution, "institutionId", number> {
   constructor(private institutionRepository: InstitutionRepository) {
     this.institutionRepository = institutionRepository;
@@ -39,13 +30,13 @@ class InstitutionsService implements ServiceI<Institution, "institutionId", numb
       throw new Error("Missing required fields");
     }
     const result = this.institutionRepository.add(entity);
-    if (typeof result === "bigint") {
-      return Number(result);
+    if (!result) {
+      throw new Error("Error adding institution");
     }
-    return result;
+    return Number(result);
   };
 
-  delete = (id: number | BigInt) => {
+  delete = (id: Institution["institutionId"]) => {
     const result = this.institutionRepository.delete(id);
 
     // result is null if the institution was not found
@@ -55,7 +46,7 @@ class InstitutionsService implements ServiceI<Institution, "institutionId", numb
     return true;
   };
 
-  update = (id: number, input: Partial<Institution>) => {
+  update = (id: Institution["institutionId"], input: Partial<Institution>) => {
     if (!input.name || !input.address || !input.postalCode || !input.city) {
       throw new Error("Missing required fields");
     }
