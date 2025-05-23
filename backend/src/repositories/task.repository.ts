@@ -150,4 +150,52 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
     const result = stmt.run(...values);
     return result.changes > 0;
   };
+
+  getByMonthAndYear = (month: number, year: number): Task[] => {
+    const stmt = this.db.prepare(`
+      SELECT task_id as taskId, reference_number as referenceNumber, task_number as taskNumber, institution_id as institutionId, program_id as programId, action_type_id as actionTypeId, description, date, actions_count as actionsCount, audience_count as audienceCount, media_platform_id as mediaPlatformId
+      FROM tasks
+      WHERE strftime('%m', date) = ? AND strftime('%Y', date) = ?
+    `);
+    const result = stmt.all(month.toString().padStart(2, "0"), year.toString()) as Task[] | undefined;
+    if (!result) {
+      console.error(`Failed to execute query or no results found for month: ${month}, year: ${year}`);
+      return [];
+    }
+    return result;
+  };
+
+  getByFromMonthToMonthAndYear = (fromMonth: number, toMonth: number, year: number): Task[] => {
+    const stmt = this.db.prepare(`
+      SELECT task_id as taskId, reference_number as referenceNumber, task_number as taskNumber, institution_id as institutionId, program_id as programId, action_type_id as actionTypeId, description, date, actions_count as actionsCount, audience_count as audienceCount, media_platform_id as mediaPlatformId
+        FROM tasks
+        WHERE strftime('%Y', date) = ? AND strftime('%m', date) BETWEEN ? AND ?
+    `);
+    const result = stmt.all(
+      year.toString(),
+      fromMonth.toString().padStart(2, "0"),
+      toMonth.toString().padStart(2, "0")
+    ) as Task[] | undefined;
+    if (!result) {
+      console.error(
+        `Failed to execute query or no results found for year: ${year}, fromMonth: ${fromMonth}, toMonth: ${toMonth}`
+      );
+      return [];
+    }
+    return result;
+  };
+
+  getAllTasksThatHaveMediaPlatform = (): Task[] => {
+    const stmt = this.db.prepare(`
+      SELECT task_id as taskId, reference_number as referenceNumber, task_number as taskNumber, institution_id as institutionId, program_id as programId, action_type_id as actionTypeId, description, date, actions_count as actionsCount, audience_count as audienceCount, media_platform_id as mediaPlatformId
+      FROM tasks
+      WHERE media_platform_id IS NOT NULL
+    `);
+    const result = stmt.all() as Task[] | undefined;
+    if (!result) {
+      console.error(`Failed to execute query or no results found`);
+      return [];
+    }
+    return result;
+  };
 }
