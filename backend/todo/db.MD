@@ -7,11 +7,14 @@
 - Jeżeli będę mial programy z opisami + szkoły (instytucje) to mogę szybciej tworzyć IZRZ
 - Jeżeli bede mial kontakty + programy + instytucje powiązane to mogę wyciągnąć mail-e koordynatorów i szkol jednocześnie
 
-TODO:
+### TODO:
+
+- [x] Change date format in generated word document to dd-mm-yyyy
+- [x] Zod scheme and validation for all services
 
 ### Dictionary:
 
-- [x] Add a table for institutions
+- [x] Add a table for institutions [instytucje](#instytucje)
   - [x] Fill
 - [x] Add a table for contacts
   - [x] Fill
@@ -19,31 +22,62 @@ TODO:
   - [x] Fill
 - [x] Add a table for media platforms
   - [x] Fill
-- [ ] Add a table for action types
+- [x] Add a table for action types
+  - [x] Fill
+- [x] Add a table for materials
   - [ ] Fill
-- [ ] Add a table for materials
-  - [ ] Fill
-- [ ] Add a table for school years
-  - [ ] Fill
+- [x] Add a table for school years
+  - [x] Fill
 
-Action types:
+## TODO:
 
-- Prelekcja
-- Wykład
-- Konferencja
-- Szkolenie
-- Sprawozdanie
-- Narada
-- Stoisko informacyjno-edukacyjne
-- Warsztaty
-- Publikacja media
-- Dystrybucja
-- List intencyjny
--
+### Backend
+
+- Schools
+  - [x] Add a repository
+  - [x] Add a service
+  - [x] Add a controller
+  - [x] Add a router
+  - [ ] Add a form for creating a school
+- Institutions
+  - [x] Add a repository
+  - [x] Add a service
+  - [x] Add a controller
+  - [x] Add a router
+- Programs
+  - [x] Add a repository
+  - [x] Add a service
+  - [x] Add a controller
+  - [x] Add a router
+- Action types
+  - [x] Add a repository
+  - [x] Add a service
+  - [x] Add a controller
+  - [x] Add a router
+        adding action type form not needed
+- Media platforms
+  - [x] Add a repository
+  - [x] Add a service
+  - [x] Add a controller
+  - [x] Add a router
+- Materials
+  - [ ] Add a repository
+  - [ ] Add a service
+  - [ ] Add a controller
+  - [ ] Add a router
+
+### Frontend
+
+- Schools
+  - [ ] Add school form
+  - [ ] Add a table for schools
+- School years
+  - [ ] Add a table for school years
+- Institutions
 
 ### Todo second priority tables
 
-- [ ] Add a table for schools (institution_id)
+- [x] Add a table for schools (institution_id)
 - [ ] Add a table for program coordinators (institution_id, program_id, contact_id, school_year_id)
 - [ ] Add a table for institution program participation (institution_id, program_id, school_year_id)
 - [ ] Add a table for task materials (task_id, material_id, quantity)
@@ -70,6 +104,8 @@ Przykład wysłanego ządania
 ```
 
 ## TODO
+
+## Institution
 
 ```sql
 
@@ -109,8 +145,9 @@ CREATE TABLE action_types (
 );
 
 CREATE TABLE materials (
-    material_id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Primary key for materials table
+    material_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE,
+    type TEXT NOT NULL CHECK (type IN ('ulotka', 'plakat', 'broszura', 'zakładka', 'inne')),
     description TEXT
 );
 
@@ -187,14 +224,6 @@ CREATE TABLE tasks (
     FOREIGN KEY (media_platform_id) REFERENCES media_platforms(media_platform_id)
 );
 
-CREATE TABLE task_materials (
-  task_id INTEGER NOT NULL,
-  material_id INTEGER NOT NULL,
-  quantity INTEGER NOT NULL DEFAULT 1,
-  PRIMARY KEY (task_id, material_id),
-  FOREIGN KEY (task_id) REFERENCES tasks(task_id),
-  FOREIGN KEY (material_id) REFERENCES materials(material_id)
-);
 
 
 -- TODO IN FUTURE
