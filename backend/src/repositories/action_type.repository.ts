@@ -1,6 +1,6 @@
 import { RepositoryI } from "../types/index.type";
 import { ActionType } from "../../../shared/types";
-import sqliteDbService from "../services/sqliteDbService";
+import sqliteDbService from "../services/sqlite_db.service";
 
 export class ActionTypeRepository implements RepositoryI<ActionType, "actionTypeId"> {
   private db: sqliteDbService;

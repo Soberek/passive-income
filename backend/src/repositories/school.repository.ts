@@ -1,4 +1,4 @@
-import sqliteDbService from "../services/sqliteDbService";
+import sqliteDbService from "../services/sqlite_db.service";
 import { School, Institution } from "../../../shared/types";
 import { RepositoryI } from "../types/index.type";
 

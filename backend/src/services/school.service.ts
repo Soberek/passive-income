@@ -2,7 +2,7 @@ import { Institution } from "../../../shared/types";
 import { School } from "../../../shared/types";
 import { SchoolRepository } from "../repositories/school.repository";
 import { InstitutionRepository } from "../repositories/institution.repository";
-import sqliteDbService from "./sqliteDbService";
+import sqliteDbService from "./sqlite_db.service";
 import { z } from "zod";
 
 const schoolSchema = z.object({

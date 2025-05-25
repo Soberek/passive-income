@@ -1,6 +1,6 @@
 import { Task } from "../../../shared/types";
 import { RepositoryI } from "../types/index.type";
-import sqliteDbService from "../services/sqliteDbService";
+import sqliteDbService from "../services/sqlite_db.service";
 
 export class TaskRepository implements RepositoryI<Task, "taskId"> {
   private db: sqliteDbService;
@@ -55,7 +55,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
       FROM tasks
     `);
 
-    if (!stmt || !stmt.all) {
+    if (!stmt || !stmt.all || !Array.isArray(stmt.all())) {
       console.error("Failed to prepare statement or execute query");
       return [];
     }

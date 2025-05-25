@@ -1,5 +1,5 @@
 import { RepositoryI } from "../types/index.type";
-import sqliteDbService from "../services/sqliteDbService";
+import sqliteDbService from "../services/sqlite_db.service";
 import { SchoolYear } from "../../../shared/types";
 
 export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYearId"> {

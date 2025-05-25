@@ -2,7 +2,7 @@ import { Router } from "express";
 import { MediaPlatformController } from "../controllers/media_platform.controller";
 import { MediaPlatformService } from "../services/media_platform.service";
 import { MediaPlatformRepository } from "../repositories/media_platform.repository";
-import sqliteDbService from "../services/sqliteDbService";
+import sqliteDbService from "../services/sqlite_db.service";
 
 const mediaPlatformRouter = Router();
 const dbService = sqliteDbService.getInstance();

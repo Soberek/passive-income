@@ -2,7 +2,7 @@ import { Router } from "express";
 import { ActionTypeController } from "../controllers/action_type.controller";
 import { ActionTypeService } from "../services/action_type.service";
 import { ActionTypeRepository } from "../repositories/action_type.repository";
-import sqliteDbService from "../services/sqliteDbService";
+import sqliteDbService from "../services/sqlite_db.service";
 
 const actionTypeRouter = Router();
 const dbService = sqliteDbService.getInstance();

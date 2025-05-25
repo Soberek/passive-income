@@ -1,6 +1,6 @@
 import { RepositoryI } from "../types/index.type";
 import { Material } from "../../../shared/types";
-import sqliteDbService from "../services/sqliteDbService";
+import sqliteDbService from "../services/sqlite_db.service";
 
 export class MaterialRepository implements RepositoryI<Material, "materialId"> {
   private db: sqliteDbService;

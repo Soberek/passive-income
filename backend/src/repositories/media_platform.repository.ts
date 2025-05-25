@@ -1,4 +1,4 @@
-import sqliteDbService from "../services/sqliteDbService";
+import sqliteDbService from "../services/sqlite_db.service";
 import { RepositoryI } from "../types/index.type";
 import { MediaPlatform } from "../../../shared/types";
 
