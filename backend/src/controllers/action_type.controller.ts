@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 export class ActionTypeController {
   constructor(private actionTypeService: ActionTypeService) {}
 
-  getAllActionTypes = (_req: Request, res: Response) => {
+  getAllActionTypes = (_req: Request, res: Response): void => {
     try {
       const actionTypes = this.actionTypeService.getAll();
       res.status(200).json(actionTypes);
@@ -14,7 +14,7 @@ export class ActionTypeController {
     }
   };
 
-  getActionTypeById = (req: Request, res: Response) => {
+  getActionTypeById = (req: Request, res: Response): void => {
     const { id } = req.params;
     try {
       const actionType = this.actionTypeService?.getById(Number(id));
@@ -31,7 +31,7 @@ export class ActionTypeController {
     }
   };
 
-  addActionType = (req: Request, res: Response) => {
+  addActionType = (req: Request, res: Response): void => {
     const actionTypeData = req.body;
     try {
       this.actionTypeService?.add(actionTypeData);
@@ -44,7 +44,7 @@ export class ActionTypeController {
     }
   };
 
-  updateActionType = (req: Request, res: Response) => {
+  updateActionType = (req: Request, res: Response): void => {
     const { id } = req.params;
     const actionTypeData = req.body;
     try {
@@ -62,7 +62,7 @@ export class ActionTypeController {
     }
   };
 
-  deleteActionType = (req: Request, res: Response) => {
+  deleteActionType = (req: Request, res: Response): void => {
     const { id } = req.params;
     try {
       const deleted = this.actionTypeService?.delete(Number(id));
