@@ -43,7 +43,7 @@ export class InstitutionRepository implements InstitutionRepositoryI {
     }
   };
 
-  getAll = (): Institution[] => {
+  getAll = (): Institution[] | [] => {
     const stmt = this.dbService.prepare(`
       SELECT 
         institution_id as institutionId, 
@@ -65,7 +65,7 @@ export class InstitutionRepository implements InstitutionRepositoryI {
     return stmt.all() as Institution[];
   };
 
-  add = (entity: Partial<Institution>) => {
+  add = (entity: Partial<Institution>): number | null => {
     const stmt = this.dbService.prepare(
       "INSERT INTO institutions (name, address, postal_code, municipality, city, created_at, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     );
