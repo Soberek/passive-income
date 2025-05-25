@@ -69,4 +69,5 @@ export interface Task {
   actionsCount: number;
   audienceCount: number;
   mediaPlatformId?: number; // will be used if the task is a media publication
+  createdAt?: Date; // current timestamp from sqlite db
 }
