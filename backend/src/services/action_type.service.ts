@@ -8,6 +8,9 @@ const actionTypeSchema = z.object({
   name: z.string().min(2).max(100),
 });
 
+const actionTypeCreateSchema = actionTypeSchema.omit({ actionTypeId: true });
+const actionTypeUpdateSchema = actionTypeCreateSchema.partial();
+
 export class ActionTypeService implements ServiceI<ActionType, "actionTypeId"> {
   private actionTypeRepository: ActionTypeRepository;
 
@@ -16,7 +19,7 @@ export class ActionTypeService implements ServiceI<ActionType, "actionTypeId"> {
   }
 
   add = (entity: Partial<ActionType>): number | null => {
-    const validation = actionTypeSchema.safeParse(entity);
+    const validation = actionTypeCreateSchema.safeParse(entity);
     if (!validation.success) {
       throw new Error("Invalid action type data " + JSON.stringify(validation.error.issues));
     }
@@ -49,7 +52,7 @@ export class ActionTypeService implements ServiceI<ActionType, "actionTypeId"> {
   };
 
   update = (id: ActionType["actionTypeId"], entity: Partial<ActionType>): boolean => {
-    const validation = actionTypeSchema.partial().safeParse(entity);
+    const validation = actionTypeUpdateSchema.safeParse(entity);
     if (!validation.success) {
       throw new Error("Invalid action type data " + JSON.stringify(validation.error.issues));
     }
