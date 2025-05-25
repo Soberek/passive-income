@@ -1,5 +1,4 @@
 import betterSqlite3 from "better-sqlite3";
-console.log("..", __dirname);
 
 import path from "path";
 
@@ -37,6 +36,7 @@ class sqliteDbService {
     if (!sqliteDbService.instance) {
       console.log("Creating new instance");
       sqliteDbService.instance = new sqliteDbService({ dbPath });
+      return sqliteDbService.instance;
     }
 
     return sqliteDbService.instance;
