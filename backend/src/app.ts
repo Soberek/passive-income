@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { NextFunction, Request, Response, Express } from "express";
 import indexRouter from "./routes/index";
 import schoolRouter from "./routes/school.router";
 import cors from "cors";
@@ -34,7 +34,7 @@ import { mediaPlatformRouter } from "./routes/media_platform.router";
 // and use it in your application
 
 export default class ExpressApp {
-  public app;
+  public app: Express;
   private PORT: number = 3000;
   private multer: multer.Multer;
 
@@ -64,9 +64,6 @@ export default class ExpressApp {
       next();
     });
     // Middleware for handling CORS (Cross-Origin Resource Sharing)
-    // This middleware allows requests from a specific origin (in this case, http://localhost:5174)
-    // It's prevents cross-origin issues when the frontend and backend are running on different ports.
-    // CORS is a security feature implemented by web browsers to prevent malicious websites from making requests to other domains.
     // By default, browsers block cross-origin requests unless the server explicitly allows them.
     this.app.use(
       cors({
@@ -92,10 +89,8 @@ export default class ExpressApp {
 
   // Initialize routes
   initRoutes() {
-    // The indexRouter is imported from the routes directory and is used to handle requests to the root URL ("/").
     this.app.use("/", indexRouter);
 
-    // The schoolRouter is imported from the routes directory and is used to handle requests to the "/api" URL.
     this.app.use("/api", schoolRouter);
 
     this.app.use("/api", contactRouter);
@@ -115,7 +110,6 @@ export default class ExpressApp {
 
   // Initialize error handling
   initErrorHandling() {
-    // Middleware for handling errors
     this.app.use((err: Error, _: Request, res: Response, next: () => void) => {
       console.error(err.stack);
       res.status(500).send("Something broke!");
