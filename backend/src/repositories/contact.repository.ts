@@ -32,7 +32,7 @@ export class ContactRepository implements ContactRepositoryI {
     stmt.run();
   };
 
-  public getAll = (): Contact[] => {
+  public getAll = (): Contact[] | [] => {
     const stmt = this.dbService.prepare(
       "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts"
     );
@@ -52,7 +52,7 @@ export class ContactRepository implements ContactRepositoryI {
     return rows;
   };
 
-  public add = (entity: Partial<Contact>) => {
+  public add = (entity: Partial<Contact>): number | null => {
     const stmt = this.dbService.prepare(
       "INSERT INTO contacts (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)"
     );
@@ -92,7 +92,7 @@ export class ContactRepository implements ContactRepositoryI {
     return row;
   };
 
-  public update = (id: number, entity: Partial<Contact>) => {
+  public update = (id: number, entity: Partial<Contact>): boolean => {
     // This SQL statement updates the contact with the given ID
     // It sets the first name, last name, email, and phone number to the new values
     // if some of them are not provided, it will not update them
@@ -139,7 +139,7 @@ export class ContactRepository implements ContactRepositoryI {
     }
   };
 
-  public delete = (id: number) => {
+  public delete = (id: number): boolean => {
     const stmt = this.dbService.prepare("DELETE FROM contacts WHERE contact_id = ?");
 
     if (!stmt) {
@@ -158,7 +158,7 @@ export class ContactRepository implements ContactRepositoryI {
     }
   };
 
-  public bulkInsert = (contacts: Omit<Contact, "contactId">[]) => {
+  public bulkInsert = (contacts: Omit<Contact, "contactId">[]): boolean => {
     const stmt = this.dbService.prepare(
       "INSERT INTO contacts (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)"
     );
