@@ -57,7 +57,7 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
     return Number(info.lastInsertRowid);
   };
 
-  delete = (id: School["schoolId"]) => {
+  delete = (id: School["schoolId"]): boolean => {
     const stmt = this.dbService.prepare("DELETE FROM schools WHERE school_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -76,7 +76,7 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
     return true;
   };
 
-  update = (schoolId: School["schoolId"], school: Partial<School>) => {
+  update = (schoolId: School["schoolId"], school: Partial<School>): boolean => {
     const fieldsToUpdate: string[] = []; // Array to hold the fields to be updated director
     const valuesToUpdate: any[] = []; // Array to hold the values to be updated
 
@@ -112,13 +112,13 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
     return true;
   };
 
-  getSchoolByInstitutionId = (institutionId: Institution["institutionId"]) => {
-    const stmt = this.dbService.prepare("SELECT * FROM schools WHERE institution_id = ?");
+  getSchoolByInstitutionId = (institutionId: Institution["institutionId"]): School | null => {
+    const stmt = this.dbService.prepare("SELECT school_id as schoolId, director FROM schools WHERE institution_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return null;
     }
-    const row = stmt.get(institutionId);
+    const row = stmt.get(institutionId) as School | null;
     if (!row) {
       console.error("No school found with institution id: ", institutionId);
       return null;
@@ -126,7 +126,7 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
     return row;
   };
 
-  getSchoolByIdWithInstitutionData = (id: School["schoolId"]) => {
+  getSchoolByIdWithInstitutionData = (id: School["schoolId"]): School | null => {
     const stmt = this.dbService.prepare(
       `SELECT school.school_id AS schoolId, institution.institution_id AS institutionId, school.director, institution.name, institution.address, institution.city, institution.postalCode, institution.phone, institution.email, institution.website, institution.municipality
          FROM schools
@@ -137,7 +137,7 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
       console.error("Error preparing SQL statement");
       return null;
     }
-    const row = stmt.get(id);
+    const row = stmt.get(id) as (School & Institution) | null;
     if (!row) {
       console.error("No school found with id: ", id);
       return null;

@@ -24,7 +24,7 @@ export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "medi
     }
   };
 
-  getAll = (): MediaPlatform[] => {
+  getAll = (): MediaPlatform[] | [] => {
     const stmt = this.db.prepare(`
             SELECT 
                 media_platform_id as mediaPlatformId, 

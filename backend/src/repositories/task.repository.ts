@@ -74,7 +74,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
       FROM tasks
       WHERE task_id = ?
     `);
-    const result = stmt.get(id) as Task | undefined;
+    const result = stmt.get(id) as Task | null;
     if (!result) {
       console.error(`Failed to execute query or no results found for id: ${id}`);
       return null;
