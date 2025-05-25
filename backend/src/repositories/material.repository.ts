@@ -22,7 +22,7 @@ export class MaterialRepository implements RepositoryI<Material, "materialId"> {
     return null;
   };
 
-  getAll = (): Material[] => {
+  getAll = (): Material[] | [] => {
     const stmt = this.db.prepare(`
                 SELECT material_id as materialId, name, type, description FROM material
             `);
@@ -40,7 +40,7 @@ export class MaterialRepository implements RepositoryI<Material, "materialId"> {
     return result;
   };
 
-  getById: (id: Material["materialId"]) => Material | null = (id) => {
+  getById = (id: Material["materialId"]): Material | null => {
     const stmt = this.db.prepare(`
             SELECT material_id as materialId, name, type, description FROM material WHERE material_id = ?
         `);
@@ -90,7 +90,7 @@ export class MaterialRepository implements RepositoryI<Material, "materialId"> {
     return result.changes > 0;
   };
 
-  getByType = (type: Material["type"]): Material[] => {
+  getByType = (type: Material["type"]): Material[] | [] => {
     const stmt = this.db.prepare(`
             SELECT material_id as materialId, name, type, description FROM material WHERE type = ?
         `);
