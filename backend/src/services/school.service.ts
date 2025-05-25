@@ -38,7 +38,7 @@ class SchoolService {
 
   addInstitutionSchool = (
     schoolInstitutionData: Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">
-  ) => {
+  ): { institutionId: number; schoolId: number } => {
     const institution: Omit<Institution, "institutionId"> = {
       name: schoolInstitutionData.name,
       address: schoolInstitutionData.address,
