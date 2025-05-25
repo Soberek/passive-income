@@ -23,7 +23,7 @@ export class ActionTypeRepository implements RepositoryI<ActionType, "actionType
       return null;
     }
   };
-  getAll = (): ActionType[] => {
+  getAll = (): ActionType[] | [] => {
     const stmt = this.db.prepare(`
             SELECT 
                 action_type_id as actionTypeId, 
