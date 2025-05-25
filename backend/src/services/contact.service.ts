@@ -11,6 +11,9 @@ const contactSchema = z.object({
   phone: z.string().optional(),
 });
 
+const contactCreateSchema = contactSchema.omit({ contactId: true });
+const contactUpdateSchema = contactCreateSchema.partial();
+
 export class ContactService implements ServiceI<Contact, "contactId", number> {
   constructor(private contactRepository: ContactRepository) {
     this.contactRepository = contactRepository;
@@ -21,7 +24,7 @@ export class ContactService implements ServiceI<Contact, "contactId", number> {
   };
 
   public add = (entity: Omit<Contact, "contactId">) => {
-    const validate = contactSchema.safeParse(entity);
+    const validate = contactCreateSchema.safeParse(entity);
     if (!validate.success) {
       const errors = validate.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
       throw new Error("Invalid data: " + errors.join(", "));
@@ -35,7 +38,7 @@ export class ContactService implements ServiceI<Contact, "contactId", number> {
   };
 
   public update = (id: number, entity: Partial<Contact>) => {
-    const validateEntity = contactSchema.partial().safeParse(entity);
+    const validateEntity = contactUpdateSchema.safeParse(entity);
     const validateId = z.number().min(1).safeParse(id);
     if (!validateId.success) {
       throw new Error("Invalid contact ID: " + JSON.stringify(validateId.error.issues));
@@ -62,7 +65,7 @@ export class ContactService implements ServiceI<Contact, "contactId", number> {
   };
 
   public bulkInsert = (contacts: Omit<Contact, "contactId">[]) => {
-    const validate = z.array(contactSchema).safeParse(contacts);
+    const validate = z.array(contactCreateSchema).safeParse(contacts);
     if (!validate.success) {
       const errors = validate.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
       throw new Error("Invalid data: " + errors.join(", "));
