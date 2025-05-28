@@ -6,6 +6,8 @@ import { createBrowserRouter, RouterProvider, useNavigate } from "react-router";
 import SchoolsPage from "./features/schools/School.tsx";
 import { Contact } from "./features/contacts/Contact.tsx";
 import IzrzForm from "./features/Izrz/Izrz.tsx";
+import { Tasks } from "./features/tasks/Task.tsx";
+import { SchoolProgramParticipation } from "./features/school-program-participation/SchoolProgramParticipation.tsx";
 
 const ErrorElement = () => {
   const navigate = useNavigate();
@@ -40,6 +42,14 @@ const router = createBrowserRouter([
       {
         path: "/izrz",
         element: <IzrzForm />,
+      },
+      {
+        path: "/zadania",
+        element: <Tasks />,
+      },
+      {
+        path: "/uczestnictwo-szkół-w-programach",
+        element: <SchoolProgramParticipation />,
       },
     ],
   },
