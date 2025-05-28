@@ -24,6 +24,26 @@ const routes = [
     name: "Wygeneruj izrz offline",
     path: "izrz",
   },
+  {
+    icon: "🦷",
+    name: "Dodaj szkołę do programu",
+    path: "uczestnictwo-szkół-w-programach",
+  },
+  {
+    icon: "👩🏻‍🏫",
+    name: "Dodaj koordynatora programu",
+    path: "program-coordinators",
+  },
+  {
+    icon: "📅",
+    name: "Dodaj typy szkoły",
+    path: "school-types",
+  },
+  {
+    icon: "✅",
+    name: "Dodaj wykonane zadanie",
+    path: "zadania",
+  },
 ];
 
 export default function NavDrawer({
