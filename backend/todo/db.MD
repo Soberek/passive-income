@@ -38,7 +38,6 @@
   - [x] Add a service
   - [x] Add a controller
   - [x] Add a router
-  - [ ] Add a form for creating a school
 - Institutions
   - [x] Add a repository
   - [x] Add a service
@@ -71,6 +70,7 @@
 - Schools
   - [ ] Add school form
   - [ ] Add a table for schools
+  - [ ] Add a form for creating a school
 - School years
   - [ ] Add a table for school years
 - Institutions
@@ -172,12 +172,12 @@ CREATE TABLE media_platforms (
 
 ```sql
 -- TODO SECOND PRIORITY TABLES
-CREATE TABLE institution_program_participation (
+CREATE TABLE school_program_participation (
     participation_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    institution_id INTEGER NOT NULL,
+    school_id INTEGER NOT NULL,
     program_id INTEGER NOT NULL,
     school_year_id INTEGER NOT NULL,
-    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+    FOREIGN KEY (school_id) REFERENCES schools(school_id) ON DELETE CASCADE,
     FOREIGN KEY (program_id) REFERENCES programs(program_id),
     FOREIGN KEY (school_year_id) REFERENCES school_years(school_year_id)
 );
@@ -193,9 +193,6 @@ CREATE TABLE program_coordinators (
     FOREIGN KEY (contact_id) REFERENCES contacts(contact_id),
     FOREIGN KEY (school_year_id) REFERENCES school_years(school_year_id)
 );
-
-
-
 
 CREATE TABLE task_materials (
   task_id INTEGER NOT NULL,
@@ -218,28 +215,28 @@ CREATE TABLE tasks (
     actions_count INTEGER,
     audience_count INTEGER,
     media_platform_id INTEGER, -- will be used if the task is a media publication
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
     FOREIGN KEY (program_id) REFERENCES programs(program_id),
     FOREIGN KEY (action_type_id) REFERENCES action_types(action_type_id),
     FOREIGN KEY (media_platform_id) REFERENCES media_platforms(media_platform_id)
 );
 
-
-
 -- TODO IN FUTURE
 -- This table will define levels of education (e.g., primary, secondary, etc.)
 -- and will be used to associate schools with their respective education levels in the future.
-CREATE TABLE levels (
-    -- for consistency
-    level_id INTEGER PRIMARY KEY AUTOINCREMENT
-    name TEXT NOT NULL UNIQUE
+CREATE TABLE class_types (
+    class_type_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL -- np. "Oddział przedszkolny", "Szkoła podstawowa", "Liceum", "Technikum", "Szkoła branżowa", "Szkoła specja lna", "Przedszkole"
 );
-CREATE TABLE school_levels (
-    school_id INTEGER,
-    level_id INTEGER,
+
+CREATE TABLE school_classes (
+    school_class_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    school_id INTEGER NOT NULL,
+    class_type_id INTEGER NOT NULL,
+    grade INTEGER, -- numer klasy, np. 1, 2, 3, 4, 5, 6, 7, 8, 1 (LO), 2 (LO) itd., null dla przedszkola
+    description TEXT,
     FOREIGN KEY (school_id) REFERENCES schools(school_id) ON DELETE CASCADE,
-    FOREIGN KEY (level_id) REFERENCES levels(level_id) ON DELETE CASCADE,
-    PRIMARY KEY (school_id, level_id)
-);
+    FOREIGN KEY (class_type_id) REFERENCES class_types(class_type_id)
 );
 ```
