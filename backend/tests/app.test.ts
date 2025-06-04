@@ -1,9 +1,7 @@
 import request from "supertest";
 import ExpressApp from "../src/app";
 import { describe, it, expect, beforeEach, beforeAll } from "@jest/globals";
-import sqliteDbService from "../src/services/sqliteDbService";
-import { contacts } from "../src/defaultContacts";
-import { programs } from "../src/defaultPrograms";
+import sqliteDbService from "../src/services/sqlite_db.service";
 const expressAppInstance = new ExpressApp();
 const app = expressAppInstance.app;
 expressAppInstance.initMiddlewares();
@@ -21,8 +19,7 @@ Cheatsheet:
     expect(res.body).toHaveProperty("id");
 */
 
-describe("Contact API", () => {
-  let dbService: sqliteDbService;
+describe.only("Contact API", () => {
   let contactId: number;
 
   it("should create a new contact", async () => {
@@ -32,10 +29,9 @@ describe("Contact API", () => {
       email: "john.doe@example.com",
       phone: "123-456-7890",
     };
-    const res = await request(app).post("/api/contact").send(newContact);
+    const res = await request(app).post("/api/contacts").send(newContact);
 
-    console.log("Response status:", res.status);
-    console.log("Response body:", res.body);
+    console.log(JSON.stringify(res.body, null, 2));
 
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty("message", "Contact added successfully");
@@ -45,7 +41,8 @@ describe("Contact API", () => {
   });
 
   it("should return a list of contacts", async () => {
-    const res = await request(app).get("/api/contact");
+    const res = await request(app).get("/api/contacts");
+    console.log(res);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("contacts");
     expect(res.body.contacts).toBeInstanceOf(Array);
@@ -59,14 +56,14 @@ describe("Contact API", () => {
       phone: "987-654-3210",
     };
     const res = await request(app)
-      .put("/api/contact/" + contactId)
+      .put("/api/contacts/" + contactId)
       .send(updatedContact);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("message", "Contact updated successfully");
   });
 
   it("should return a contact by ID", async () => {
-    const res = await request(app).get("/api/contact/" + contactId);
+    const res = await request(app).get("/api/contacts/" + contactId);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("contactId", contactId);
     expect(res.body).toHaveProperty("firstName", "Jane");
@@ -76,7 +73,7 @@ describe("Contact API", () => {
   });
 
   it("should delete a contact by ID", async () => {
-    const res = await request(app).delete(`/api/contact/${contactId}`);
+    const res = await request(app).delete(`/api/contacts/${contactId}`);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("message", "Contact deleted successfully");
   });
@@ -84,19 +81,19 @@ describe("Contact API", () => {
   // Test for invalid contact ID
 
   it("should return 404 for invalid contact ID", async () => {
-    const res = await request(app).get("/api/contact/99999");
+    const res = await request(app).get("/api/contacts/99999");
     expect(res.status).toBe(404);
     expect(res.body).toHaveProperty("message", "Contact not found");
   });
 
   it("should return 400 for invalid contact ID format", async () => {
-    const res = await request(app).get("/api/contact/invalid-id");
+    const res = await request(app).get("/api/contacts/invalid-id");
     expect(res.status).toBe(400);
     expect(res.body).toHaveProperty("message", "Invalid contact ID");
   });
 
   it("should return 400 for missing required fields", async () => {
-    const res = await request(app).post("/api/contact").send({
+    const res = await request(app).post("/api/contacts").send({
       firstName: "Jane",
     });
     expect(res.status).toBe(400);
@@ -104,7 +101,7 @@ describe("Contact API", () => {
   });
 
   it("should return 400 for invalid contact ID format on update", async () => {
-    const res = await request(app).put("/api/contact/invalid-id").send({
+    const res = await request(app).put("/api/contacts/invalid-id").send({
       firstName: "Jane",
       lastName: "Doe",
     });
@@ -113,13 +110,13 @@ describe("Contact API", () => {
   });
 
   it("should return 400 for invalid contact ID format on delete", async () => {
-    const res = await request(app).delete("/api/contact/invalid-id");
+    const res = await request(app).delete("/api/contacts/invalid-id");
     expect(res.status).toBe(400);
     expect(res.body).toHaveProperty("message", "Invalid contact ID");
   });
 
   it("should return 404 for non-existent contact on update", async () => {
-    const res = await request(app).put("/api/contact/99999").send({
+    const res = await request(app).put("/api/contacts/99999").send({
       firstName: "Jane",
       lastName: "Doe",
     });
@@ -133,7 +130,7 @@ describe("School API", () => {
   let institutionId: number;
 
   it("should return a list of schools", async () => {
-    const res = await request(app).get("/api/school");
+    const res = await request(app).get("/api/schools");
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("schools");
     expect(res.body.schools).toBeInstanceOf(Array);
@@ -151,7 +148,7 @@ describe("School API", () => {
       director: "Test Director",
     };
 
-    const res = await request(app).post("/api/school").send(newSchool);
+    const res = await request(app).post("/api/schools").send(newSchool);
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty("message", "School created successfully");
     expect(res.body).toHaveProperty("institutionId");
@@ -162,7 +159,7 @@ describe("School API", () => {
   });
 
   it("should return a school by ID", async () => {
-    const res = await request(app).get(`/api/school/${schoolId}`);
+    const res = await request(app).get(`/api/schools/${schoolId}`);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("schoolId", schoolId);
     expect(res.body).toHaveProperty("director");
@@ -173,20 +170,20 @@ describe("School API", () => {
       director: "Updated Director",
     };
 
-    const res = await request(app).put(`/api/school/${schoolId}`).send(updatedSchool);
+    const res = await request(app).put(`/api/schools/${schoolId}`).send(updatedSchool);
     console.log(res.body);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("message", "School updated successfully");
   });
 
   it("should delete a school by ID", async () => {
-    const res = await request(app).delete(`/api/school/${schoolId}`);
+    const res = await request(app).delete(`/api/schools/${schoolId}`);
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("message", "School deleted successfully");
   });
 
   it("should return 404 for non-existent school ID", async () => {
-    const res = await request(app).get("/api/school/99999");
+    const res = await request(app).get("/api/schools/99999");
     expect(res.status).toBe(404);
     expect(res.body).toHaveProperty("message", "School not found");
   });
