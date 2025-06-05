@@ -1,5 +1,4 @@
 import { ActionTypeRepository } from "../repositories/action_type.repository";
-import { ServiceI } from "../types/index.type";
 import { ActionType } from "../../../shared/types";
 import { z } from "zod";
 
@@ -11,7 +10,15 @@ const actionTypeSchema = z.object({
 const actionTypeCreateSchema = actionTypeSchema.omit({ actionTypeId: true });
 const actionTypeUpdateSchema = actionTypeCreateSchema.partial();
 
-export class ActionTypeService implements ServiceI<ActionType, "actionTypeId"> {
+import type { CreatableI, DeletableI, UpdatableI, ReadableI } from "../types/index.type";
+
+export class ActionTypeService
+  implements
+    CreatableI<ActionType, "actionTypeId">,
+    DeletableI<ActionType, "actionTypeId">,
+    UpdatableI<ActionType, "actionTypeId">,
+    ReadableI<ActionType, "actionTypeId">
+{
   private actionTypeRepository: ActionTypeRepository;
 
   constructor(actionTypeRepository: ActionTypeRepository) {
