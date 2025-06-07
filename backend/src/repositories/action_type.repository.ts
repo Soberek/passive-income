@@ -9,7 +9,7 @@ export class ActionTypeRepository implements RepositoryI<ActionType, "actionType
   }
 
   add = (entity: Partial<ActionType>): number | null => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             INSERT INTO action_types (name)
             VALUES (?);
         `);
@@ -24,7 +24,7 @@ export class ActionTypeRepository implements RepositoryI<ActionType, "actionType
     }
   };
   getAll = (): ActionType[] | [] => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             SELECT 
                 action_type_id as actionTypeId, 
                 name
@@ -43,7 +43,7 @@ export class ActionTypeRepository implements RepositoryI<ActionType, "actionType
     }));
   };
   getById = (id: number): ActionType | null => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
                 SELECT 
                     action_type_id as actionTypeId, 
                     name
@@ -63,7 +63,7 @@ export class ActionTypeRepository implements RepositoryI<ActionType, "actionType
     };
   };
   delete = (id: number): boolean => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             DELETE FROM action_types
             WHERE action_type_id = ?;
         `);
@@ -89,7 +89,7 @@ export class ActionTypeRepository implements RepositoryI<ActionType, "actionType
       console.error("No fields to update");
       return false;
     }
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             UPDATE action_types
             SET ${fieldsToUpdate.join(", ")}
             WHERE action_type_id = ?;

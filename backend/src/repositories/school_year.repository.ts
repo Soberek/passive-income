@@ -9,7 +9,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
   }
   add = (entity: Partial<SchoolYear>): number | null => {
     const { year } = entity;
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             INSERT INTO school_year (year)
             VALUES (?)
         `);
@@ -20,7 +20,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
     return null;
   };
   getAll = (): SchoolYear[] => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             SELECT school_year_id as schoolYearId, year FROM school_years
         `);
     const result = (stmt.all() as SchoolYear[]) || [];
@@ -31,7 +31,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
     return result;
   };
   getById: (id: number) => SchoolYear | null = (id) => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             SELECT school_year_id as schoolYearId, year FROM school_years WHERE school_year_id = ?
         `);
     const result = stmt.get(id) as SchoolYear | undefined;
@@ -42,7 +42,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
     return result;
   };
   delete = (id: number): boolean => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             DELETE FROM school_years WHERE school_year_id = ?
         `);
     const result = stmt.run(id);
@@ -55,7 +55,7 @@ export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYear
       fieldsToUpdate.push("year = ?");
       values.push(entity.year);
     }
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             UPDATE school_years
             SET ${fieldsToUpdate.join(", ")}
             WHERE school_year_id = ?

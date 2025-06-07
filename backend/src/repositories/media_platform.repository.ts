@@ -9,7 +9,7 @@ export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "medi
   }
 
   add = (entity: Partial<MediaPlatform>): number | null => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             INSERT INTO media_platforms (name)
             VALUES (?);
         `);
@@ -25,7 +25,7 @@ export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "medi
   };
 
   getAll = (): MediaPlatform[] | [] => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             SELECT 
                 media_platform_id as mediaPlatformId, 
                 name
@@ -45,7 +45,7 @@ export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "medi
   };
 
   getById = (id: MediaPlatform["mediaPlatformId"]): MediaPlatform | null => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
                 SELECT 
                     media_platform_id as mediaPlatformId, 
                     name
@@ -81,7 +81,7 @@ export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "medi
       console.error("No fields to update");
       return false;
     }
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             UPDATE media_platforms
             SET ${fieldsToUpdate.join(", ")}
             WHERE media_platform_id = ?;
@@ -98,7 +98,7 @@ export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "medi
   };
 
   delete = (id: MediaPlatform["mediaPlatformId"]): boolean => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             DELETE FROM media_platforms
             WHERE media_platform_id = ?;
         `);

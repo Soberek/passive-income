@@ -14,7 +14,7 @@ export class InstitutionRepository implements InstitutionRepositoryI {
   }
 
   createInstitutionTable = () => {
-    const stmt = this.dbService.prepare(`
+    const stmt = this.dbService.getDb().prepare(`
      CREATE TABLE institutions (
         institution_id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -28,7 +28,7 @@ export class InstitutionRepository implements InstitutionRepositoryI {
     );
     `);
 
-    // Check if the statement was prepared successfully
+    // Check if the statement was getDb().prepared successfully
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return;
@@ -44,7 +44,7 @@ export class InstitutionRepository implements InstitutionRepositoryI {
   };
 
   getAll = (): Institution[] | [] => {
-    const stmt = this.dbService.prepare(`
+    const stmt = this.dbService.getDb().prepare(`
       SELECT 
         institution_id as institutionId, 
         name, 
@@ -66,11 +66,13 @@ export class InstitutionRepository implements InstitutionRepositoryI {
   };
 
   add = (entity: Partial<Institution>): number | null => {
-    const stmt = this.dbService.prepare(
-      "INSERT INTO institutions (name, address, postal_code, municipality, city, created_at, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-    );
+    const stmt = this.dbService
+      .getDb()
+      .prepare(
+        "INSERT INTO institutions (name, address, postal_code, municipality, city, created_at, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+      );
 
-    // Check if the statement was prepared successfully
+    // Check if the statement was getDb().prepared successfully
     // and handle the error if it wasn't
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -86,7 +88,7 @@ export class InstitutionRepository implements InstitutionRepositoryI {
   };
 
   getById = (id: Institution["institutionId"]): Institution | null => {
-    const stmt = this.dbService.prepare("SELECT * FROM institutions WHERE institution_id = ?");
+    const stmt = this.dbService.getDb().prepare("SELECT * FROM institutions WHERE institution_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return null;
@@ -97,7 +99,7 @@ export class InstitutionRepository implements InstitutionRepositoryI {
   };
 
   delete = (id: Institution["institutionId"]): boolean => {
-    const stmt = this.dbService.prepare("DELETE FROM institutions WHERE institution_id = ?");
+    const stmt = this.dbService.getDb().prepare("DELETE FROM institutions WHERE institution_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
@@ -158,7 +160,7 @@ export class InstitutionRepository implements InstitutionRepositoryI {
     // Add the ID to the values array
     valuesToUpdate.push(id);
 
-    const stmt = this.dbService.prepare(sql);
+    const stmt = this.dbService.getDb().prepare(sql);
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;

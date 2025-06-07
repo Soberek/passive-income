@@ -23,7 +23,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
       mediaPlatformId,
     } = entity;
 
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
       INSERT INTO tasks (
         reference_number, task_number, institution_id, program_id, action_type_id, description, date, actions_count, audience_count, media_platform_id
       )
@@ -50,13 +50,13 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
   };
 
   getAll = (): Task[] => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
       SELECT task_id as taskId, reference_number as referenceNumber, task_number as taskNumber, institution_id as institutionId, program_id as programId, action_type_id as actionTypeId, description, date, actions_count as actionsCount, audience_count as audienceCount, media_platform_id as mediaPlatformId
       FROM tasks
     `);
 
     if (!stmt || !stmt.all || !Array.isArray(stmt.all())) {
-      console.error("Failed to prepare statement or execute query");
+      console.error("Failed to getDb().prepare statement or execute query");
       return [];
     }
 
@@ -69,7 +69,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
   };
 
   getById = (id: Task["taskId"]): Task | null => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
       SELECT task_id as taskId, reference_number as referenceNumber, task_number as taskNumber, institution_id as institutionId, program_id as programId, action_type_id as actionTypeId, description, date, actions_count as actionsCount, audience_count as audienceCount, media_platform_id as mediaPlatformId
       FROM tasks
       WHERE task_id = ?
@@ -83,7 +83,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
   };
 
   delete = (id: Task["taskId"]): boolean => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
       DELETE FROM tasks WHERE task_id = ?
     `);
     const result = stmt.run(id);
@@ -139,7 +139,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
       return false;
     }
 
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
       UPDATE tasks
       SET ${fieldsToUpdate.join(", ")}
       WHERE task_id = ?
@@ -152,7 +152,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
   };
 
   getByMonthAndYear = (month: number, year: number): Task[] => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
       SELECT task_id as taskId, reference_number as referenceNumber, task_number as taskNumber, institution_id as institutionId, program_id as programId, action_type_id as actionTypeId, description, date, actions_count as actionsCount, audience_count as audienceCount, media_platform_id as mediaPlatformId
       FROM tasks
       WHERE strftime('%m', date) = ? AND strftime('%Y', date) = ?
@@ -166,7 +166,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
   };
 
   getByFromMonthToMonthAndYear = (fromMonth: number, toMonth: number, year: number): Task[] => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
       SELECT task_id as taskId, reference_number as referenceNumber, task_number as taskNumber, institution_id as institutionId, program_id as programId, action_type_id as actionTypeId, description, date, actions_count as actionsCount, audience_count as audienceCount, media_platform_id as mediaPlatformId
         FROM tasks
         WHERE strftime('%Y', date) = ? AND strftime('%m', date) BETWEEN ? AND ?
@@ -186,7 +186,7 @@ export class TaskRepository implements RepositoryI<Task, "taskId"> {
   };
 
   getAllTasksThatHaveMediaPlatform = (): Task[] => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
       SELECT task_id as taskId, reference_number as referenceNumber, task_number as taskNumber, institution_id as institutionId, program_id as programId, action_type_id as actionTypeId, description, date, actions_count as actionsCount, audience_count as audienceCount, media_platform_id as mediaPlatformId
       FROM tasks
       WHERE media_platform_id IS NOT NULL

@@ -11,7 +11,7 @@ export class MaterialRepository implements RepositoryI<Material, "materialId"> {
 
   add = (entity: Partial<Material>): number | null => {
     const { name, type, description } = entity;
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             INSERT INTO material (name, type, description)
             VALUES (?, ?, ?)
         `);
@@ -23,12 +23,12 @@ export class MaterialRepository implements RepositoryI<Material, "materialId"> {
   };
 
   getAll = (): Material[] | [] => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
                 SELECT material_id as materialId, name, type, description FROM material
             `);
 
     if (!stmt || !stmt.all) {
-      console.error("Failed to prepare statement or execute query");
+      console.error("Failed to getDb().prepare statement or execute query");
       return [];
     }
 
@@ -41,7 +41,7 @@ export class MaterialRepository implements RepositoryI<Material, "materialId"> {
   };
 
   getById = (id: Material["materialId"]): Material | null => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             SELECT material_id as materialId, name, type, description FROM material WHERE material_id = ?
         `);
     const result = stmt.get(id) as Material | undefined;
@@ -53,7 +53,7 @@ export class MaterialRepository implements RepositoryI<Material, "materialId"> {
   };
 
   delete = (id: Material["materialId"]): boolean => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
                 DELETE FROM material WHERE material_id = ?
             `);
     const result = stmt.run(id);
@@ -81,7 +81,7 @@ export class MaterialRepository implements RepositoryI<Material, "materialId"> {
       return false; // No fields to update
     }
 
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
                 UPDATE material SET ${fieldsToUpdate.join(", ")} WHERE material_id = ?
             `);
     values.push(id);
@@ -91,7 +91,7 @@ export class MaterialRepository implements RepositoryI<Material, "materialId"> {
   };
 
   getByType = (type: Material["type"]): Material[] | [] => {
-    const stmt = this.db.prepare(`
+    const stmt = this.db.getDb().prepare(`
             SELECT material_id as materialId, name, type, description FROM material WHERE type = ?
         `);
     const result = stmt.all(type) as Material[] | undefined;

@@ -9,7 +9,7 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
   }
 
   getAll = (): School[] | [] => {
-    const stmt = this.dbService.prepare("SELECT school_id as schoolId, director FROM schools");
+    const stmt = this.dbService.getDb().prepare("SELECT school_id as schoolId, director FROM schools");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return [];
@@ -23,7 +23,9 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
   };
 
   getById = (id: School["schoolId"]): School | null => {
-    const stmt = this.dbService.prepare("SELECT school_id as schoolId, director FROM schools WHERE school_id = ?");
+    const stmt = this.dbService
+      .getDb()
+      .prepare("SELECT school_id as schoolId, director FROM schools WHERE school_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return null;
@@ -44,7 +46,7 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
   };
 
   add = (entity: Partial<School>) => {
-    const stmt = this.dbService.prepare("INSERT INTO schools (institution_id, director) VALUES (?, ?)");
+    const stmt = this.dbService.getDb().prepare("INSERT INTO schools (institution_id, director) VALUES (?, ?)");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return -1;
@@ -58,7 +60,7 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
   };
 
   delete = (id: School["schoolId"]): boolean => {
-    const stmt = this.dbService.prepare("DELETE FROM schools WHERE school_id = ?");
+    const stmt = this.dbService.getDb().prepare("DELETE FROM schools WHERE school_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
@@ -94,7 +96,7 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
     }
     const sql = `UPDATE schools SET ${fieldsToUpdate.join(", ")} WHERE school_id = ?`;
     valuesToUpdate.push(schoolId);
-    const stmt = this.dbService.prepare(sql);
+    const stmt = this.dbService.getDb().prepare(sql);
 
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -113,7 +115,9 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
   };
 
   getSchoolByInstitutionId = (institutionId: Institution["institutionId"]): School | null => {
-    const stmt = this.dbService.prepare("SELECT school_id as schoolId, director FROM schools WHERE institution_id = ?");
+    const stmt = this.dbService
+      .getDb()
+      .prepare("SELECT school_id as schoolId, director FROM schools WHERE institution_id = ?");
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return null;
@@ -127,7 +131,7 @@ export class SchoolRepository implements RepositoryI<School, "schoolId"> {
   };
 
   getSchoolByIdWithInstitutionData = (id: School["schoolId"]): School | null => {
-    const stmt = this.dbService.prepare(
+    const stmt = this.dbService.getDb().prepare(
       `SELECT school.school_id AS schoolId, institution.institution_id AS institutionId, school.director, institution.name, institution.address, institution.city, institution.postalCode, institution.phone, institution.email, institution.website, institution.municipality
          FROM schools
          JOIN institution ON school.institution_id = institution.institution_id
