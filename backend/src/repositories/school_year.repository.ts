@@ -1,8 +1,19 @@
-import { RepositoryI } from "../types/index.type";
 import sqliteDbService from "../services/sqlite_db.service";
-import { SchoolYear } from "../../../shared/types";
+import type { SchoolYear } from "../../../shared/types";
 
-export class SchoolYearRepository implements RepositoryI<SchoolYear, "schoolYearId"> {
+import type {
+  CreatableIRepositoryI,
+  ReadableRepositoryI,
+  UpdatableRepositoryI,
+  DeletableRepositoryI,
+} from "../types/index.type";
+export class SchoolYearRepository
+  implements
+    CreatableIRepositoryI<SchoolYear, "schoolYearId">,
+    ReadableRepositoryI<SchoolYear, "schoolYearId">,
+    UpdatableRepositoryI<SchoolYear, "schoolYearId">,
+    DeletableRepositoryI<SchoolYear, "schoolYearId">
+{
   private db: sqliteDbService;
   constructor(db: sqliteDbService) {
     this.db = db;

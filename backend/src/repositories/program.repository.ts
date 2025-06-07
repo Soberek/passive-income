@@ -1,8 +1,17 @@
 import sqliteDbService from "../services/sqlite_db.service";
-import { Program } from "../../../shared/types";
-import { RepositoryI } from "../types/index.type";
+import type { Program } from "../../../shared/types";
+import type {
+  CreatableIRepositoryI,
+  ReadableRepositoryI,
+  UpdatableRepositoryI,
+  DeletableRepositoryI,
+} from "../types/index.type";
 
-interface ProgramRepositoryI extends RepositoryI<Program, "programId"> {}
+interface ProgramRepositoryI
+  extends CreatableIRepositoryI<Program, "programId">,
+    ReadableRepositoryI<Program, "programId">,
+    UpdatableRepositoryI<Program, "programId">,
+    DeletableRepositoryI<Program, "programId"> {}
 
 export class ProgramRepository implements ProgramRepositoryI {
   private dbService: sqliteDbService;

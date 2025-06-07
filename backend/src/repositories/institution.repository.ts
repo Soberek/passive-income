@@ -1,8 +1,18 @@
 import sqliteDbService from "../services/sqlite_db.service";
 import { Institution } from "../../../shared/types";
-import { RepositoryI } from "../types/index.type";
 
-interface InstitutionRepositoryI extends RepositoryI<Institution, "institutionId"> {
+import type {
+  CreatableIRepositoryI,
+  ReadableRepositoryI,
+  UpdatableRepositoryI,
+  DeletableRepositoryI,
+} from "../types/index.type";
+
+interface InstitutionRepositoryI
+  extends CreatableIRepositoryI<Institution, "institutionId">,
+    ReadableRepositoryI<Institution, "institutionId">,
+    UpdatableRepositoryI<Institution, "institutionId">,
+    DeletableRepositoryI<Institution, "institutionId"> {
   // addSchoolInstitution: (entity: Partial<Institution>) => number | null;
 }
 export class InstitutionRepository implements InstitutionRepositoryI {

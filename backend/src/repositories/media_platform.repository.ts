@@ -1,8 +1,19 @@
 import sqliteDbService from "../services/sqlite_db.service";
-import { RepositoryI } from "../types/index.type";
-import { MediaPlatform } from "../../../shared/types";
+import type {
+  CreatableIRepositoryI,
+  ReadableRepositoryI,
+  UpdatableRepositoryI,
+  DeletableRepositoryI,
+} from "../types/index.type";
+import type { MediaPlatform } from "../../../shared/types";
 
-export class MediaPlatformRepository implements RepositoryI<MediaPlatform, "mediaPlatformId"> {
+export class MediaPlatformRepository
+  implements
+    CreatableIRepositoryI<MediaPlatform, "mediaPlatformId">,
+    ReadableRepositoryI<MediaPlatform, "mediaPlatformId">,
+    UpdatableRepositoryI<MediaPlatform, "mediaPlatformId">,
+    DeletableRepositoryI<MediaPlatform, "mediaPlatformId">
+{
   private db: sqliteDbService;
   constructor(sqliteDbService: sqliteDbService) {
     this.db = sqliteDbService;

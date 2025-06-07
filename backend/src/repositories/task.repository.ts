@@ -1,8 +1,19 @@
-import { Task } from "../../../shared/types";
-import { RepositoryI } from "../types/index.type";
+import type { Task } from "../../../shared/types";
+import type {
+  CreatableIRepositoryI,
+  ReadableRepositoryI,
+  UpdatableRepositoryI,
+  DeletableRepositoryI,
+} from "../types/index.type";
 import sqliteDbService from "../services/sqlite_db.service";
 
-export class TaskRepository implements RepositoryI<Task, "taskId"> {
+export class TaskRepository
+  implements
+    CreatableIRepositoryI<Task, "taskId">,
+    ReadableRepositoryI<Task, "taskId">,
+    UpdatableRepositoryI<Task, "taskId">,
+    DeletableRepositoryI<Task, "taskId">
+{
   private db: sqliteDbService;
 
   constructor(db: sqliteDbService) {

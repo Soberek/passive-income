@@ -1,8 +1,20 @@
-import { RepositoryI } from "../types/index.type";
 import { ActionType } from "../../../shared/types";
 import sqliteDbService from "../services/sqlite_db.service";
 
-export class ActionTypeRepository implements RepositoryI<ActionType, "actionTypeId"> {
+import type {
+  CreatableIRepositoryI,
+  ReadableRepositoryI,
+  UpdatableRepositoryI,
+  DeletableRepositoryI,
+} from "../types/index.type";
+
+export class ActionTypeRepository
+  implements
+    CreatableIRepositoryI<ActionType, "actionTypeId">,
+    ReadableRepositoryI<ActionType, "actionTypeId">,
+    UpdatableRepositoryI<ActionType, "actionTypeId">,
+    DeletableRepositoryI<ActionType, "actionTypeId">
+{
   private db: sqliteDbService;
   constructor(sqliteDbService: sqliteDbService) {
     this.db = sqliteDbService;

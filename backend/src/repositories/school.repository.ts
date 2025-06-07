@@ -1,8 +1,19 @@
 import sqliteDbService from "../services/sqlite_db.service";
-import { School, Institution } from "../../../shared/types";
-import { RepositoryI } from "../types/index.type";
+import type { School, Institution } from "../../../shared/types";
+import type {
+  CreatableIRepositoryI,
+  ReadableRepositoryI,
+  UpdatableRepositoryI,
+  DeletableRepositoryI,
+} from "../types/index.type";
 
-export class SchoolRepository implements RepositoryI<School, "schoolId"> {
+export class SchoolRepository
+  implements
+    CreatableIRepositoryI<School, "schoolId">,
+    ReadableRepositoryI<School, "schoolId">,
+    UpdatableRepositoryI<School, "schoolId">,
+    DeletableRepositoryI<School, "schoolId">
+{
   private dbService: sqliteDbService;
   constructor() {
     this.dbService = sqliteDbService.getInstance();

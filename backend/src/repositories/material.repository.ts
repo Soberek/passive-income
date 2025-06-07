@@ -1,8 +1,19 @@
-import { RepositoryI } from "../types/index.type";
+import type {
+  CreatableIRepositoryI,
+  ReadableRepositoryI,
+  UpdatableRepositoryI,
+  DeletableRepositoryI,
+} from "../types/index.type";
 import { Material } from "../../../shared/types";
 import sqliteDbService from "../services/sqlite_db.service";
 
-export class MaterialRepository implements RepositoryI<Material, "materialId"> {
+export class MaterialRepository
+  implements
+    CreatableIRepositoryI<Material, "materialId">,
+    ReadableRepositoryI<Material, "materialId">,
+    UpdatableRepositoryI<Material, "materialId">,
+    DeletableRepositoryI<Material, "materialId">
+{
   private db: sqliteDbService;
 
   constructor(db: sqliteDbService) {

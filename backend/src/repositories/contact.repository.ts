@@ -2,8 +2,6 @@ import sqliteDbService from "../services/sqlite_db.service";
 
 import { Contact } from "../../../shared/types";
 
-import { RepositoryI } from "../types/index.type";
-
 import type {
   CreatableIRepositoryI,
   ReadableRepositoryI,
