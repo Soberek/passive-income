@@ -11,14 +11,35 @@ import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import NavDrawer from "./Navbar";
+import { useAuth } from "../auth/useAuth";
+import { useNavigate } from "react-router";
 
 export default function MenuAppBar() {
-  const [auth, setAuth] = React.useState(true);
+  // const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
+  const { login, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAuth(event.target.checked);
+    // setAuth(event.target.checked);
+    if (event.target.checked) {
+      login();
+    } else {
+      logout();
+    }
   };
+
+  React.useEffect(() => {
+    // Check if the user is authenticated on component mount
+    if (isAuthenticated) {
+      console.log("User is authenticated");
+      navigate("/");
+    } else {
+      console.log("User is not authenticated");
+      navigate("/login", { replace: true });
+    }
+  }, [isAuthenticated]);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -38,8 +59,8 @@ export default function MenuAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <FormGroup>
         <FormControlLabel
-          control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
-          label={auth ? "Logout" : "Login"}
+          control={<Switch checked={isAuthenticated} onChange={handleChange} aria-label="login switch" />}
+          label={isAuthenticated ? "Logout" : "Login"}
         />
       </FormGroup>
       <AppBar position="static">
@@ -57,7 +78,7 @@ export default function MenuAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Czy się stoi, czy się leży, to wypłata się należy
           </Typography>
-          {auth && (
+          {isAuthenticated && (
             <div>
               <IconButton
                 size="large"
