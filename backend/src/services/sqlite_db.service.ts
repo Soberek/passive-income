@@ -6,9 +6,6 @@ const DB_PATH = path.resolve(__dirname, "../../sqliteDb.db");
 
 import type { DatabaseI } from "../types/database.type";
 
-// sqlite DbService is a singleton class that provides a connection to a SQLite database using better-sqlite3.
-// It implements the DatabaseServiceI interface, which defines methods for interacting with the database.
-
 export class SqliteDbService implements DatabaseI {
   private static instance: SqliteDbService | null = null;
   private db: SqliteDatabase.Database;
