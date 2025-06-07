@@ -11,6 +11,7 @@ import programRouter from "./routes/program.router";
 import { schoolYearRouter } from "./routes/school_year.router";
 import { actionTypeRouter } from "./routes/action_type.router";
 import { mediaPlatformRouter } from "./routes/media_platform.router";
+import programParticipationRouter from "./routes/program_participation_router";
 
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
@@ -105,6 +106,8 @@ export default class ExpressApp {
     this.app.use("/api", actionTypeRouter);
 
     this.app.use("/api", mediaPlatformRouter);
+
+    this.app.use("/api", programParticipationRouter);
   }
 
   // Initialize error handling
