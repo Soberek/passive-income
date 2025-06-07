@@ -42,7 +42,7 @@ export default class schoolController {
 
       // 1. Step 1: Create institution
 
-      const newInstitutionSchool = this.schoolService.addInstitutionSchool({
+      const newInstitutionSchool = await this.schoolService.addInstitutionSchool({
         name,
         address,
         postalCode,
