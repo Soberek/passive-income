@@ -1,4 +1,4 @@
-import { ServiceI } from "../types/index.type";
+import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../types/index.type";
 import { MediaPlatform } from "../../../shared/types";
 import { MediaPlatformRepository } from "../repositories/media_platform.repository";
 import { z } from "zod";
@@ -7,7 +7,13 @@ const mediaPlatformSchema = z.object({
   mediaPlatformId: z.number().min(1).optional(),
   name: z.string().min(2).max(100),
 });
-export class MediaPlatformService implements ServiceI<MediaPlatform, "mediaPlatformId"> {
+export class MediaPlatformService
+  implements
+    CreatableServiceI<MediaPlatform, "mediaPlatformId">,
+    DeletableServiceI<MediaPlatform, "mediaPlatformId">,
+    UpdatableServiceI<MediaPlatform, "mediaPlatformId">,
+    ReadableServiceI<MediaPlatform, "mediaPlatformId">
+{
   private mediaPlatformRepository: MediaPlatformRepository;
 
   constructor(mediaPlatformRepository: MediaPlatformRepository) {

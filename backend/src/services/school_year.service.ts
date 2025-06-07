@@ -1,4 +1,4 @@
-import { ServiceI } from "../types/index.type";
+import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../types/index.type";
 import { SchoolYearRepository } from "../repositories/school_year.repository";
 import { SchoolYear } from "../../../shared/types";
 import { z } from "zod";
@@ -7,7 +7,13 @@ const schoolYearSchema = z.object({
   schoolYearId: z.number().min(1).optional(),
   year: z.string().min(4).max(4),
 });
-export class SchoolYearService implements ServiceI<SchoolYear, "schoolYearId"> {
+export class SchoolYearService
+  implements
+    CreatableServiceI<SchoolYear, "schoolYearId">,
+    DeletableServiceI<SchoolYear, "schoolYearId">,
+    UpdatableServiceI<SchoolYear, "schoolYearId">,
+    ReadableServiceI<SchoolYear, "schoolYearId">
+{
   private schoolYearRepo: SchoolYearRepository;
 
   constructor(schoolYearRepo: SchoolYearRepository) {

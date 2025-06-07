@@ -1,7 +1,7 @@
 import { Program } from "../../../shared/types";
 import { ProgramModel } from "../models/program.model";
 import { ProgramRepository } from "../repositories/program.repository";
-import { ServiceI } from "../types/index.type";
+import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../types/index.type";
 import { z } from "zod";
 
 const programSchema = z.object({
@@ -11,7 +11,13 @@ const programSchema = z.object({
   mediaPlatformId: z.number().min(1),
   actionTypeId: z.number().min(1),
 });
-export class ProgramService implements ServiceI<Program, "programId"> {
+export class ProgramService
+  implements
+    CreatableServiceI<Program, "programId">,
+    DeletableServiceI<Program, "programId">,
+    UpdatableServiceI<Program, "programId">,
+    ReadableServiceI<Program, "programId">
+{
   constructor(private programRepository: ProgramRepository) {}
 
   getAll = (): Program[] => {

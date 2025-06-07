@@ -1,6 +1,5 @@
 import { TaskRepository } from "../repositories/task.repository";
-
-import { ServiceI } from "../types/index.type";
+import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../types/index.type";
 import { Task } from "../../../shared/types";
 import { z } from "zod";
 
@@ -22,7 +21,13 @@ const TaskSchema = z.object({
 const TaskCreateSchema = TaskSchema.omit({ taskId: true, createdAt: true });
 const TaskUpdateSchema = TaskCreateSchema.partial();
 
-export class TaskService implements ServiceI<Task, "taskId"> {
+export class TaskService
+  implements
+    CreatableServiceI<Task, "taskId">,
+    DeletableServiceI<Task, "taskId">,
+    UpdatableServiceI<Task, "taskId">,
+    ReadableServiceI<Task, "taskId">
+{
   private repository: TaskRepository;
 
   constructor(repository: TaskRepository) {
