@@ -4,10 +4,20 @@ import { Contact } from "../../../shared/types";
 
 import { RepositoryI } from "../types/index.type";
 
-interface ContactRepositoryI extends RepositoryI<Contact, "contactId"> {
-  bulkInsert: (contacts: Contact[]) => boolean;
-}
-export class ContactRepository implements ContactRepositoryI {
+import type {
+  CreatableIRepositoryI,
+  ReadableRepositoryI,
+  UpdatableRepositoryI,
+  DeletableRepositoryI,
+} from "../types/index.type";
+
+export class ContactRepository
+  implements
+    CreatableIRepositoryI<Contact, "contactId">,
+    ReadableRepositoryI<Contact, "contactId">,
+    UpdatableRepositoryI<Contact, "contactId">,
+    DeletableRepositoryI<Contact, "contactId">
+{
   private dbService: sqliteDbService;
 
   constructor(dbService: sqliteDbService) {
@@ -15,15 +25,15 @@ export class ContactRepository implements ContactRepositoryI {
   }
 
   createContactTable = () => {
-    const stmt = this.dbService.prepare(`
-      CREATE TABLE IF NOT EXISTS contacts (
-        contact_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        first_name TEXT NOT NULL,
-        last_name TEXT NOT NULL,
-        email TEXT,
-        phone TEXT
-      )
-    `);
+    const stmt = this.dbService.getDb().prepare(`
+        CREATE TABLE IF NOT EXISTS contacts (
+          contact_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          first_name TEXT NOT NULL,
+          last_name TEXT NOT NULL,
+          email TEXT,
+          phone TEXT
+        )
+      `);
 
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -33,9 +43,11 @@ export class ContactRepository implements ContactRepositoryI {
   };
 
   public getAll = (): Contact[] | [] => {
-    const stmt = this.dbService.prepare(
-      "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts"
-    );
+    const stmt = this.dbService
+      .getDb()
+      .prepare(
+        "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts"
+      );
 
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -53,9 +65,9 @@ export class ContactRepository implements ContactRepositoryI {
   };
 
   public add = (entity: Partial<Contact>): number | null => {
-    const stmt = this.dbService.prepare(
-      "INSERT INTO contacts (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)"
-    );
+    const stmt = this.dbService
+      .getDb()
+      .prepare("INSERT INTO contacts (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)");
 
     // Check if the statement was prepared successfully
     // and handle the error if it wasn't
@@ -73,9 +85,11 @@ export class ContactRepository implements ContactRepositoryI {
   };
 
   public getById = (id: number): Contact | null => {
-    const stmt = this.dbService.prepare(
-      "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts WHERE contact_id = ?"
-    );
+    const stmt = this.dbService
+      .getDb()
+      .prepare(
+        "SELECT contact_id as contactId, first_name as firstName, last_name as lastName, email, phone FROM contacts WHERE contact_id = ?"
+      );
 
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -122,7 +136,7 @@ export class ContactRepository implements ContactRepositoryI {
     }
     const sql = `UPDATE contacts SET ${fieldsToUpdate.join(", ")} WHERE contact_id = ?`;
 
-    const stmt = this.dbService.prepare(sql);
+    const stmt = this.dbService.getDb().prepare(sql);
 
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -140,7 +154,7 @@ export class ContactRepository implements ContactRepositoryI {
   };
 
   public delete = (id: number): boolean => {
-    const stmt = this.dbService.prepare("DELETE FROM contacts WHERE contact_id = ?");
+    const stmt = this.dbService.getDb().prepare("DELETE FROM contacts WHERE contact_id = ?");
 
     if (!stmt) {
       console.error("Error preparing SQL statement");
@@ -159,23 +173,21 @@ export class ContactRepository implements ContactRepositoryI {
   };
 
   public bulkInsert = (contacts: Omit<Contact, "contactId">[]): boolean => {
-    const stmt = this.dbService.prepare(
-      "INSERT INTO contacts (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)"
-    );
+    const stmt = this.dbService
+      .getDb()
+      .prepare("INSERT INTO contacts (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)");
 
     if (!stmt) {
       console.error("Error preparing SQL statement");
       return false;
     }
-
-    const transaction = this.dbService.transaction(() => {
-      for (const contact of contacts) {
-        stmt.run(contact.firstName, contact.lastName, contact.email, contact.phone);
-      }
-    });
-
     try {
-      transaction();
+      this.dbService.transaction(() => {
+        for (const contact of contacts) {
+          stmt.run(contact.firstName, contact.lastName, contact.email, contact.phone);
+        }
+      });
+
       return true;
     } catch (error) {
       console.error("Error inserting contacts in bulk", error);
