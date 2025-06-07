@@ -4,11 +4,17 @@ import { useFetch } from "../../hooks/useFetch";
 import { Institution, Program, SchoolYear } from "../../../../shared/types";
 
 export const SchoolProgramParticipation = () => {
+  type FormValues = {
+    school: number | null;
+    program: number | null;
+    schoolYear: number | null;
+  };
+
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormValues>();
 
   const {
     data: institutionsData,
@@ -28,33 +34,34 @@ export const SchoolProgramParticipation = () => {
     error: schoolYearsError,
   } = useFetch<SchoolYear[]>("http://localhost:3000/api/school-years");
 
-  const onSubmit = (data: any) => {
-    // "data.institution" będzie zawierać tylko institution_id
-    const postData = fetch("http://localhost:3000/api/school-program-participation", {
+  const onSubmit = async (data: FormValues) => {
+    // Ensure all fields are selected (not null)
+    if (data.school === null || data.program === null || data.schoolYear === null) {
+      console.error("Wszystkie pola muszą być wybrane.");
+      return;
+    }
+    console.log(data);
+
+    const postData = await fetch("http://localhost:3000/api/school-program-participation", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        institutionId: data.institution,
+        schoolId: data.school,
         programId: data.program,
         schoolYearId: data.schoolYear,
       }),
     });
-    postData
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to add participation");
-        }
-        return response.json();
-      })
-      .then(() => {
-        // Reset form or show success message
-        console.log("Uczestnictwo dodane pomyślnie");
-      })
-      .catch((error) => {
-        console.error("Błąd podczas dodawania uczestnictwa:", error);
-      });
+
+    if (!postData.ok) {
+      const errorData = await postData.text();
+      console.error("Błąd podczas dodawania uczestnictwa:", errorData);
+      return;
+    }
+
+    const responseData = await postData.json();
+    console.log("Uczestnictwo dodane pomyślnie:", responseData);
   };
   if (institutionsError) {
     return <Typography color="error">Błąd ładowania szkół: {institutionsError.message}</Typography>;
@@ -75,7 +82,7 @@ export const SchoolProgramParticipation = () => {
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
-          name="institution"
+          name="school"
           control={control}
           defaultValue={null}
           rules={{ required: "Wybierz szkołę" }}
@@ -87,7 +94,7 @@ export const SchoolProgramParticipation = () => {
               onChange={(_, value) => field.onChange(value ? value.institutionId : null)}
               value={institutionsData?.find((i) => i.institutionId === field.value) || null}
               renderInput={(params) => (
-                <TextField {...params} label="Wybierz szkołę" placeholder="Wybierz..." error={!!errors.institution} />
+                <TextField {...params} label="Wybierz szkołę" placeholder="Wybierz..." error={!!errors.school} />
               )}
             />
           )}
