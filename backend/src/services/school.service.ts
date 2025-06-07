@@ -36,9 +36,9 @@ class SchoolService {
   // first add the institution and then add the school
   // if i want to add a school i need to add institution first
 
-  addInstitutionSchool = (
+  addInstitutionSchool = async (
     schoolInstitutionData: Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">
-  ): { institutionId: number; schoolId: number } => {
+  ): Promise<{ institutionId: number; schoolId: number }> => {
     const institution: Omit<Institution, "institutionId"> = {
       name: schoolInstitutionData.name,
       address: schoolInstitutionData.address,
@@ -76,7 +76,7 @@ class SchoolService {
         return { institutionId: newInstitutionId, schoolId };
       });
 
-      return transaction;
+      return await transaction;
     } catch (error) {
       throw new Error(`Error adding institution and school: ${error instanceof Error ? error.message : String(error)}`);
     }
