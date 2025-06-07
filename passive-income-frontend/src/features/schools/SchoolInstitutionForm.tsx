@@ -13,6 +13,7 @@ import {
   Typography,
   Snackbar,
   Alert,
+  Checkbox,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { Institution, School } from "../../../../shared/types";
@@ -22,8 +23,12 @@ import { Institution, School } from "../../../../shared/types";
 // Define a type for form submission
 
 interface SchoolInstitutionFormProps {
-  onSubmit: (data: Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">) => Promise<void>;
-  initialValues?: Partial<Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">>;
+  onSubmit: (
+    data: Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId"> & { isSchool: boolean }
+  ) => Promise<void>;
+  initialValues?: Partial<
+    Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId"> & { isSchool: boolean }
+  >;
 }
 
 const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit, initialValues = {} }) => {
@@ -36,27 +41,32 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">>({
-    defaultValues: {
-      // Institution fields
-      name: initialValues.name || "",
-      address: initialValues.address || "",
-      postalCode: initialValues.postalCode || "",
-      municipality: initialValues.municipality || "",
-      city: initialValues.city || "",
-      email: initialValues.email || "",
-      phone: initialValues.phone || "",
+  } = useForm<Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId"> & { isSchool?: boolean }>(
+    {
+      defaultValues: {
+        // Institution fields
+        isSchool: false,
+        name: initialValues.name || "",
+        address: initialValues.address || "",
+        postalCode: initialValues.postalCode || "",
+        municipality: initialValues.municipality || "",
+        city: initialValues.city || "",
+        email: initialValues.email || "",
+        phone: initialValues.phone || "",
 
-      // School fields
-      director: initialValues.director || "",
-    },
-  });
+        // School fields
+        director: initialValues.director || "",
+      },
+    }
+  );
 
   const processSubmit = async (
-    data: Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId">
+    data: Omit<Institution, "institutionId"> & Omit<School, "schoolId" | "institutionId"> & { isSchool: boolean }
   ) => {
     setIsSubmitting(true);
     setSubmitError(null);
+
+    console.log("Submitting data:", data);
 
     try {
       await onSubmit(data);
@@ -81,7 +91,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
           Create New School
         </Typography>
 
-        <form onSubmit={handleSubmit(processSubmit)}>
+        <form onSubmit={handleSubmit((data) => processSubmit({ ...data, isSchool: data.isSchool ?? false }))}>
           <Card sx={{ mb: 3 }}>
             <CardContent>
               <Typography variant="h5" component="h2" color="primary" gutterBottom>
@@ -92,6 +102,21 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
               </Typography>
 
               <Grid container spacing={2}>
+                <Grid size={12}>
+                  <Controller
+                    name="isSchool"
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox
+                        {...field}
+                        color="primary"
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        sx={{ mb: 2 }}
+                      />
+                    )}
+                  />
+                </Grid>
                 <Grid size={12}>
                   <Controller
                     name="name"
