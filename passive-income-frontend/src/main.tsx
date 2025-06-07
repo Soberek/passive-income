@@ -2,12 +2,16 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
-import { createBrowserRouter, RouterProvider, useNavigate } from "react-router";
+import { createBrowserRouter, RouterProvider, useNavigate, Navigate, useLocation, NavLink } from "react-router";
 import SchoolsPage from "./features/schools/School.tsx";
 import { Contact } from "./features/contacts/Contact.tsx";
 import IzrzForm from "./features/Izrz/Izrz.tsx";
 import { Tasks } from "./features/tasks/Task.tsx";
 import { SchoolProgramParticipation } from "./features/school-program-participation/SchoolProgramParticipation.tsx";
+import { AuthProvider } from "./auth/auth.provider.tsx";
+import { useAuth } from "./auth/useAuth.ts";
+import { LoginPage } from "./features/login/Login.tsx";
+import { Home } from "./features/home/Home.tsx";
 
 const ErrorElement = () => {
   const navigate = useNavigate();
@@ -21,35 +25,73 @@ const ErrorElement = () => {
   );
 };
 
+function RequireAuth({ children }: { children: React.ReactNode }) {
+  let location = useLocation();
+  const { isAuthenticated, login, logout } = useAuth();
+
+  if (!isAuthenticated) {
+    // Jeśli użytkownik nie jest zalogowany, przekieruj na login
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  // Jeśli jest zalogowany, renderuj dzieci (chronioną zawartość)
+  return children;
+}
+
 const router = createBrowserRouter([
   {
-    // layout
+    // public routes
+    path: "/",
     element: <App />,
     errorElement: <div>Oops! Something went wrong.</div>,
     children: [
       {
         path: "/",
-        element: <div>Home</div>,
+        element: <Home />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
       },
       {
         path: "/schools",
-        element: <SchoolsPage />,
+        element: (
+          <RequireAuth>
+            <SchoolsPage />
+          </RequireAuth>
+        ),
       },
       {
         path: "/contacts",
-        element: <Contact />,
+        element: (
+          <RequireAuth>
+            <Contact />
+          </RequireAuth>
+        ),
       },
       {
         path: "/izrz",
-        element: <IzrzForm />,
+        element: (
+          <RequireAuth>
+            <IzrzForm />
+          </RequireAuth>
+        ),
       },
       {
         path: "/zadania",
-        element: <Tasks />,
+        element: (
+          <RequireAuth>
+            <Tasks />
+          </RequireAuth>
+        ),
       },
       {
         path: "/uczestnictwo-szkół-w-programach",
-        element: <SchoolProgramParticipation />,
+        element: (
+          <RequireAuth>
+            <SchoolProgramParticipation />
+          </RequireAuth>
+        ),
       },
     ],
   },
@@ -62,6 +104,6 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider children={<RouterProvider router={router} />} />
   </StrictMode>
 );
