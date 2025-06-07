@@ -1,6 +1,6 @@
 import { Institution } from "../../../shared/types";
 import { InstitutionRepository } from "../repositories/institution.repository";
-import { ServiceI } from "../types/index.type";
+import { CreatableServiceI, ReadableServiceI, UpdatableServiceI, DeletableServiceI } from "../types/index.type";
 
 import { z } from "zod";
 
@@ -12,7 +12,13 @@ const institutionSchema = z.object({
   city: z.string().min(2).max(100),
 });
 
-class InstitutionsService implements ServiceI<Institution, "institutionId", number> {
+class InstitutionsService
+  implements
+    CreatableServiceI<Institution, "institutionId", number>,
+    ReadableServiceI<Institution, "institutionId", number>,
+    UpdatableServiceI<Institution, "institutionId", number>,
+    DeletableServiceI<Institution, "institutionId", number>
+{
   constructor(private institutionRepository: InstitutionRepository) {
     this.institutionRepository = institutionRepository;
   }

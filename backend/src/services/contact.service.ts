@@ -1,6 +1,6 @@
 import { Contact } from "../../../shared/types";
 import { ContactRepository } from "../repositories/contact.repository";
-import type { CreatableI, DeletableI, UpdatableI, ReadableI } from "../types/index.type";
+import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../types/index.type";
 import { z } from "zod";
 
 const contactSchema = z.object({
@@ -16,10 +16,10 @@ const contactUpdateSchema = contactCreateSchema.partial();
 
 export class ContactService
   implements
-    CreatableI<Contact, "contactId">,
-    DeletableI<Contact, "contactId">,
-    UpdatableI<Contact, "contactId">,
-    ReadableI<Contact, "contactId">
+    CreatableServiceI<Contact, "contactId">,
+    DeletableServiceI<Contact, "contactId">,
+    UpdatableServiceI<Contact, "contactId">,
+    ReadableServiceI<Contact, "contactId">
 {
   constructor(private contactRepository: ContactRepository) {
     this.contactRepository = contactRepository;

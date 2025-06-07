@@ -10,14 +10,14 @@ const actionTypeSchema = z.object({
 const actionTypeCreateSchema = actionTypeSchema.omit({ actionTypeId: true });
 const actionTypeUpdateSchema = actionTypeCreateSchema.partial();
 
-import type { CreatableI, DeletableI, UpdatableI, ReadableI } from "../types/index.type";
+import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../types/index.type";
 
 export class ActionTypeService
   implements
-    CreatableI<ActionType, "actionTypeId">,
-    DeletableI<ActionType, "actionTypeId">,
-    UpdatableI<ActionType, "actionTypeId">,
-    ReadableI<ActionType, "actionTypeId">
+    CreatableServiceI<ActionType, "actionTypeId">,
+    DeletableServiceI<ActionType, "actionTypeId">,
+    UpdatableServiceI<ActionType, "actionTypeId">,
+    ReadableServiceI<ActionType, "actionTypeId">
 {
   private actionTypeRepository: ActionTypeRepository;
 
