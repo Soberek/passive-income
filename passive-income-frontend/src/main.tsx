@@ -2,10 +2,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
-import { createBrowserRouter, RouterProvider, useNavigate, Navigate, useLocation, NavLink } from "react-router";
+import { createBrowserRouter, RouterProvider, useNavigate, Navigate, useLocation } from "react-router";
 import SchoolsPage from "./features/schools/School.tsx";
 import { Contact } from "./features/contacts/Contact.tsx";
-import IzrzForm from "./features/Izrz/Izrz.tsx";
+import IzrzForm from "./features/Izrz/RaportDocumentGenerator.tsx";
 import { Tasks } from "./features/tasks/Task.tsx";
 import { SchoolProgramParticipation } from "./features/school-program-participation/SchoolProgramParticipation.tsx";
 import { AuthProvider } from "./auth/auth.provider.tsx";
@@ -27,7 +27,7 @@ const ErrorElement = () => {
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   let location = useLocation();
-  const { isAuthenticated, login, logout } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
     // Jeśli użytkownik nie jest zalogowany, przekieruj na login
