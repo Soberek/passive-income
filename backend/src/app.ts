@@ -1,17 +1,21 @@
 import express, { NextFunction, Request, Response, Express } from "express";
-import indexRouter from "./routes/index";
-import schoolRouter from "./routes/school.router";
+
 import cors from "cors";
-import contactRouter from "./routes/contact.router";
-import izrzRouter from "./routes/izrz.router";
+
 import multer from "multer";
 import helmet from "helmet";
-import { institutionRouter } from "./routes/institution.router";
-import programRouter from "./routes/program.router";
-import { schoolYearRouter } from "./routes/school_year.router";
-import { actionTypeRouter } from "./routes/action_type.router";
-import { mediaPlatformRouter } from "./routes/media_platform.router";
-import programParticipationRouter from "./routes/program_participation_router";
+
+// ROUTERS
+import { institutionRouter } from "./modules/institution/institution.router";
+import programRouter from "./modules/program/program.router";
+import { schoolYearRouter } from "./modules/school-year/school_year.router";
+import { actionTypeRouter } from "./modules/action-type/action_type.router";
+import { mediaPlatformRouter } from "./modules/media-platform/media_platform.router";
+import programParticipationRouter from "./modules/school-program-participation/school_program_participation_router";
+import contactRouter from "./modules/contact/contact.router";
+import izrzRouter from "./modules/izrz-document-generator/izrz.router";
+import indexRouter from "./modules/main/index";
+import schoolRouter from "./modules/school/school.router";
 
 // JWT installation and usage
 // Step 1. Install the jsonwebtoken package
