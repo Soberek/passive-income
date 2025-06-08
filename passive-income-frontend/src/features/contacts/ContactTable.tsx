@@ -12,23 +12,13 @@ import {
 } from "@mui/material";
 import { Contact } from "../../../../shared/types";
 
-interface ContactsTableProps {
+interface ContactTableProps {
   contacts: Contact[];
-  onPageChange: (event: unknown, newPage: number) => void;
-  onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  page: number;
-  rowsPerPage: number;
-  totalCount: number;
+  error?: Error | null;
+  loading?: boolean;
 }
 
-const ContactsTable = ({
-  contacts,
-  onPageChange,
-  onRowsPerPageChange,
-  page,
-  rowsPerPage,
-  totalCount,
-}: ContactsTableProps) => {
+const ContactsTable = ({ contacts, error, loading }: ContactTableProps) => {
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -63,11 +53,11 @@ const ContactsTable = ({
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
-              count={totalCount}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={onPageChange}
-              onRowsPerPageChange={onRowsPerPageChange}
+              count={50}
+              rowsPerPage={5}
+              page={0}
+              onPageChange={() => {}}
+              onRowsPerPageChange={() => {}}
             />
           </TableRow>
         </TableFooter>
