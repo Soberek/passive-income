@@ -1,4 +1,4 @@
-import { Program } from "../../../shared/types";
+import { Program } from "../../../../shared/types";
 
 export class ProgramModel {
   static validate(entity: Omit<Program, "programId"> | Partial<Program>): string[] {

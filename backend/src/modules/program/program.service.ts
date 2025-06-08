@@ -1,5 +1,5 @@
 import { Program } from "../../../../shared/types";
-import { ProgramModel } from "../../models/program.model";
+import { ProgramModel } from "./program.model";
 import { ProgramRepository } from "./program.repository";
 import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../../types/index.type";
 import { z } from "zod";
