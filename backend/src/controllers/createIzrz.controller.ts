@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IzrzService } from "../repositories/temp/createIzrz.repository";
+import { IzrzService } from "../modules/izrz-document-generator/create-izrz-document.repository";
 
 export class createIzrzController {
   private izrzService: IzrzService;
