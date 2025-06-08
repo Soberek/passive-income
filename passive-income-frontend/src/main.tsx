@@ -12,6 +12,7 @@ import { AuthProvider } from "./auth/auth.provider.tsx";
 import { useAuth } from "./auth/useAuth.ts";
 import { LoginPage } from "./features/login/Login.tsx";
 import { Home } from "./features/home/Home.tsx";
+import ExcelUploader from "./features/excel-raport-generator/ExcelRaportGenerator.tsx";
 
 const ErrorElement = () => {
   const navigate = useNavigate();
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage />,
+      },
+      {
+        path: "/excel-raport-generator",
+        element: <ExcelUploader />,
       },
       {
         path: "/schools",
