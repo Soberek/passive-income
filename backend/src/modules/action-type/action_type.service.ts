@@ -1,14 +1,7 @@
 import { ActionTypeRepository } from "./action_type.repository";
 import { ActionType } from "../../../../shared/types";
-import { z } from "zod";
 
-const actionTypeSchema = z.object({
-  actionTypeId: z.number().min(1).optional(),
-  name: z.string().min(2).max(100),
-});
-
-const actionTypeCreateSchema = actionTypeSchema.omit({ actionTypeId: true });
-const actionTypeUpdateSchema = actionTypeCreateSchema.partial();
+import { actionTypeSchema, actionTypeCreateSchema, actionTypeUpdateSchema } from "./action_type.schema";
 
 import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../../types/index.type";
 
@@ -38,7 +31,7 @@ export class ActionTypeService
   };
 
   getById = (id: number): ActionType | null => {
-    const validateId = z.number().min(1).safeParse(id);
+    const validateId = actionTypeSchema.shape.actionTypeId.safeParse(id);
     const validateEntity = actionTypeSchema.safeParse(id);
     if (!validateEntity.success) {
       throw new Error("Invalid action type data " + JSON.stringify(validateEntity.error.issues));
@@ -51,7 +44,7 @@ export class ActionTypeService
   };
 
   delete = (id: ActionType["actionTypeId"]): boolean => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = actionTypeSchema.shape.actionTypeId.safeParse(id);
     if (!validation.success) {
       throw new Error("Invalid action type ID " + JSON.stringify(validation.error.issues));
     }

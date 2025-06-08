@@ -1,11 +1,5 @@
 import { SchoolProgramParticipation } from "./school_program_participation.repository";
-import z from "zod";
-
-const schoolProgramParticipationSchema = z.object({
-  schoolId: z.number().min(1),
-  programId: z.number().min(1),
-  schoolYearId: z.number().min(1),
-});
+import { schoolProgramParticipationSchema } from "./school_program_participation.schema";
 
 export class SchoolProgramParticipationService {
   constructor(private schoolProgramParticipation: SchoolProgramParticipation) {}

@@ -3,13 +3,7 @@ import { School } from "../../../../shared/types";
 import { SchoolRepository } from "../school/school.repository";
 import { InstitutionRepository } from "../institution/institution.repository";
 import sqliteDbService from "../../services/sqlite_db.service";
-import { z } from "zod";
-
-const schoolSchema = z.object({
-  schoolId: z.number().min(1).optional(),
-  institutionId: z.number().min(1).optional(),
-  director: z.string().min(2).max(100),
-});
+import { schoolSchema, schoolCreateSchema, schoolUpdateSchema } from "./school.schema";
 
 class SchoolService {
   constructor(private schoolRepository: SchoolRepository, private institutionRepository: InstitutionRepository) {}
@@ -24,7 +18,7 @@ class SchoolService {
   };
 
   getSchoolById = (id: number) => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = schoolSchema.shape.schoolId.safeParse(id);
     if (!validation.success) {
       throw new Error("Invalid school ID " + JSON.stringify(validation.error.issues));
     }
@@ -126,7 +120,7 @@ class SchoolService {
 
   updateSchool = (schoolId: School["schoolId"], school: Partial<School>) => {
     const schoolValidation = schoolSchema.partial().safeParse(school);
-    const idValidation = z.number().min(1).safeParse(schoolId);
+    const idValidation = schoolSchema.shape.schoolId.safeParse(schoolId);
     if (!idValidation.success) {
       throw new Error("Invalid school ID " + JSON.stringify(idValidation.error.issues));
     }

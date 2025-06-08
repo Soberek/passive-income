@@ -1,25 +1,7 @@
 import { TaskRepository } from "./task.repository";
 import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../../types/index.type";
 import { Task } from "../../../../shared/types";
-import { z } from "zod";
-
-const TaskSchema = z.object({
-  taskId: z.number().min(1),
-  referenceNumber: z.string().min(2).max(100),
-  taskNumber: z.string().min(2).max(100).optional(),
-  institutionId: z.number().min(1),
-  programId: z.number().min(1),
-  actionTypeId: z.number().min(1),
-  description: z.string().min(5).max(500).optional(),
-  date: z.date(),
-  actionsCount: z.number().min(0),
-  audienceCount: z.number().min(0),
-  mediaPlatformId: z.number().min(1).optional(),
-  createdAt: z.date().optional(),
-});
-
-const TaskCreateSchema = TaskSchema.omit({ taskId: true, createdAt: true });
-const TaskUpdateSchema = TaskCreateSchema.partial();
+import { TaskSchema, TaskCreateSchema, TaskUpdateSchema } from "./task.schema";
 
 export class TaskService
   implements
@@ -47,7 +29,7 @@ export class TaskService
   };
 
   getById = (id: number): Task | null => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = TaskSchema.shape.taskId.safeParse(id);
     if (!validation.success) {
       throw new Error("Invalid task ID: " + JSON.stringify(validation.error.issues));
     }
@@ -55,7 +37,7 @@ export class TaskService
   };
 
   update = (id: number, entity: Partial<Task>): boolean => {
-    const idValidation = z.number().min(1).safeParse(id);
+    const idValidation = TaskSchema.shape.taskId.safeParse(id);
     const entityValidation = TaskUpdateSchema.safeParse(entity);
     if (!entityValidation.success) {
       throw new Error("Invalid task data: " + JSON.stringify(entityValidation.error.issues));
@@ -67,7 +49,7 @@ export class TaskService
   };
 
   delete = (id: number): boolean => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = TaskSchema.shape.taskId.safeParse(id);
     if (!validation.success) {
       throw new Error("Invalid task ID: " + JSON.stringify(validation.error.issues));
     }

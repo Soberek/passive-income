@@ -2,16 +2,7 @@ import { Institution } from "../../../../shared/types";
 import { InstitutionRepository } from "./institution.repository";
 import { CreatableServiceI, ReadableServiceI, UpdatableServiceI, DeletableServiceI } from "../../types/index.type";
 
-import { z } from "zod";
-
-const institutionSchema = z.object({
-  institutionId: z.number().min(1).optional(),
-  name: z.string().min(2).max(100),
-  address: z.string().min(2).max(100),
-  postalCode: z.string().min(2).max(10),
-  city: z.string().min(2).max(100),
-});
-
+import { institutionSchema, institutionCreateSchema, institutionUpdateSchema } from "./institution.schema";
 class InstitutionsService
   implements
     CreatableServiceI<Institution, "institutionId", number>,
@@ -33,7 +24,7 @@ class InstitutionsService
   };
 
   getById = (id: Institution["institutionId"]) => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = institutionSchema.shape.institutionId.safeParse(id);
     if (!validation.success) {
       throw new Error("Invalid institution ID " + JSON.stringify(validation.error.issues));
     }
@@ -59,7 +50,7 @@ class InstitutionsService
   };
 
   delete = (id: Institution["institutionId"]) => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = institutionSchema.shape.institutionId.safeParse(id);
     if (!validation.success) {
       throw new Error("Invalid institution ID " + JSON.stringify(validation.error.issues));
     }
@@ -74,7 +65,7 @@ class InstitutionsService
 
   update = (id: Institution["institutionId"], entity: Partial<Institution>) => {
     const entityValidation = institutionSchema.partial().safeParse(entity);
-    const idValidation = z.number().min(1).safeParse(id);
+    const idValidation = institutionSchema.shape.institutionId.safeParse(id);
     if (!idValidation.success) {
       throw new Error("Invalid institution ID " + JSON.stringify(idValidation.error.issues));
     }

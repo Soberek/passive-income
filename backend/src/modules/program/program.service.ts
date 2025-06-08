@@ -2,15 +2,8 @@ import { Program } from "../../../../shared/types";
 import { ProgramModel } from "./program.model";
 import { ProgramRepository } from "./program.repository";
 import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../../types/index.type";
-import { z } from "zod";
+import { programSchema, programCreateSchema, programUpdateSchema } from "./program.schema";
 
-const programSchema = z.object({
-  programId: z.number().min(1).optional(),
-  name: z.string().min(2).max(100),
-  description: z.string().optional(),
-  mediaPlatformId: z.number().min(1),
-  actionTypeId: z.number().min(1),
-});
 export class ProgramService
   implements
     CreatableServiceI<Program, "programId">,
@@ -29,7 +22,7 @@ export class ProgramService
   };
 
   getById = (id: Program["programId"]): Program | null => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = programSchema.shape.programId.safeParse(id);
     if (!validation.success) {
       throw new Error("Invalid program ID " + JSON.stringify(validation.error.issues));
     }
@@ -42,7 +35,7 @@ export class ProgramService
   };
 
   add = (entity: Omit<Program, "programId">): number => {
-    const validation = programSchema.safeParse(entity);
+    const validation = programCreateSchema.safeParse(entity);
     if (!validation.success) {
       const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
       throw new Error("Invalid data: " + errors.join(", "));
@@ -64,8 +57,9 @@ export class ProgramService
   };
 
   update = (id: Program["programId"], entity: Partial<Program>): boolean => {
-    const entityValidation = programSchema.partial().safeParse(entity);
-    const idValidation = z.number().min(1).safeParse(id);
+    const entityValidation = programUpdateSchema.partial().safeParse(entity);
+    const idValidation = programSchema.shape.programId.safeParse(id);
+
     if (!idValidation.success) {
       throw new Error("Invalid program ID: " + JSON.stringify(idValidation.error.issues));
     }
@@ -82,7 +76,7 @@ export class ProgramService
   };
 
   bulkInsert = (programs: Omit<Program, "programId">[]): boolean => {
-    const validation = z.array(programSchema).safeParse(programs);
+    const validation = programCreateSchema.array().safeParse(programs);
     if (!validation.success) {
       const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
       throw new Error("Invalid data: " + errors.join(", "));

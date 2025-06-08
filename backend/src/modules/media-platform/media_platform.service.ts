@@ -1,12 +1,8 @@
 import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../../types/index.type";
 import { MediaPlatform } from "../../../../shared/types";
 import { MediaPlatformRepository } from "../media-platform/media_platform.repository";
-import { z } from "zod";
+import { mediaPlatformSchema, mediaPlatformCreateSchema, mediaPlatformUpdateSchema } from "./media_platform.schema";
 
-const mediaPlatformSchema = z.object({
-  mediaPlatformId: z.number().min(1).optional(),
-  name: z.string().min(2).max(100),
-});
 export class MediaPlatformService
   implements
     CreatableServiceI<MediaPlatform, "mediaPlatformId">,
@@ -21,7 +17,7 @@ export class MediaPlatformService
   }
 
   add = (entity: Partial<MediaPlatform>): number | null => {
-    const validation = mediaPlatformSchema.safeParse(entity);
+    const validation = mediaPlatformCreateSchema.safeParse(entity);
     if (!validation.success) {
       const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
       throw new Error("Invalid data: " + errors.join(", "));
@@ -34,7 +30,7 @@ export class MediaPlatformService
   };
 
   getById = (id: MediaPlatform["mediaPlatformId"]): MediaPlatform | null => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = mediaPlatformSchema.shape.mediaPlatformId.safeParse(id);
     if (!validation.success) {
       throw new Error("Invalid media platform ID " + JSON.stringify(validation.error.issues));
     }
@@ -42,7 +38,7 @@ export class MediaPlatformService
   };
 
   delete = (id: MediaPlatform["mediaPlatformId"]): boolean => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = mediaPlatformSchema.shape.mediaPlatformId.safeParse(id);
     if (!validation.success) {
       throw new Error("Invalid media platform ID " + JSON.stringify(validation.error.issues));
     }
@@ -50,7 +46,7 @@ export class MediaPlatformService
   };
 
   update = (id: MediaPlatform["mediaPlatformId"], entity: Partial<MediaPlatform>): boolean => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = mediaPlatformUpdateSchema.safeParse(entity);
     const entityValidation = mediaPlatformSchema.partial().safeParse(entity);
     if (!entityValidation.success) {
       const errors = entityValidation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);

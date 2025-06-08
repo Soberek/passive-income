@@ -1,12 +1,7 @@
 import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../../types/index.type";
 import { SchoolYearRepository } from "./school_year.repository";
 import { SchoolYear } from "../../../../shared/types";
-import { z } from "zod";
-
-const schoolYearSchema = z.object({
-  schoolYearId: z.number().min(1).optional(),
-  year: z.string().min(4).max(4),
-});
+import { schoolYearSchema, schoolYearCreateSchema, schoolYearUpdateSchema } from "./school_year.schema";
 export class SchoolYearService
   implements
     CreatableServiceI<SchoolYear, "schoolYearId">,
@@ -35,7 +30,7 @@ export class SchoolYearService
     return schoolYears;
   };
   getById: (id: number) => SchoolYear | null = (id) => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = schoolYearSchema.shape.schoolYearId.safeParse(id);
     if (!validation.success) {
       throw new Error("Invalid schoolYearId " + JSON.stringify(validation.error.issues));
     }
@@ -43,7 +38,7 @@ export class SchoolYearService
     return this.schoolYearRepo.getById(id);
   };
   delete = (id: number): boolean => {
-    const validation = z.number().min(1).safeParse(id);
+    const validation = schoolYearSchema.shape.schoolYearId.safeParse(id);
     if (!validation.success) {
       throw new Error("Invalid schoolYearId " + JSON.stringify(validation.error.issues));
     }
@@ -51,7 +46,7 @@ export class SchoolYearService
   };
   update = (id: number, entity: Partial<SchoolYear>): boolean => {
     const entityValidation = schoolYearSchema.partial().safeParse(entity);
-    const idValidation = z.number().min(1).safeParse(id);
+    const idValidation = schoolYearSchema.shape.schoolYearId.safeParse(id);
     if (!idValidation.success) {
       const errors = idValidation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
       throw new Error("Invalid data: " + errors.join(", "));
