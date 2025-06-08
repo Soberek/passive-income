@@ -1,5 +1,5 @@
 import { ActionType } from "../../../../shared/types";
-import sqliteDbService from "../../services/sqlite_db.service";
+import sqliteDbService from "../../database/sqlite_db.service";
 
 import type {
   CreatableIRepositoryI,

@@ -1,7 +1,7 @@
 import { SchoolProgramParticipation } from "./school_program_participation.repository";
 import { SchoolProgramParticipationService } from "./school_program_participation.service";
 import { Router } from "express";
-import SqliteDbService from "../../services/sqlite_db.service";
+import SqliteDbService from "../../database/sqlite_db.service";
 import { SchoolProgramParticipationController } from "./school_program_participation.controller";
 
 const dbInstance = SqliteDbService.getInstance();

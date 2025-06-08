@@ -1,4 +1,4 @@
-import SqliteDbService from "../../services/sqlite_db.service";
+import SqliteDbService from "../../database/sqlite_db.service";
 import { Contact } from "../../../../shared/types";
 
 import type {

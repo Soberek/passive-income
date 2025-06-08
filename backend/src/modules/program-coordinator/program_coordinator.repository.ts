@@ -1,5 +1,5 @@
 import { Contact, Institution, Program } from "../../../../shared/types";
-import SqliteDbService from "../../services/sqlite_db.service";
+import SqliteDbService from "../../database/sqlite_db.service";
 import {
   CreatableIRepositoryI,
   ReadableRepositoryI,

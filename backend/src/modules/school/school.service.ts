@@ -2,7 +2,7 @@ import { Institution } from "../../../../shared/types";
 import { School } from "../../../../shared/types";
 import { SchoolRepository } from "../school/school.repository";
 import { InstitutionRepository } from "../institution/institution.repository";
-import sqliteDbService from "../../services/sqlite_db.service";
+import sqliteDbService from "../../database/sqlite_db.service";
 import { schoolSchema, schoolCreateSchema, schoolUpdateSchema } from "./school.schema";
 
 class SchoolService {

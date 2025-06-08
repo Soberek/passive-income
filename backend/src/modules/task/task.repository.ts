@@ -5,7 +5,7 @@ import type {
   UpdatableRepositoryI,
   DeletableRepositoryI,
 } from "../../types/index.type";
-import SqliteDbService from "../../services/sqlite_db.service";
+import SqliteDbService from "../../database/sqlite_db.service";
 
 export class TaskRepository
   implements

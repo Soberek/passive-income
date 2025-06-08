@@ -1,5 +1,5 @@
 import { DatabaseI } from "../../types/database.type";
-import SqliteDbService from "../../services/sqlite_db.service";
+import SqliteDbService from "../../database/sqlite_db.service";
 import type { CreatableIRepositoryI, ReadableRepositoryI } from "../../types/index.type";
 
 export class SchoolProgramParticipation {

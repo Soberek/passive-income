@@ -5,7 +5,7 @@ import type {
   DeletableRepositoryI,
 } from "../../types/index.type";
 import { Material } from "../../../../shared/types";
-import SqliteDbService from "../../services/sqlite_db.service";
+import SqliteDbService from "../../database/sqlite_db.service";
 
 export class MaterialRepository
   implements

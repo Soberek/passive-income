@@ -1,4 +1,4 @@
-import sqliteDbService from "../../services/sqlite_db.service";
+import sqliteDbService from "../../database/sqlite_db.service";
 import type { SchoolYear } from "../../../../shared/types";
 
 import type {

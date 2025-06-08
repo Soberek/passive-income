@@ -3,7 +3,7 @@ import { Router, Request, Response } from "express";
 import ContactController from "./contact.controller";
 import { ContactRepository } from "./contact.repository";
 import { ContactService } from "./contact.service";
-import sqliteDbService from "../../services/sqlite_db.service";
+import sqliteDbService from "../../database/sqlite_db.service";
 
 const contactRouter = Router();
 const dbService = sqliteDbService.getInstance();

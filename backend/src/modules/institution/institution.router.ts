@@ -1,5 +1,5 @@
 import { Router } from "express";
-import sqliteDbService from "../../services/sqlite_db.service";
+import sqliteDbService from "../../database/sqlite_db.service";
 import { InstitutionRepository } from "./institution.repository";
 import { InstitutionsService } from "./institutions.service";
 import { InstitutionController } from "./institution.controller";
