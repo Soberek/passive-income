@@ -34,6 +34,11 @@ const private_routes = [
     path: "/",
   },
   {
+    icon: "📖",
+    name: "Wygeneruj miernik budżetowy",
+    path: "/excel-raport-generator",
+  },
+  {
     icon: "🏫",
     name: "Dodaj szkołę",
     path: "/schools",
@@ -45,7 +50,7 @@ const private_routes = [
   },
   {
     icon: "📊",
-    name: "Wygeneruj izrz offline",
+    name: "Wygeneruj dokument izrz",
     path: "/izrz",
   },
   {
