@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import SqliteDbService from "../services/sqlite_db.service";
+import SqliteDbService from "./sqlite_db.service";
 
 // import sqlitedb.sql
 const sqlFilePath = path.join(__dirname, "sqlitedb.sql");
