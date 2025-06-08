@@ -82,6 +82,10 @@ export const ContactForm = ({ handleSubmit, control, reset, formState: { errors 
           <Button variant="contained" color="primary" type="submit">
             Dodaj kontakt
           </Button>
+
+          <Button variant="outlined" color="secondary" onClick={reset}>
+            Resetuj formularz
+          </Button>
         </Stack>
       </form>
     </Paper>
