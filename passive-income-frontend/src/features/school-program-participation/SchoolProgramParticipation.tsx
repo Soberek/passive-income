@@ -78,7 +78,7 @@ export const SchoolProgramParticipation = () => {
   return (
     <Box sx={{ marginY: 2, marginX: 2 }}>
       <Typography variant="h5" gutterBottom>
-        ☎️ Lista kontaktów
+        🎓 Dodaj uczestnictwo szkoły w programie 📚
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
