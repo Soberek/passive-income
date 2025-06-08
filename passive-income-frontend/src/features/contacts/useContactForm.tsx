@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { Contact as Contacts } from "../../../../shared/types";
-import { useFetch } from "../../hooks/useFetch";
 
 export type ContactFormFields = Omit<Contacts, "contactId">;
 

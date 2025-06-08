@@ -19,6 +19,12 @@ interface ContactTableProps {
 }
 
 const ContactsTable = ({ contacts, error, loading }: ContactTableProps) => {
+  if (loading) {
+    return <div>Ładowanie kontaktów...</div>;
+  }
+  if (error) {
+    return <div>Błąd podczas ładowania kontaktów: {error.message}</div>;
+  }
   return (
     <TableContainer component={Paper}>
       <Table>
