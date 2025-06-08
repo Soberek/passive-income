@@ -1,18 +1,8 @@
 import { Contact } from "../../../../shared/types";
 import { ContactRepository } from "./contact.repository";
 import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../../types/index.type";
-import { z } from "zod";
 
-const contactSchema = z.object({
-  contactId: z.number().min(1).optional(),
-  firstName: z.string().min(2).max(100),
-  lastName: z.string().min(2).max(100),
-  email: z.string().email(),
-  phone: z.string().optional(),
-});
-
-const contactCreateSchema = contactSchema.omit({ contactId: true });
-const contactUpdateSchema = contactCreateSchema.partial();
+import { contactSchema, contactCreateSchema, contactUpdateSchema } from "./contact.schema";
 
 export class ContactService
   implements
@@ -45,7 +35,7 @@ export class ContactService
 
   public update = (id: number, entity: Partial<Contact>) => {
     const validateEntity = contactUpdateSchema.safeParse(entity);
-    const validateId = z.number().min(1).safeParse(id);
+    const validateId = contactSchema.shape.contactId.safeParse(id);
     if (!validateId.success) {
       throw new Error("Invalid contact ID: " + JSON.stringify(validateId.error.issues));
     }
@@ -58,7 +48,7 @@ export class ContactService
   };
 
   public delete = (id: number) => {
-    const validate = z.number().min(1).safeParse(id);
+    const validate = contactSchema.shape.contactId.safeParse(id);
     if (!validate.success) {
       throw new Error("Invalid contact ID: " + JSON.stringify(validate.error.issues));
     }
@@ -71,7 +61,7 @@ export class ContactService
   };
 
   public bulkInsert = (contacts: Omit<Contact, "contactId">[]) => {
-    const validate = z.array(contactCreateSchema).safeParse(contacts);
+    const validate = contactCreateSchema.array().safeParse(contacts);
     if (!validate.success) {
       const errors = validate.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
       throw new Error("Invalid data: " + errors.join(", "));
