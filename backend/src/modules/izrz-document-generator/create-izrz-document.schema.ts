@@ -10,6 +10,8 @@ interface ReportDataModel {
   viewerCountDescription: string;
   taskDescription: string;
   additionalInfo: string;
+  attendanceList?: boolean;
+  rozdzielnik?: boolean;
 }
 
 import { z } from "zod";
@@ -20,11 +22,18 @@ export const createIzrzDocumentSchema = z.object({
   programName: z.string().min(1, "Program name is required."),
   taskType: z.string().min(1, "Task type is required."),
   address: z.string().min(1, "Address is required."),
-  dateInput: z.date(),
-  viewerCount: z.number().int().nonnegative("Viewer count cannot be negative."),
+  dateInput: z.string().refine((value: string) => !isNaN(Date.parse(value)), {
+    message: "Invalid date format. Please use a valid date.",
+  }),
+  viewerCount: z.preprocess(
+    (val) => (typeof val === "string" ? Number(val) : val),
+    z.number().int().nonnegative("Viewer count cannot be negative.")
+  ),
   viewerCountDescription: z.string().optional(),
   taskDescription: z.string().optional(),
   additionalInfo: z.string().optional(),
+  attendanceList: z.string().optional(),
+  rozdzielnik: z.string().optional(),
 });
 export type CreateIzrzDocumentT = z.infer<typeof createIzrzDocumentSchema>;
 export const createIzrzDocumentCreateSchema = createIzrzDocumentSchema.omit({

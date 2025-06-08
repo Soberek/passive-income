@@ -1,4 +1,16 @@
-import { Box, Button, CircularProgress, Grid, Paper, Stack, TextField, Typography, Autocomplete } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+  Autocomplete,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 import { useRaportDocumentGenerator } from "./useRaportDocumentGenerator";
 
 const IzrzForm = () => {
@@ -15,6 +27,9 @@ const IzrzForm = () => {
     programs,
     programsLoading,
     programsError,
+    actionTypes,
+    actionTypesLoading,
+    actionTypesError,
   } = useRaportDocumentGenerator();
 
   return (
@@ -42,6 +57,12 @@ const IzrzForm = () => {
             Błąd podczas ładowania programów: {programsError.message}
           </Typography>
         )}
+        {actionTypesError && (
+          <Typography color="error" variant="body2" sx={{ mb: 2 }}>
+            Błąd podczas ładowania rodzajów zadań: {actionTypesError.message}
+          </Typography>
+        )}
+
         <Typography variant="body1" sx={{ mb: 2 }}>
           Wypełnij poniższy formularz, aby wygenerować raport IZRZ. Upewnij się, że wszystkie pola są poprawnie
           wypełnione.
@@ -92,13 +113,23 @@ const IzrzForm = () => {
               />
             </Grid>
             <Grid size={12}>
-              <TextField
-                label="Rodzaj zadania"
-                name="taskType"
-                placeholder="np. Prelekcja"
+              <Autocomplete
+                options={actionTypes?.length ? actionTypes.map((actionType) => actionType.name) : []}
+                loading={actionTypesLoading}
+                loadingText="Ładowanie rodzajów zadań..."
                 value={formData.taskType}
-                onChange={handleChange}
-                required
+                onChange={(_, value) => setFormData((prev) => ({ ...prev, taskType: value || "" }))}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Rodzaj zadania"
+                    name="taskType"
+                    placeholder="np. Prelekcja"
+                    fullWidth
+                    required
+                  />
+                )}
+                freeSolo
                 fullWidth
               />
             </Grid>
@@ -145,7 +176,6 @@ const IzrzForm = () => {
                 value={formData.viewerCount}
                 onChange={handleChange}
                 required
-                inputProps={{ min: 0 }}
                 fullWidth
               />
             </Grid>
@@ -185,6 +215,37 @@ const IzrzForm = () => {
                 fullWidth
                 multiline
                 minRows={2}
+              />
+            </Grid>
+
+            <Grid size={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formData.attendanceList}
+                    name="attendanceList"
+                    color="primary"
+                    inputProps={{ "aria-label": "Czy chcesz dodać załacznik listę obecności do raportu?" }}
+                    sx={{ mr: 1 }}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, attendanceList: e.target.checked }))}
+                  />
+                }
+                label={<Typography variant="body1">Czy chcesz dodać załacznik listę obecności do raportu?</Typography>}
+              />
+            </Grid>
+            <Grid size={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formData.rozdzielnik}
+                    name="rozdzielnik"
+                    color="primary"
+                    inputProps={{ "aria-label": "Czy chcesz dodać rozdzielnik do raportu?" }}
+                    sx={{ mr: 1 }}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, rozdzielnik: e.target.checked }))}
+                  />
+                }
+                label={<Typography variant="body1">Czy chcesz dodać rozdzielnik do raportu?</Typography>}
               />
             </Grid>
             <Grid size={12}>

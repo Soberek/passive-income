@@ -21,6 +21,7 @@ export class IzrzRepository {
     if (validationErrors.length) {
       throw new Error("Niepoprawne dane: " + validationErrors.join(", "));
     }
+
     const {
       templateFile,
       caseNumber,
@@ -39,16 +40,14 @@ export class IzrzRepository {
       throw new Error("Szablon nie został wybrany.");
     }
 
-    console.log(templateFile);
-
     const zip = new PizZip(data.templateFile);
     const doc = new docxtemplater(zip);
 
     const date = new Date(dateInput).toISOString().split("T")[0];
     // change date format dd.mm.yyyy
     const formattedDate = date.split("-").reverse().join(".");
+    let index = 0;
 
-    console.log(date);
     doc.setData({
       znak_sprawy: caseNumber,
       numer_izrz: reportNumber,
@@ -61,6 +60,8 @@ export class IzrzRepository {
       opis_zadania: taskDescription,
       dodatkowe_informacje: additionalInfo,
       data: formattedDate,
+      lista_obecnosci: data.attendanceList === "on" ? `${++index}. Potwierdzenie spotkania zał. F/PT/PZ/01/02` : "",
+      rozdzielnik: data.rozdzielnik === "on" ? `${++index}. Rozdzielnik materiałów zał. F/PT/PZ/01/01` : "",
     });
 
     // This is the line that renders the document

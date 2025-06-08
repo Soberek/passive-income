@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useInstitutions } from "../../hooks/useInstitutions";
 import { useFetch } from "../../hooks/useFetch";
-import { Program } from "../../../../shared/types";
+import { ActionType, Program } from "../../../../shared/types";
 interface FormData {
   templateFile: File | null;
   caseNumber: string;
@@ -14,6 +14,8 @@ interface FormData {
   viewerCountDescription: string;
   taskDescription: string;
   additionalInfo: string;
+  attendanceList: boolean;
+  rozdzielnik: boolean;
 }
 export const useRaportDocumentGenerator = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -23,17 +25,25 @@ export const useRaportDocumentGenerator = () => {
     programName: "",
     taskType: "",
     address: "",
-    dateInput: "",
+    dateInput: new Date().toISOString().split("T")[0], // Default to today's date
     viewerCount: 0,
     viewerCountDescription: "",
     taskDescription: "",
     additionalInfo: "",
+    rozdzielnik: false,
+    attendanceList: true,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
 
   const { institutions, loading: institutionsLoading } = useInstitutions();
+
+  const {
+    data: actionTypes,
+    loading: actionTypesLoading,
+    error: actionTypesError,
+  } = useFetch<ActionType[]>("http://localhost:3000/api/action-types", {});
 
   const {
     data: programs,
@@ -69,6 +79,8 @@ export const useRaportDocumentGenerator = () => {
     setSubmitMessage({ type: "", text: "" });
 
     const formDataToSend = new FormData(e.currentTarget);
+
+    console.log(formData);
 
     if (formData.templateFile) {
       formDataToSend.set("templateFile", formData.templateFile);
@@ -124,5 +136,8 @@ export const useRaportDocumentGenerator = () => {
     programs,
     programsLoading,
     programsError,
+    actionTypes,
+    actionTypesLoading,
+    actionTypesError,
   };
 };
