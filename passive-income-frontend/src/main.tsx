@@ -40,8 +40,6 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
 
 const router = createBrowserRouter([
   {
-    // public routes
-    path: "/",
     element: <App />,
     errorElement: <div>Oops! Something went wrong.</div>,
     children: [
