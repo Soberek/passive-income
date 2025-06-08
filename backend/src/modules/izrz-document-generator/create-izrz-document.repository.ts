@@ -3,65 +3,7 @@
 import PizZip from "pizzip";
 import docxtemplater from "docxtemplater";
 
-// Model for the Izrz document
-interface ReportDataModel {
-  templateFile: Buffer;
-  caseNumber: string;
-  reportNumber: string;
-  programName: string;
-  taskType: string;
-  address: string;
-  dateInput: Date;
-  viewerCount: number;
-  viewerCountDescription: string;
-  taskDescription: string;
-  additionalInfo: string;
-}
-
-export class Report implements ReportDataModel {
-  templateFile: Buffer;
-  caseNumber: string;
-  reportNumber: string;
-  programName: string;
-  taskType: string;
-  address: string;
-  dateInput: Date;
-  viewerCount: number;
-  viewerCountDescription: string;
-  taskDescription: string;
-  additionalInfo: string;
-  constructor(data: ReportDataModel) {
-    this.templateFile = data.templateFile;
-    this.caseNumber = data.caseNumber;
-    this.reportNumber = data.reportNumber;
-    this.programName = data.programName;
-    this.taskType = data.taskType;
-    this.address = data.address;
-    this.dateInput = data.dateInput;
-    this.viewerCount = data.viewerCount;
-    this.viewerCountDescription = data.viewerCountDescription;
-    this.taskDescription = data.taskDescription;
-    this.additionalInfo = data.additionalInfo;
-  }
-
-  validate(): string[] {
-    const errors: string[] = [];
-
-    if (!this.caseNumber.trim()) {
-      errors.push("Case number is required.");
-    }
-
-    if (!this.reportNumber.trim()) {
-      errors.push("Report number is required.");
-    }
-
-    if (this.viewerCount < 0) {
-      errors.push("Viewer count cannot be negative.");
-    }
-
-    return errors;
-  }
-}
+import { CreateIzrzDocumentT, createIzrzDocumentCreateSchema } from "./create-izrz-document.schema";
 
 // IzrzRepository class will handle the logic of generating the izrz document
 // in service class we will use the repository to generate the document and report model to validate the data
@@ -70,9 +12,11 @@ export class IzrzRepository {
 
   // data will be passed from frontend
   // and will be used to generate izrz document
-  generateIzrz = async (data: ReportDataModel): Promise<{ buffer: Buffer; fileName: string } | void> => {
-    const report = new Report(data);
-    const validationErrors = report.validate();
+  generateIzrz = async (data: CreateIzrzDocumentT): Promise<{ buffer: Buffer; fileName: string } | void> => {
+    const validationErrors =
+      createIzrzDocumentCreateSchema
+        .safeParse(data)
+        .error?.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`) || [];
 
     if (validationErrors.length) {
       throw new Error("Niepoprawne dane: " + validationErrors.join(", "));
@@ -89,7 +33,7 @@ export class IzrzRepository {
       viewerCountDescription,
       taskDescription,
       additionalInfo,
-    } = report;
+    } = data;
 
     if (!templateFile) {
       throw new Error("Szablon nie został wybrany.");
@@ -157,30 +101,4 @@ function sanitizeFileName(fileName: string) {
     .replace(/[\/:*?"<>|\\]/g, "") // Remove invalid characters (slashes, etc.)
     .replace(/[^a-zA-Z0-9._\- ]/g, "") // Allow alphanumeric, dots, hyphens, and spaces
     .trim(); // Remove leading/trailing spaces
-}
-
-export class IzrzService {
-  private repo: IzrzRepository;
-  constructor(izrzRepository: IzrzRepository) {
-    this.repo = izrzRepository;
-  }
-
-  async generateIzrzDocument(data: ReportDataModel): Promise<{ buffer: Buffer; fileName: string } | void> {
-    // Validate the data using the Report model
-
-    const report = new Report(data);
-    const errors = report.validate();
-
-    if (errors.length) {
-      throw new Error("Invalid data: " + errors.join(", "));
-    }
-
-    // Call the repository method to generate the document
-    // and return the buffer and file name
-    try {
-      return await this.repo.generateIzrz(data);
-    } catch (error: any) {
-      throw new Error("Error generating Izrz document: " + error.message);
-    }
-  }
 }

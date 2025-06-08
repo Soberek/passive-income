@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { IzrzService } from "./create-izrz-document.repository";
+
+import { IzrzService } from "./create-izrz-document.service";
 
 export class createIzrzController {
   private izrzService: IzrzService;
@@ -18,7 +19,7 @@ export class createIzrzController {
         return;
       }
 
-      const fileBuffer = await this.izrzService.generateIzrzDocument({
+      const fileBuffer = await this.izrzService.generateIzrzDocumenService({
         ...data,
         templateFile: file,
       });

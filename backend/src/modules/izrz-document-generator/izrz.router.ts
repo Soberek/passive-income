@@ -1,7 +1,8 @@
 import { Router } from "express";
 
 import { createIzrzController } from "./create-izrz-document.controller";
-import { IzrzRepository, IzrzService } from "./create-izrz-document.repository";
+import { IzrzRepository } from "./create-izrz-document.repository";
+import { IzrzService } from "./create-izrz-document.service";
 
 const izrzRouter = Router();
 
