@@ -18,6 +18,7 @@ export const useFetch = <T>(url: string, options?: RequestInit) => {
         console.log("Fetched data:", result);
         setData(result);
       } catch (error) {
+        console.log("Fetch error:", error);
         setError(error instanceof Error ? error : new Error("Unknown error"));
       } finally {
         setLoading(false);
