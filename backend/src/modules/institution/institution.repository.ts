@@ -76,10 +76,11 @@ export class InstitutionRepository implements InstitutionRepositoryI {
   };
 
   add = (entity: Partial<Institution>): number | null => {
+    const { name, address, postalCode, municipality, city, email, phone } = entity;
     const stmt = this.dbService
       .getDb()
       .prepare(
-        "INSERT INTO institutions (name, address, postal_code, municipality, city, created_at, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO institutions (name, address, postal_code, municipality, city, email, phone) VALUES (?, ?, ?, ?, ?, ?, ?)"
       );
 
     // Check if the statement was getDb().prepared successfully
@@ -88,12 +89,10 @@ export class InstitutionRepository implements InstitutionRepositoryI {
       console.error("Error preparing SQL statement");
       return null;
     }
-    const result = stmt.run(entity);
+    const result = stmt.run(name, address, postalCode, municipality, city, email, phone);
     if (result.changes > 0) {
-      console.log("Institution added successfully");
       return Number(result.lastInsertRowid); // Return the ID of the newly inserted row
     }
-    console.error("Error adding institution");
     return null; // Return null to indicate failure
   };
 
