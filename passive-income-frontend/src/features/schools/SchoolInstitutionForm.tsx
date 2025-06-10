@@ -86,19 +86,19 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
 
   return (
     <Container maxWidth="md">
-      <Paper elevation={3} sx={{ p: 3, mt: 4 }}>
+      <Paper elevation={3} sx={{ p: 2, mt: 2 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Create New School
+          Dodaj Instytucję i Szkołę
         </Typography>
 
         <form onSubmit={handleSubmit((data) => processSubmit({ ...data, isSchool: data.isSchool ?? false }))}>
           <Card sx={{ mb: 3 }}>
             <CardContent>
               <Typography variant="h5" component="h2" color="primary" gutterBottom>
-                Institution Information
+                Informacje o instytucji
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Enter the details of the institution
+                Wprowadź dane instytucji
               </Typography>
 
               <Grid container spacing={2}>
