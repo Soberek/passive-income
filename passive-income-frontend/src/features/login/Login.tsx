@@ -1,24 +1,14 @@
 import { Button, TextField } from "@mui/material";
 import { useAuth } from "../../auth/useAuth";
-import { useNavigate } from "react-router";
-import { useEffect } from "react";
 
 export const LoginPage = () => {
-  const { login, isAuthenticated } = useAuth();
-
-  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Here you would typically handle the login logic, e.g., call an API
+    // Tu możesz zrobić async login z API
     login();
   };
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
 
   return (
     <form onSubmit={handleLogin}>

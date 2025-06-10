@@ -14,6 +14,9 @@ import { LoginPage } from "./features/login/Login.tsx";
 import { Home } from "./features/home/Home.tsx";
 import ExcelUploader from "./features/excel-raport-generator/ExcelRaportGenerator.tsx";
 
+import { ThemeProvider } from "@mui/material";
+import theme from "./style/theme.tsx";
+
 const ErrorElement = () => {
   const navigate = useNavigate();
 
@@ -29,6 +32,8 @@ const ErrorElement = () => {
 function RequireAuth({ children }: { children: React.ReactNode }) {
   let location = useLocation();
   const { isAuthenticated } = useAuth();
+
+  console.log("RequireAuth", isAuthenticated);
 
   if (!isAuthenticated) {
     // Jeśli użytkownik nie jest zalogowany, przekieruj na login
@@ -107,6 +112,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AuthProvider children={<RouterProvider router={router} />} />
+    <ThemeProvider theme={theme}>
+      <AuthProvider children={<RouterProvider router={router} />} />
+    </ThemeProvider>
   </StrictMode>
 );

@@ -12,34 +12,26 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import NavDrawer from "./Navbar";
 import { useAuth } from "../auth/useAuth";
-import { useNavigate } from "react-router";
+import { Navigate } from "react-router";
 
 export default function MenuAppBar() {
   // const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const { login, logout, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // setAuth(event.target.checked);
     if (event.target.checked) {
       login();
+      // redirect to home
+      return <Navigate to="/" replace />;
     } else {
       logout();
+      // redirect to login
+      return <Navigate to="/login" replace />;
     }
   };
-
-  React.useEffect(() => {
-    // Check if the user is authenticated on component mount
-    if (isAuthenticated) {
-      console.log("User is authenticated");
-      navigate("/");
-    } else {
-      console.log("User is not authenticated");
-      navigate("/login", { replace: true });
-    }
-  }, [isAuthenticated]);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -75,9 +67,15 @@ export default function MenuAppBar() {
           >
             🍔
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Czy się stoi, czy się leży, to wypłata się należy
-          </Typography>
+
+          {/* // centered */}
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" component="div">
+              Czy się stoi, czy się leży, to wypłata się należy
+            </Typography>
+            <Typography></Typography>
+          </Box>
+
           {isAuthenticated && (
             <div>
               <IconButton
