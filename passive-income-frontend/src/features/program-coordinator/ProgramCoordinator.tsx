@@ -5,17 +5,17 @@ import { Contact, Institution, Program, SchoolYear } from "../../../../shared/ty
 
 type FormValues = {
   institution: number | null;
-  contactName: string;
-  programName: string;
-  schoolYear: string;
+  contactName: number | null;
+  programName: number | null;
+  schoolYear: number | null;
 };
 export const ProgramCoordinator = () => {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       institution: null,
-      contactName: "",
-      programName: "",
-      schoolYear: "",
+      contactName: null,
+      programName: null,
+      schoolYear: null,
     },
   });
 
@@ -70,7 +70,7 @@ export const ProgramCoordinator = () => {
               option.firstName + " " + option.lastName + (option.email ? ` (${option.email})` : "")
             }
             onChange={(_, value) => field.onChange(value ? value.contactId : null)}
-            value={contacts.contacts?.find((c) => String(c.contactId) === field.value) || null}
+            value={contacts.contacts?.find((c) => c.contactId === field.value) || null}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -83,16 +83,16 @@ export const ProgramCoordinator = () => {
           />
         )}
       />
-      {/* <Controller
+      <Controller
         name="programName"
         control={control}
         rules={{ required: true }}
         render={({ field, formState }) => (
           <Autocomplete
             options={programs || []}
-            getOptionLabel={(option) => option}
-            onChange={(_, value) => field.onChange(value || "")}
-            value={field.value || ""}
+            getOptionLabel={(option) => option.name}
+            onChange={(_, value) => field.onChange(value?.programId || null)}
+            value={programs?.find((p) => p.programId === field.value) || null}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -104,7 +104,7 @@ export const ProgramCoordinator = () => {
             )}
           />
         )}
-      /> */}
+      />
       {/* <Controller
         name="schoolYear"
         control={control}
