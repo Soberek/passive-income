@@ -1,11 +1,36 @@
--- This SQL script creates the necessary tables for the database schema of the application.
--- It includes tables for users, roles, permissions, institutions, and schools.
--- The script uses SQLite syntax and includes foreign key constraints for data integrity.
+### Najważniejsze funkcjonalności:
+
+- [x] Generowanie Miernika budżetowego na podstawie wgranego pliku XLSX i eksportowanie do pliku XLSX agregowanych danych
+- [x] Generowanie dokumentu IZRZ (Informacja o Zrealizowanych Zadaniach) na podstawie forumlarza i eksportowanie do pliku DOCX
+- [x] Dodawanie szkoły do programu według roku szkolnego
+
+  - [ ] Wyświetlanie listy szkół biorących udział w programach
+    - [ ] Filtrowanie szkół według roku szkolnego, programu, instytucji
+
+  > Od razu bym chciał wiedzieć kto jest koordynatorem programu w danej szkole, żeby nie trzeba było szukać kontaktów osobno, numer telefonu koordynatora, adres email,
+
+### Funkcjonalności:
+
+- [ ] Dodawanie (szkoły, organizacje)
+  - [ ] Usuwanie instytucji
+  - [ ] Edytowanie instytucji
+- [ ] Dodawanie kontaktów (koordynatorów programów)
+  - [ ] Edytowanie kontaktów
+  - [ ] Usuwanie kontaktów
+- [ ] Dodawanie programów
+  - [ ] Edytowanie programów
+  - [ ] Usuwanie programów
+- [ ] Dodawanie typów działań
+- [ ] Dodawanie platform mediów społecznościowych
+- [ ] Dodawanie materiałów
+
+##
 
 - Czy inne instytucje mi będą potrzebne tak bardzo prócz nazwy i adresu, okazjonalnie przy prelekcjach, które i tak są rzadko
 - Koniec koncow to aplikacja do
 - Jeżeli będę mial programy z opisami + szkoły (instytucje) to mogę szybciej tworzyć IZRZ
 - Jeżeli bede mial kontakty + programy + instytucje powiązane to mogę wyciągnąć mail-e koordynatorów i szkol jednocześnie
+-
 
 ### TODO:
 

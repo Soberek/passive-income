@@ -13,6 +13,7 @@
   "dependencies": {
     "@types/express": "^5.0.1",
     "@types/helmet": "^4.0.0",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/multer": "^1.4.12",
     "@types/uuid": "^10.0.0",
     "@types/xlsx": "^0.0.35",
@@ -20,6 +21,7 @@
     "cors": "^2.8.5",
     "docxtemplater": "^3.61.1",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.2",
     "pizzip": "^3.1.8",
     "supertest": "^7.1.1",
