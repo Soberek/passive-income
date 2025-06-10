@@ -16,6 +16,7 @@ import ExcelUploader from "./features/excel-raport-generator/ExcelRaportGenerato
 
 import { ThemeProvider } from "@mui/material";
 import theme from "./style/theme.tsx";
+import { ProgramCoordinator } from "./features/program-coordinator/ProgramCoordinator.tsx";
 
 const ErrorElement = () => {
   const navigate = useNavigate();
@@ -98,6 +99,14 @@ const router = createBrowserRouter([
         element: (
           <RequireAuth>
             <SchoolProgramParticipation />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "/koordynatorzy-programow-szkolnych",
+        element: (
+          <RequireAuth>
+            <ProgramCoordinator />
           </RequireAuth>
         ),
       },
