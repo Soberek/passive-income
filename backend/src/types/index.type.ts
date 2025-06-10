@@ -1,5 +1,3 @@
-import { Contact, Institution, Program, SchoolYear } from "../../../shared/types";
-
 export interface CreatableIRepositoryI<T, idKey extends keyof T, idType = number> {
   add: (entity: Omit<T, idKey>) => idType | null;
 }
@@ -36,8 +34,3 @@ export interface ReadableServiceI<T, idKey extends keyof T, idType = number> {
   getAll: () => T[];
   getById: (id: idType) => T | null;
 }
-
-export type ProgramCoordinator = { programCoordinatorId: string } & Pick<Program, "programId"> &
-  Pick<Institution, "institutionId"> &
-  Pick<Contact, "contactId"> &
-  Pick<SchoolYear, "schoolYearId">;
