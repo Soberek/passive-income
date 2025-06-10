@@ -37,8 +37,9 @@ class InstitutionsService
 
   // Adds a new institution to the database.
   add = (entity: Omit<Institution, "institutionId">) => {
-    const validation = institutionSchema.safeParse(entity);
+    const validation = institutionCreateSchema.safeParse(entity);
     if (!validation.success) {
+      console.error("Validation failed:", validation.error);
       const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
       throw new Error("Invalid data: " + errors.join(", "));
     }
