@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useInstitutions } from "../../hooks/useInstitutions";
 import { useFetch } from "../../hooks/useFetch";
-import { ActionType, Program } from "../../../../shared/types";
+import { ActionType, Institution, Program } from "../../../../shared/types";
 interface FormData {
   templateFile: File | null;
   caseNumber: string;
@@ -37,7 +37,10 @@ export const useRaportDocumentGenerator = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
 
-  const { institutions, loading: institutionsLoading } = useInstitutions();
+  const { data: institutions, loading: institutionsLoading } = useFetch<Institution[]>(
+    "http://localhost:3000/api/institutions",
+    {}
+  );
 
   const {
     data: actionTypes,
@@ -52,6 +55,9 @@ export const useRaportDocumentGenerator = () => {
   } = useFetch<Program[]>("http://localhost:3000/api/programs", {});
 
   const institutionList = useMemo(() => {
+    if (!institutions || institutions.length === 0) {
+      return [];
+    }
     return institutions.map((institution) => {
       return `${institution.name}, ${institution.address}, ${institution.postalCode} ${institution.city}`;
     });
