@@ -1,23 +1,25 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { InstitutionsService } from "./institutions.service";
+
+import { AppError } from "../../handlers/error.handler";
 
 export class InstitutionController {
   constructor(private institutionService: InstitutionsService) {
     this.institutionService = institutionService;
   }
 
-  getAllInstitutions = (_: Request, res: Response) => {
+  getAllInstitutions = (_: Request, res: Response, next: NextFunction) => {
     try {
       const institutions = this.institutionService.getAll();
-      res.status(200).json(institutions);
+      res.status(200).json({ data: institutions });
       return;
     } catch (error) {
-      res.status(500).json({ error: "Error fetching institutions" });
+      next(new AppError("Error fetching institutions", 500, true));
       return;
     }
   };
 
-  getInstitutionById = (req: Request, res: Response) => {
+  getInstitutionById = (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {
       const institution = this.institutionService.getById(Number(id));

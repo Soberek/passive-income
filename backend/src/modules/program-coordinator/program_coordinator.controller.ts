@@ -7,7 +7,7 @@ export class ProgramCoordinatorController {
   getAll = (req: Request, res: Response) => {
     try {
       const result = this.programCoordinatorService.getAll();
-      res.status(200).json(result);
+      res.status(200).json({ data: result });
     } catch (error) {
       console.error("Error fetching program coordinators:", error);
       res.status(500).json({ error: "Failed to fetch program coordinators." });
@@ -27,7 +27,7 @@ export class ProgramCoordinatorController {
         res.status(404).json({ error: "Program coordinator not found." });
         return;
       }
-      res.status(200).json(result);
+      res.status(200).json({ data: result });
     } catch (error) {
       console.error("Error fetching program coordinator by ID:", error);
       res.status(500).json({ error: "Failed to fetch program coordinator." });
@@ -44,7 +44,7 @@ export class ProgramCoordinatorController {
         return;
       }
 
-      res.status(201).json(result);
+      res.status(201).json({ data: result });
     } catch (error) {
       console.error("Error adding program coordinator:", error);
       res.status(500).json({ error: "Failed to add program coordinator." });

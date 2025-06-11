@@ -1,13 +1,14 @@
 import { Program } from "../../../../shared/types";
+import { AppError } from "../../handlers/error.handler";
 import ProgramService from "./program.service";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 class ProgramController {
   constructor(private programService: ProgramService) {
     this.programService = programService;
   }
 
-  getAllPrograms = (_: Request, res: Response): void => {
+  getAllPrograms = (_: Request, res: Response, next: NextFunction): void => {
     console.log("Fetching all programs");
     try {
       const programs = this.programService.getAll();
@@ -15,16 +16,14 @@ class ProgramController {
         res.status(404).json({ message: "No programs found" });
         return;
       }
-      res.status(200).json(programs);
+      res.status(200).json({ data: programs });
       return;
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Error fetching programs", error: error instanceof Error ? error.message : error });
+      next(new AppError("Error fetching programs", 500));
       return;
     }
   };
-  createProgram = (req: Request, res: Response): void => {
+  createProgram = (req: Request, res: Response, next: NextFunction): void => {
     try {
       const { name, description, programType, referenceNumber } = req.body;
 
@@ -38,18 +37,15 @@ class ProgramController {
         res.status(500).json({ message: "Error creating program", error: "Failed to create program" });
         return;
       }
-      res.status(201).json({ message: "Program created successfully", newProgramId });
+      res.status(201).json({ message: "Program created successfully", data: newProgramId });
       return;
     } catch (error) {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "Error creating program", error: error instanceof Error ? error.message : error });
+      next(new AppError("Error creating program", 500));
       return;
     }
   };
 
-  deleteProgram = (req: Request, res: Response): void => {
+  deleteProgram = (req: Request, res: Response, next: NextFunction): void => {
     console.log("Deleting program");
     try {
       const { id } = req.params;
@@ -66,14 +62,12 @@ class ProgramController {
       return;
     } catch (error) {
       console.log(error);
-      res
-        .status(500)
-        .json({ message: "Error deleting program", error: error instanceof Error ? error.message : error });
+      next(new AppError("Error deleting program", 500));
       return;
     }
   };
 
-  updateProgram = (req: Request, res: Response): void => {
+  updateProgram = (req: Request, res: Response, next: NextFunction): void => {
     console.log("Updating program");
     try {
       const { id } = req.params;
@@ -90,15 +84,12 @@ class ProgramController {
       res.status(200).json({ message: "Program updated successfully" });
       return;
     } catch (error) {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "Error updating program", error: error instanceof Error ? error.message : error });
+      next(new AppError("Error updating program", 500));
       return;
     }
   };
 
-  getProgramById = (req: Request, res: Response): void => {
+  getProgramById = (req: Request, res: Response, next: NextFunction): void => {
     console.log("Fetching program by ID");
     try {
       const { id } = req.params;
@@ -115,14 +106,12 @@ class ProgramController {
       return;
     } catch (error) {
       console.log(error);
-      res
-        .status(500)
-        .json({ message: "Error fetching program", error: error instanceof Error ? error.message : error });
+      next(new AppError("Error fetching program", 500));
       return;
     }
   };
 
-  bulkCreatePrograms = (req: Request, res: Response): void => {
+  bulkCreatePrograms = (req: Request, res: Response, next: NextFunction): void => {
     console.log("Bulk creating programs");
 
     try {
@@ -140,9 +129,7 @@ class ProgramController {
       res.status(201).json({ message: "Programs created successfully" });
       return;
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Error bulk creating programs", error: error instanceof Error ? error.message : error });
+      next(new AppError("Error bulk creating programs", 500));
       return;
     }
   };

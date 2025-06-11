@@ -7,7 +7,7 @@ export class MediaPlatformController {
   getAllMediaPlatforms = (_req: Request, res: Response) => {
     try {
       const mediaPlatforms = this.mediaPlatformService.getAll();
-      res.status(200).json(mediaPlatforms);
+      res.status(200).json({ data: mediaPlatforms });
     } catch (error) {
       res.status(500).json({ error: "Error fetching media platforms" });
     }
@@ -21,7 +21,7 @@ export class MediaPlatformController {
         res.status(404).json({ error: "Media platform not found" });
         return;
       }
-      res.status(200).json(mediaPlatform);
+      res.status(200).json({ data: mediaPlatform });
     } catch (error) {
       res.status(500).json({ error: "Error fetching media platform" });
     }
@@ -31,7 +31,7 @@ export class MediaPlatformController {
     const mediaPlatformData = req.body;
     try {
       const mediaPlatformId = this.mediaPlatformService.add(mediaPlatformData);
-      res.status(201).json({ mediaPlatformId });
+      res.status(201).json({ data: mediaPlatformId });
     } catch (error) {
       res.status(500).json({ error: "Error adding media platform" });
     }
