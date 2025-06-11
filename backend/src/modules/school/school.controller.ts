@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import SchoolService from "./school.service";
+import { AppError } from "../../handlers/error.handler";
 
 import type { Institution, School } from "../../../../shared/types";
 
@@ -8,22 +9,21 @@ export default class schoolController {
     this.schoolService = schoolService;
   }
 
-  getAllSchools = async (_: Request, res: Response): Promise<void> => {
+  getAllSchools = async (_: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const schools = this.schoolService.getAllSchools();
 
       res.status(200).json({
-        schools: schools || [],
+        data: schools,
       });
       return;
     } catch (error) {
-      res.status(500).json({
-        message: "Error fetching schools",
-      });
+      next(new AppError("Error fetching schools", 500));
+      return;
     }
   };
 
-  createSchool = async (req: Request, res: Response): Promise<void> => {
+  createSchool = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const {
         name,
@@ -36,7 +36,7 @@ export default class schoolController {
         director,
       }: Omit<Institution, "institutionId"> & Omit<School, "schoolId"> = req.body;
       if (!name || !address || !postalCode || !city) {
-        res.status(400).json({ message: "Missing required fields" });
+        next(new AppError("Missing required fields", 400));
         return;
       }
 
@@ -55,7 +55,7 @@ export default class schoolController {
 
       if (!newInstitutionSchool.institutionId || newInstitutionSchool.schoolId === -1) {
         {
-          res.status(500).json({ message: "Error creating school institution" });
+          next(new AppError("Error creating school institution", 500));
           return;
         }
       }
@@ -71,102 +71,103 @@ export default class schoolController {
 
       return;
     } catch (error) {
-      res.status(500).json({ message: "Error creating school" });
+      next(new AppError("Error creating school", 500));
       return;
     }
   };
 
-  deleteSchool = async (req: Request, res: Response): Promise<void> => {
+  deleteSchool = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { id } = req.params;
     console.log("Deleting school with ID: ", id);
     try {
       if (!id) {
-        res.status(400).json({ message: "Missing school ID" });
+        next(new AppError("Missing school ID", 400));
         return;
       }
       const deletedSchool = this.schoolService.deleteSchool(parseInt(id));
 
       if (!deletedSchool) {
-        res.status(404).json({ message: "School not found" });
+        next(new AppError("School not found", 404));
         return;
       }
       res.status(200).json({ message: "School deleted successfully" });
       return;
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Error deleting school", error: String(error) });
+      next(new AppError("Error deleting school", 500));
       return;
     }
   };
 
-  getSchoolById = async (req: Request, res: Response): Promise<void> => {
+  getSchoolById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     console.log("Fetching school by ID");
     try {
       const { id } = req.params;
 
       if (!id || isNaN(parseInt(id))) {
-        res.status(400).json({ message: "Invalid or missing school ID" });
+        next(new AppError("Invalid or missing school ID", 400));
         return;
       }
 
       const school = this.schoolService.getSchoolById(parseInt(id));
 
       if (!school) {
-        res.status(404).json({ message: "School not found" });
+        next(new AppError("School not found", 404));
         return;
       }
 
       res
         .status(200)
-        .json({ schoolId: school.schoolId, institutionId: school.institutionId, director: school.director });
+        .json({ data: { schoolId: school.schoolId, institutionId: school.institutionId, director: school.director } });
       return;
     } catch (error) {
-      res.status(500).json({ message: "Error fetching school" });
+      next(new AppError("Error fetching school", 500));
       return;
     }
   };
 
-  updateSchool = async (req: Request, res: Response): Promise<void> => {
+  updateSchool = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { id } = req.params;
       const { institutionId, director }: { institutionId: string | undefined; director: string | undefined } = req.body;
       if (!id) {
-        res.status(400).json({ message: "Missing required fields" });
+        next(new AppError("Missing required fields", 400));
         return;
       }
+
       const updatedSchool = this.schoolService.updateSchool(parseInt(id), {
         institutionId: institutionId ? parseInt(institutionId) : undefined,
         director,
       });
       if (!updatedSchool) {
-        res.status(404).json({ message: "School not found" });
+        next(new AppError("School not found", 404));
         return;
       }
       res.status(200).json({ message: "School updated successfully" });
       return;
     } catch (error) {
-      res.status(500).json({ message: "Error updating school", error });
+      next(new AppError("Error updating school", 500));
       return;
     }
   };
 
-  getSchoolByInstitutionId = async (req: Request, res: Response): Promise<void> => {
+  getSchoolByInstitutionId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     console.log("Fetching school by institution ID");
     try {
       const { institutionId } = req.params;
       if (!institutionId) {
-        res.status(400).json({ message: "Missing institution ID" });
+        next(new AppError("Missing institution ID", 400));
         return;
       }
       const school = this.schoolService.getSchoolByInstitutionId(parseInt(institutionId));
       if (!school) {
-        res.status(404).json({ message: "School not found" });
+        next(new AppError("School not found", 404));
         return;
       }
       res.status(200).json(school);
       return;
     } catch (error) {
-      res.status(500).json({ message: "Error fetching school", error });
+      next(new AppError("Error fetching school", 500));
       return;
     }
   };
