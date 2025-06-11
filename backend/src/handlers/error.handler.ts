@@ -12,25 +12,6 @@ export class AppError extends Error {
   }
 }
 
-export const errorHandler = (err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
-  // Jeśli błąd to nasz AppError, wyślij konkretną odpowiedź
-  if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
-      status: "error",
-      message: err.message,
-    });
-  }
-
-  // Logowanie nieznanych błędów (np. do Sentry)
-  console.error(err);
-
-  // Błąd nieznany - 500
-  res.status(500).json({
-    status: "error",
-    message: "Internal server error",
-  });
-};
-
 class ErrorHandler {
   static handleError = (err: unknown, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof AppError) {
