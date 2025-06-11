@@ -17,6 +17,8 @@ import indexRouter from "./modules/main/index";
 import schoolRouter from "./modules/school/school.router";
 import programCoordinatorRouter from "./modules/program-coordinator/program_coordinator.router";
 
+// Error handling
+import ErrorHandler from "./handlers/error.handler";
 export default class ExpressApp {
   public app: Express;
   private PORT: number = 3000;
@@ -97,10 +99,7 @@ export default class ExpressApp {
 
   // Initialize error handling
   initErrorHandling() {
-    this.app.use((err: Error, _: Request, res: Response, next: () => void) => {
-      console.error(err.stack);
-      res.status(500).send("Something broke!");
-    });
+    this.app.use(ErrorHandler.handleError);
   }
 
   onAppStop() {
