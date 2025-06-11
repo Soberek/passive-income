@@ -12,7 +12,7 @@ class TaskController {
     try {
       const taskId = this.taskService.add(req.body);
       if (taskId) {
-        res.status(201).json({ taskId });
+        res.status(201).json({ data: taskId });
       } else {
         res.status(400).json({ error: "Failed to create task" });
       }
