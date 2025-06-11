@@ -13,7 +13,7 @@ export const Contact = () => {
     formState: { errors },
   } = useContactForm();
 
-  const { contactList, error, loading } = useContactTable();
+  const { data, error, loading } = useContactTable();
 
   return (
     <Box sx={{ marginY: 2, marginX: 2 }}>
@@ -30,10 +30,13 @@ export const Contact = () => {
       />
       {error && <Typography color="error">Błąd podczas ładowania kontaktów: {error.message}</Typography>}
       {loading && <Typography>Ładowanie kontaktów...</Typography>}
-      {!loading && contactList.length === 0 ? (
-        <Typography>Brak kontaktów do wyświetlenia.</Typography>
-      ) : (
-        <ContactsTable contacts={contactList} error={error} loading={loading} />
+      {!loading && !data && <Typography>Brak kontaktów do wyświetlenia.</Typography>}
+
+      {data && data.length > 0 && (
+        <Box sx={{ marginTop: 2 }}>
+          <Typography variant="subtitle1">Liczba kontaktów: {data.length}</Typography>
+          <ContactsTable contacts={data} error={error} loading={loading} />
+        </Box>
       )}
     </Box>
   );
