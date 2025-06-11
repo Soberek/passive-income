@@ -1,7 +1,7 @@
 import { Program } from "../../../../shared/types";
-import { AppError } from "../../handlers/error.handler";
 import ProgramService from "./program.service";
 import { NextFunction, Request, Response } from "express";
+import { AppError } from "../../handlers/error.handler";
 
 class ProgramController {
   constructor(private programService: ProgramService) {
@@ -28,13 +28,13 @@ class ProgramController {
       const { name, description, programType, referenceNumber } = req.body;
 
       if (!name || !description || !programType || !referenceNumber) {
-        res.status(400).json({ message: "Missing required fields" });
+        next(new AppError("Missing required fields", 400));
         return;
       }
 
       const newProgramId = this.programService.add({ name, description, programType, referenceNumber });
       if (newProgramId === -1) {
-        res.status(500).json({ message: "Error creating program", error: "Failed to create program" });
+        next(new AppError("Error creating program", 500));
         return;
       }
       res.status(201).json({ message: "Program created successfully", data: newProgramId });
@@ -55,13 +55,13 @@ class ProgramController {
       }
       const result = this.programService.delete(Number(id));
       if (!result) {
-        res.status(500).json({ message: "Error deleting program", error: "Failed to delete program" });
+        next(new AppError("Error deleting program", 500));
         return;
       }
       res.status(200).json({ message: "Program deleted successfully" });
       return;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       next(new AppError("Error deleting program", 500));
       return;
     }
@@ -129,6 +129,7 @@ class ProgramController {
       res.status(201).json({ message: "Programs created successfully" });
       return;
     } catch (error) {
+      console.error("Error in bulkCreatePrograms:", error);
       next(new AppError("Error bulk creating programs", 500));
       return;
     }
