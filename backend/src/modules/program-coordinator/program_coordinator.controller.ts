@@ -1,53 +1,54 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ProgramCoordinatorService } from "./program_coordinator.service";
+import { AppError } from "../../handlers/error.handler";
 
 export class ProgramCoordinatorController {
   constructor(private programCoordinatorService: ProgramCoordinatorService) {}
 
-  getAll = (req: Request, res: Response) => {
+  getAll = (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = this.programCoordinatorService.getAll();
       res.status(200).json({ data: result });
     } catch (error) {
       console.error("Error fetching program coordinators:", error);
-      res.status(500).json({ error: "Failed to fetch program coordinators." });
+      next(new AppError("Failed to fetch program coordinators.", 500));
     }
   };
 
-  getById = (req: Request, res: Response) => {
+  getById = (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
-      res.status(400).json({ error: "Invalid coordinator ID." });
+      next(new AppError("Invalid coordinator ID.", 400));
       return;
     }
 
     try {
       const result = this.programCoordinatorService.getById(id);
       if (!result) {
-        res.status(404).json({ error: "Program coordinator not found." });
+        next(new AppError("Program coordinator not found.", 404));
         return;
       }
       res.status(200).json({ data: result });
     } catch (error) {
       console.error("Error fetching program coordinator by ID:", error);
-      res.status(500).json({ error: "Failed to fetch program coordinator." });
+      next(new AppError("Failed to fetch program coordinator.", 500));
     }
   };
 
-  add = (req: Request, res: Response) => {
+  add = (req: Request, res: Response, next: NextFunction) => {
     try {
       const item = req.body;
       const result = this.programCoordinatorService.add(item);
 
       if (!result) {
-        res.status(400).json({ error: "Failed to add program coordinator." });
+        next(new AppError("Failed to add program coordinator.", 400));
         return;
       }
 
       res.status(201).json({ data: result });
     } catch (error) {
       console.error("Error adding program coordinator:", error);
-      res.status(500).json({ error: "Failed to add program coordinator." });
+      next(new AppError("Failed to add program coordinator.", 500));
     }
   };
 }
