@@ -6,8 +6,8 @@ export class ActionTypeController {
 
   getAllActionTypes = (_req: Request, res: Response): void => {
     try {
-      const actionTypes = this.actionTypeService.getAll();
-      res.status(200).json(actionTypes);
+      const result = this.actionTypeService.getAll();
+      res.status(200).json({ data: result });
     } catch (error) {
       console.error("Error fetching action types:", error);
       res.status(500).json({ error: "Error fetching action types" });
@@ -17,12 +17,12 @@ export class ActionTypeController {
   getActionTypeById = (req: Request, res: Response): void => {
     const { id } = req.params;
     try {
-      const actionType = this.actionTypeService?.getById(Number(id));
-      if (!actionType) {
+      const result = this.actionTypeService?.getById(Number(id));
+      if (!result) {
         res.status(404).json({ error: "Action type not found" });
         return;
       }
-      res.status(200).json(actionType);
+      res.status(200).json({ data: result });
       return;
     } catch (error) {
       console.error("Error fetching action type:", error);
