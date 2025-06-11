@@ -24,7 +24,7 @@ class TaskController {
   getAllTasks = (req: Request, res: Response): void => {
     try {
       const tasks = this.taskService.getAll();
-      res.status(200).json(tasks);
+      res.status(200).json({ data: tasks });
     } catch (error) {
       res.status(500).json({ error: error instanceof Error ? error.message : "Internal server error" });
     }
