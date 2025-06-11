@@ -12,6 +12,8 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import { useRaportDocumentGenerator } from "./useRaportDocumentGenerator";
+import { useFetch } from "../../hooks/useFetch";
+import { Institution } from "../../../../shared/types";
 
 const IzrzForm = () => {
   const {
@@ -19,8 +21,7 @@ const IzrzForm = () => {
     setFormData,
     isSubmitting,
     submitMessage,
-    institutionList,
-    institutionsLoading,
+
     handleChange,
     handleFileChange,
     handleSubmit,
@@ -31,6 +32,11 @@ const IzrzForm = () => {
     actionTypesLoading,
     actionTypesError,
   } = useRaportDocumentGenerator();
+
+  const { data: institutions, loading: institutionsLoading } = useFetch<Institution[]>(
+    "http://localhost:3000/api/institutions",
+    {}
+  );
 
   return (
     <Box maxWidth={900} mx="auto">
@@ -136,7 +142,14 @@ const IzrzForm = () => {
 
             <Grid size={12}>
               <Autocomplete
-                options={institutionList}
+                options={
+                  institutions?.length
+                    ? institutions.map(
+                        (institution) =>
+                          `${institution.name}, ${institution.address}, ${institution.postalCode} ${institution.municipality}`
+                      )
+                    : []
+                }
                 loading={institutionsLoading}
                 loadingText="Ładowanie placówek..."
                 value={formData.address}
