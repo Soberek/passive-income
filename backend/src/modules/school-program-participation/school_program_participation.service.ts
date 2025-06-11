@@ -1,27 +1,38 @@
-import { SchoolProgramParticipation } from "./school_program_participation.repository";
+import SchoolProgramParticipationRepository from "./school_program_participation.repository";
 import { schoolProgramParticipationSchema } from "./school_program_participation.schema";
+import { CreatableServiceI } from "../../types/index.type";
 
-export class SchoolProgramParticipationService {
-  constructor(private schoolProgramParticipation: SchoolProgramParticipation) {}
+import type {
+  SchoolProgramParticipationType,
+  schoolProgramParticipationCreateType,
+} from "./school_program_participation.schema";
+class SchoolProgramParticipationService
+  implements CreatableServiceI<SchoolProgramParticipationType, "participationId">
+{
+  constructor(private schoolProgramParticipation: SchoolProgramParticipationRepository) {}
 
-  addSchoolProgramParticipation = (schoolId: number, programId: number, schoolYearId: number): boolean => {
+  add = (entity: schoolProgramParticipationCreateType) => {
     try {
-      const validation = schoolProgramParticipationSchema.safeParse({
-        schoolId,
-        programId,
-        schoolYearId,
-      });
+      const validation = schoolProgramParticipationSchema.safeParse(entity);
+
       if (!validation.success) {
         const errors = validation.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
         throw new Error("Invalid data: " + errors.join(", "));
       }
-      return this.schoolProgramParticipation.addSchoolProgramParticipation(schoolId, programId, schoolYearId);
+
+      const result = this.schoolProgramParticipation.add(entity);
+      if (!result) {
+        throw new Error("Failed to add school program participation");
+      }
+      return result;
     } catch (error) {
       console.error(
         "Error adding school program participation:",
         error instanceof Error ? error.message : String(error)
       );
-      return false;
+      return null;
     }
   };
 }
+
+export default SchoolProgramParticipationService;

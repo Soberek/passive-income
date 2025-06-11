@@ -1,11 +1,19 @@
 import { DatabaseI } from "../../types/database.type";
 import SqliteDbService from "../../database/sqlite_db.service";
 import type { CreatableIRepositoryI, ReadableRepositoryI } from "../../types/index.type";
+import type {
+  SchoolProgramParticipationType,
+  schoolProgramParticipationCreateType,
+} from "./school_program_participation.schema";
 
-export class SchoolProgramParticipation {
+class SchoolProgramParticipationRepository
+  implements
+    CreatableIRepositoryI<SchoolProgramParticipationType, "participationId">,
+    ReadableRepositoryI<SchoolProgramParticipationType, "participationId">
+{
   constructor(private dbService: SqliteDbService) {}
 
-  getAllSchoolProgramParticipations = (): { schoolId: number; programId: number; schoolYearId: number }[] => {
+  getAll = (): SchoolProgramParticipationType[] => {
     try {
       const stmt = this.dbService.getDb().prepare(
         `SELECT institutions.name, institutions.email, institutions.municipality, programs.name, school_years.year  
@@ -19,7 +27,7 @@ export class SchoolProgramParticipation {
         console.error("Error preparing SQL statement");
         return [];
       }
-      return stmt.all() as { schoolId: number; programId: number; schoolYearId: number }[];
+      return stmt.all() as SchoolProgramParticipationType[];
     } catch (error) {
       console.error(
         "Error fetching all school program participations:",
@@ -28,23 +36,54 @@ export class SchoolProgramParticipation {
       return [];
     }
   };
-  addSchoolProgramParticipation = (schoolId: number, programId: number, schoolYearId: number): boolean => {
+
+  getById: (id: number) => SchoolProgramParticipationType | null = (id: number) => {
+    try {
+      const stmt = this.dbService
+        .getDb()
+        .prepare("SELECT * FROM school_program_participation WHERE participation_id = ?");
+      if (!stmt) {
+        console.error("Error preparing SQL statement");
+        return null;
+      }
+      const result = stmt.get(id) as SchoolProgramParticipationType | undefined;
+      if (!result) {
+        console.error("No participation found with the given ID");
+        return null;
+      }
+      return result;
+    } catch (error) {
+      console.error(
+        "Error fetching school program participation by ID:",
+        error instanceof Error ? error.message : String(error)
+      );
+      return null;
+    }
+  };
+
+  add = (entity: schoolProgramParticipationCreateType) => {
     try {
       const stmt = this.dbService
         .getDb()
         .prepare("INSERT INTO school_program_participation (school_id, program_id, school_year_id) VALUES (?, ?, ?)");
       if (!stmt) {
         console.error("Error preparing SQL statement");
-        return false;
+        return null;
       }
-      const info = stmt.run(schoolId, programId, schoolYearId);
-      return info.changes > 0;
+      const info = stmt.run(entity.schoolId, entity.programId, entity.schoolYearId);
+      if (info.changes === 0) {
+        console.error("No rows were inserted");
+        return null;
+      }
+      return info.lastInsertRowid as number;
     } catch (error) {
       console.error(
         "Error adding school program participation:",
         error instanceof Error ? error.message : String(error)
       );
-      return false;
+      return null;
     }
   };
 }
+
+export default SchoolProgramParticipationRepository;
