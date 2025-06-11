@@ -25,6 +25,10 @@ const ContactsTable = ({ contacts, error, loading }: ContactTableProps) => {
   if (error) {
     return <div>Błąd podczas ładowania kontaktów: {error.message}</div>;
   }
+
+  if (contacts.length === 0) {
+    return <div>Brak kontaktów do wyświetlenia.</div>;
+  }
   return (
     <TableContainer component={Paper}>
       <Table>
