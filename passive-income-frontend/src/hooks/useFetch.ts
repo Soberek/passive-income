@@ -13,10 +13,10 @@ export const useFetch = <T>(url: string, options?: RequestInit) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const result: T = await response.json();
+        const result = await response.json();
 
         console.log("Fetched data:", result);
-        setData(result);
+        setData(result.data);
       } catch (error) {
         console.log("Fetch error:", error);
         setError(error instanceof Error ? error : new Error("Unknown error"));
