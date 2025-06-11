@@ -2,8 +2,16 @@ import { createTheme } from "@mui/material/styles";
 
 // colors of this
 // primary:  #E16349
+// lighter:  #F29B8A
+// darker:   #B94B36
+// contrast: #FFFFFF
+// accent:   #FF7A59
 
 const primaryColor = "#E16349"; // Primary color for the theme
+const lighterColor = "#F29B8A"; // Lighter shade for the theme
+const darkerColor = "#B94B36"; // Darker shade for the theme
+const contrastColor = "#FFFFFF"; // Contrast color for text and elements
+const accentColor = "#FF7A59"; // Accent color for highlights and buttons
 
 const theme = createTheme({
   components: {
@@ -19,6 +27,16 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: {
+          "& .MuiInputBase-root": {
+            fontSize: "1rem", // Smaller font size
+          },
+          "& .MuiAutocomplete-inputRoot": {},
         },
       },
     },
@@ -44,14 +62,23 @@ const theme = createTheme({
         },
       },
     },
-    colors: {
-      mode: "light",
-      primary: {
-        main: primaryColor,
-      },
-      secondary: {
-        main: "#9c27b0",
-      },
+  },
+  palette: {
+    mode: "light",
+    primary: {
+      main: primaryColor,
+    },
+    secondary: {
+      main: lighterColor, // Lighter shade for secondary color
+    },
+    background: {
+      default: "#f5f5f5", // Light background color for the app
+      paper: "#ffffff", // White background for paper components
+    },
+    text: {
+      primary: "#000", // Darker text color for better readability
+      secondary: "#757575", // Secondary text color
+      disabled: "#bdbdbd", // Disabled text color
     },
   },
 });
