@@ -61,7 +61,7 @@ const private_routes = [
   {
     icon: "👩🏻‍🏫",
     name: "Dodaj koordynatora programu",
-    path: "/program-coordinators",
+    path: "/koordynatorzy-programow-szkolnych",
   },
   {
     icon: "📅",
