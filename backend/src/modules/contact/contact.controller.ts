@@ -54,7 +54,7 @@ class ContactController {
         res.status(404).json({ message: "Contact not found" });
         return;
       }
-      res.status(200).json(contact);
+      res.status(200).json({ data: contact });
     } catch (error) {
       res.status(500).json({ message: "Error fetching contact", error: String(error) });
     }
