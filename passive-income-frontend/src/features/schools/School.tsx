@@ -1,26 +1,28 @@
 import React from "react";
 import SchoolInstitutionForm from "./SchoolInstitutionForm";
 import SchoolInstitutionTable from "./SchoolInstitutionTable";
-import { useInstitutions } from "../../hooks/useInstitutions";
+
 import { useSchoolInstitutionForm } from "./useSchoolInstitutionForm";
+import { useFetch } from "../../hooks/useFetch";
+import { Institution } from "../../../../shared/types";
 
 const SchoolsPage: React.FC = () => {
-  const { institutions, loading } = useInstitutions();
+  const { data, loading } = useFetch<Institution[]>("http://localhost:3000/api/institutions");
   const { handleSubmit } = useSchoolInstitutionForm();
 
   return (
     <div>
       <SchoolInstitutionForm onSubmit={handleSubmit} />
       {loading && <p>Loading...</p>}
-      {!loading && institutions.length === 0 && <p>No institutions found.</p>}
-      {!loading && institutions.length > 0 && <h2>Institutions</h2>}
+      {!loading && data && data.length === 0 && <p>No institutions found.</p>}
+      {!loading && data && data.length > 0 && <h2>Institutions</h2>}
 
-      {!loading && institutions.length > 0 && (
+      {!loading && data && data.length > 0 && (
         <SchoolInstitutionTable
-          data={institutions}
+          data={data}
           rowsPerPage={5}
           page={0}
-          totalCount={institutions.length}
+          totalCount={data.length}
           onPageChange={() => {}}
           onRowsPerPageChange={() => {}}
         />
