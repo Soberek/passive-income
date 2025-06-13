@@ -71,3 +71,11 @@ export interface Task {
   mediaPlatformId?: number; // will be used if the task is a media publication
   createdAt?: Date; // current timestamp from sqlite db
 }
+
+export interface SchoolProgramParticipationType {
+  participationId: number;
+  schoolId: number;
+  programId: number;
+  schoolYearId: number;
+  createdAt?: Date; // current timestamp from sqlite db
+}
