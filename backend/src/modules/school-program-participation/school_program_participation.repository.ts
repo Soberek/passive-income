@@ -16,8 +16,14 @@ class SchoolProgramParticipationRepository
   getAll = (): SchoolProgramParticipationType[] => {
     try {
       const stmt = this.dbService.getDb().prepare(
-        `SELECT institutions.name, institutions.email, institutions.municipality, programs.name, school_years.year  
-            FROM  school_program_participation spp
+        `SELECT *, institutions.name AS institutionName,
+                programs.name AS programName,
+                school_years.year AS schoolYear,
+                institutions.institution_id AS institutionId,
+                programs.program_id AS programId,
+                school_years.school_year_id AS schoolYearId,
+                participation_id AS participationId
+            FROM school_program_participation spp
             JOIN schools ON spp.school_id = schools.school_id 
             JOIN institutions ON institutions.institution_id = schools.institution_id
             JOIN programs ON spp.program_id = programs.program_id

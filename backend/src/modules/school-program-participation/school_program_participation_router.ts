@@ -16,9 +16,9 @@ programParticipationRouter.post(
   "/school-program-participation",
   schoolProgramParticipationController.addSchoolProgramParticipation
 );
-
-programParticipationRouter.get("/program-participation", (req, res) => {
-  res.status(200).send("Program participation endpoint is working");
-});
+programParticipationRouter.get(
+  "/school-program-participation",
+  schoolProgramParticipationController.getSchoolProgramParticipation
+);
 
 export default programParticipationRouter;

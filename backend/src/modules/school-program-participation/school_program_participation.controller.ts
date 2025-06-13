@@ -19,6 +19,20 @@ class SchoolProgramParticipationController {
       return;
     }
   };
+
+  getSchoolProgramParticipation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const result = await this.schoolProgramParticipationService.getAll();
+
+      if (result) {
+        res.status(200).send({ message: "School program participation retrieved successfully", data: result });
+      } else {
+        next(new AppError("No school program participation found", 404));
+      }
+    } catch (error) {
+      next(new AppError("Error retrieving school program participation", 500));
+    }
+  };
 }
 
 export default SchoolProgramParticipationController;
