@@ -1,23 +1,34 @@
 import { Autocomplete, Button, TextField, Typography } from "@mui/material";
 import { Controller } from "react-hook-form";
 import useSchoolProgramParticipation from "./useSchoolProgramParticipation";
+import { Institution, Program, SchoolYear } from "../../../../shared/types";
 
-const SchoolProgramParticipationForm = () => {
-  const {
-    control,
-    handleSubmit,
-    onSubmit,
-    errors,
-    institutionsData,
-    institutionsLoading,
-    institutionsError,
-    programsData,
-    programsLoading,
-    programsError,
-    schoolYearsData,
-    schoolYearsLoading,
-    schoolYearsError,
-  } = useSchoolProgramParticipation();
+interface SchoolProgramParticipationFormProps {
+  institutionsData: Institution[] | null;
+  institutionsLoading: boolean;
+  institutionsError: Error | null;
+  programsData: Program[] | null;
+  programsLoading: boolean;
+  programsError: Error | null;
+  schoolYearsData: SchoolYear[] | null;
+  schoolYearsLoading: boolean;
+  schoolYearsError: Error | null;
+  refetch: () => void;
+}
+
+const SchoolProgramParticipationForm = ({
+  institutionsData,
+  institutionsLoading,
+  institutionsError,
+  programsData,
+  programsLoading,
+  programsError,
+  schoolYearsData,
+  schoolYearsLoading,
+  schoolYearsError,
+  refetch,
+}: SchoolProgramParticipationFormProps) => {
+  const { control, handleSubmit, onSubmit, errors } = useSchoolProgramParticipation();
 
   if (institutionsError) {
     return <Typography color="error">Błąd ładowania szkół: {institutionsError.message}</Typography>;
@@ -32,7 +43,12 @@ const SchoolProgramParticipationForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(async (data) => {
+        await onSubmit(data);
+        refetch();
+      })}
+    >
       <Controller
         name="school"
         control={control}

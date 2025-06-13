@@ -1,6 +1,4 @@
 import { useForm } from "react-hook-form";
-import { Institution, Program, SchoolYear } from "../../../../shared/types";
-import { useFetch } from "../../hooks/useFetch";
 
 const useSchoolProgramParticipationForm = () => {
   type FormValues = {
@@ -14,24 +12,6 @@ const useSchoolProgramParticipationForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
-
-  const {
-    data: institutionsData,
-    loading: institutionsLoading,
-    error: institutionsError,
-  } = useFetch<Institution[]>("http://localhost:3000/api/institutions");
-
-  const {
-    data: programsData,
-    loading: programsLoading,
-    error: programsError,
-  } = useFetch<Program[]>("http://localhost:3000/api/programs");
-
-  const {
-    data: schoolYearsData,
-    loading: schoolYearsLoading,
-    error: schoolYearsError,
-  } = useFetch<SchoolYear[]>("http://localhost:3000/api/school-years");
 
   const onSubmit = async (data: FormValues) => {
     // Ensure all fields are selected (not null)
@@ -69,15 +49,6 @@ const useSchoolProgramParticipationForm = () => {
     handleSubmit,
     onSubmit,
     errors,
-    institutionsData,
-    institutionsLoading,
-    institutionsError,
-    programsData,
-    programsLoading,
-    programsError,
-    schoolYearsData,
-    schoolYearsLoading,
-    schoolYearsError,
   };
 };
 
