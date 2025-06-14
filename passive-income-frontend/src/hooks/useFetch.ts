@@ -34,12 +34,14 @@ export const useFetch = <T>(url: string, options?: RequestInit) => {
   }, [url]);
 
   const refetch = async () => {
+    console.log("Refetching data...");
     setLoading(true);
     setError(null);
 
     try {
       const newData = await fetchData();
       setData(newData);
+      console.log("Data refetched successfully:", newData);
     } catch (error) {
       console.log("Refetch error:", error);
       setError(error instanceof Error ? error : new Error("Unknown error"));

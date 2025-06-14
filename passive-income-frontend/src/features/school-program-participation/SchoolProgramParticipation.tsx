@@ -11,9 +11,11 @@ import { SchoolProgramParticipationTable } from "./school-program-participation-
 import { SchoolProgramParticipationTableI } from "./types";
 
 export const SchoolProgramParticipation = () => {
-  const { data: participationData, loading } = useFetch<SchoolProgramParticipationTableI[]>(
-    "http://localhost:3000/api/school-program-participation"
-  );
+  const {
+    data: participationData,
+    loading,
+    refetch,
+  } = useFetch<SchoolProgramParticipationTableI[]>("http://localhost:3000/api/school-program-participation");
 
   const {
     institutionIdParam,
@@ -22,7 +24,7 @@ export const SchoolProgramParticipation = () => {
     schoolYearIdParam,
     handleParamsChange,
     filteredProgramCoordinatorsData,
-  } = useSchoolProgramParticipationFilterButtons();
+  } = useSchoolProgramParticipationFilterButtons({ participationData: participationData || [] });
 
   const { data: institutions } = useFetch<Institution[]>("http://localhost:3000/api/institutions");
   const { data: programs } = useFetch<Program[]>("http://localhost:3000/api/programs");
@@ -35,7 +37,23 @@ export const SchoolProgramParticipation = () => {
         🎓 Dodaj uczestnictwo szkoły w programie 📚
       </Typography>
 
-      {participationData && participationData.length > 0 && <SchoolProgramParticipationForms />}
+      {participationData && participationData.length > 0 && (
+        <SchoolProgramParticipationForms
+          institutionsData={institutions}
+          institutionsLoading={!institutions}
+          institutionsError={null}
+          programsData={programs}
+          programsLoading={!programs}
+          programsError={null}
+          schoolYearsData={schoolYears}
+          schoolYearsLoading={!schoolYears}
+          schoolYearsError={null}
+          contactsData={contacts}
+          contactsLoading={!contacts}
+          contactsError={null}
+          refetch={refetch}
+        />
+      )}
 
       <SchoolProgramCoordinatorFilters
         handleParamsChange={handleParamsChange}

@@ -1,6 +1,6 @@
 import { Autocomplete, Button, TextField, Typography } from "@mui/material";
 import { Controller } from "react-hook-form";
-import useSchoolProgramParticipation from "../useSchoolProgramParticipation";
+import useSchoolProgramParticipation from "./useSchoolProgramParticipationForm";
 import { Contact, Institution, Program, SchoolYear } from "../../../../../shared/types";
 
 interface SchoolProgramParticipationFormProps {
@@ -56,7 +56,7 @@ const SchoolProgramParticipationForm = ({
     <form
       onSubmit={handleSubmit(async (data) => {
         await onSubmit(data);
-        refetch();
+        await refetch();
       })}
       style={{ width: "100%" }}
     >

@@ -1,15 +1,15 @@
 import { useSearchParams } from "react-router";
 
 import { useMemo } from "react";
-import { useFetch } from "../../../hooks/useFetch";
+
 import { FormValues, SchoolProgramParticipationTableI } from "../types";
 
-export const useSchoolProgramParticipationFilterButtons = () => {
+export const useSchoolProgramParticipationFilterButtons = ({
+  participationData,
+}: {
+  participationData: SchoolProgramParticipationTableI[];
+}) => {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const { data: programCoordinators, refetch } = useFetch<SchoolProgramParticipationTableI[]>(
-    "http://localhost:3000/api/school-program-participation"
-  );
 
   const handleParamsChange = (field: keyof FormValues, value: string | null) => {
     if (value) {
@@ -37,7 +37,7 @@ export const useSchoolProgramParticipationFilterButtons = () => {
       });
     };
   }, [schoolYearIdParam, institutionIdParam, contactIdParam, programIdParam]);
-  const filteredProgramCoordinatorsData = filterData(programCoordinators || []);
+  const filteredProgramCoordinatorsData = filterData(participationData || []);
 
   return {
     institutionIdParam,
@@ -46,7 +46,5 @@ export const useSchoolProgramParticipationFilterButtons = () => {
     schoolYearIdParam,
     handleParamsChange,
     filteredProgramCoordinatorsData,
-    programCoordinators,
-    refetch,
   };
 };

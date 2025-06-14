@@ -1,12 +1,6 @@
-import { useFetch } from "../../../hooks/useFetch";
-
-import type { FormValues, SchoolProgramParticipationTableI } from "../types";
+import type { FormValues } from "../types";
 
 export const useProgramCoordinatorForm = () => {
-  const { data, loading, refetch } = useFetch<SchoolProgramParticipationTableI[]>(
-    "http://localhost:3000/api/school-program-participation"
-  );
-
   const handleFormSubmit = (data: FormValues) => {
     console.log("Form submitted with data:", data);
 
@@ -33,7 +27,6 @@ export const useProgramCoordinatorForm = () => {
         })
         .then((result) => {
           console.log("Form submission successful:", result);
-          refetch(); // Refetch the data to update the table
         });
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -42,8 +35,5 @@ export const useProgramCoordinatorForm = () => {
 
   return {
     handleFormSubmit,
-    data,
-    loading,
-    refetch,
   };
 };

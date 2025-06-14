@@ -1,16 +1,14 @@
 import { Autocomplete, Button, TextField } from "@mui/material";
 import { Contact, Institution, Program, SchoolYear } from "../../../../../shared/types";
-import { Control, Controller, UseFormHandleSubmit } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import type { FormValues } from "../types";
+import { useProgramCoordinatorForm } from "./useProgramCoordinatorForm";
 
 interface ProgramCoordinatorFormProps {
   institutions: Institution[];
   contacts: Contact[];
   programs: Program[];
   schoolYears: SchoolYear[];
-  handleSubmit: UseFormHandleSubmit<FormValues, FormValues>;
-  control: Control<FormValues, any, FormValues>;
-  handleFormSubmit: (data: FormValues) => void;
 }
 
 export const ProgramCoordinatorForm = ({
@@ -18,10 +16,18 @@ export const ProgramCoordinatorForm = ({
   contacts,
   programs,
   schoolYears,
-  handleSubmit,
-  control,
-  handleFormSubmit,
 }: ProgramCoordinatorFormProps) => {
+  const { handleFormSubmit } = useProgramCoordinatorForm();
+
+  const { control, handleSubmit } = useForm<FormValues>({
+    defaultValues: {
+      institutionId: null,
+      contactId: null,
+      programId: null,
+      schoolYearId: null,
+    },
+  });
+
   if (!institutions || institutions.length === 0) {
     console.error("No institutions available");
     return <div>Ładowanie instytucji...</div>;
