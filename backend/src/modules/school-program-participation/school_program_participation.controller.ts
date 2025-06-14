@@ -5,10 +5,10 @@ class SchoolProgramParticipationController {
   constructor(private schoolProgramParticipationService: SchoolProgramParticipationService) {}
 
   addSchoolProgramParticipation = (req: Request, res: Response, next: NextFunction): void => {
-    const { schoolId, programId, schoolYearId } = req.body;
+    const { schoolId, programId, schoolYearId, contactId } = req.body;
     console.log(req.body);
-    console.log(schoolId, programId, schoolYearId);
-    const result = this.schoolProgramParticipationService.add({ schoolId, programId, schoolYearId });
+    console.log(schoolId, programId, schoolYearId, contactId);
+    const result = this.schoolProgramParticipationService.add({ schoolId, programId, schoolYearId, contactId });
 
     console.log("result: ", result);
     if (result) {

@@ -5,6 +5,7 @@ export const schoolProgramParticipationSchema = z.object({
   schoolId: z.number().min(1),
   programId: z.number().min(1),
   schoolYearId: z.number().min(1),
+  contactId: z.number().min(1),
 });
 
 export const schoolProgramParticipationCreateSchema = schoolProgramParticipationSchema.omit({

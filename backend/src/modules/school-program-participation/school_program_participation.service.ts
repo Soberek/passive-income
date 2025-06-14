@@ -9,6 +9,7 @@ import type {
   SchoolProgramParticipationType,
   schoolProgramParticipationCreateType,
 } from "./school_program_participation.schema";
+import { ProgramCoordinatorRepository } from "../program-coordinator/program_coordinator.repository";
 class SchoolProgramParticipationService
   implements
     CreatableServiceI<SchoolProgramParticipationType, "participationId">,
@@ -25,7 +26,7 @@ class SchoolProgramParticipationService
         throw new Error("Invalid data: " + errors.join(", "));
       }
 
-      const result = this.schoolProgramParticipation.add(entity);
+      const result = this.schoolProgramParticipation.addSchoolProgramParticipationCoordinatorTransaction(entity);
       if (!result) {
         throw new Error("Failed to add school program participation");
       }

@@ -25,22 +25,42 @@ export class ProgramCoordinatorRepository
     try {
       const stmt = this.dbService.getDb().prepare(
         `SELECT 
+           -- Program Coordinator Details
             pc.coordinator_id as coordinatorId,
-            i.institution_id as institutionId,  -- id instytucji (szkoły)
-            c.contact_id as contactId,           -- id kontaktu (koordynatora)
-            p.program_id as programId,           -- id programu
-            pc.school_year_id as schoolYearId,   -- id roku szkolnego
-            p.name as programName,          -- nazwa programu
-            i.name as institutionName,      -- nazwa instytucji (szkoły)
+            pc.participation_id as participationId,
+            sy.school_year_id as schoolYearId,
+
+            
+            -- School Year Details
+            sy.school_year_id as schoolYearId,
+            sy.year as schoolYear,
+
+            -- Program Details
+            p.program_id as programId,
+            p.name as programName,
+            p.program_type as programType,
+
+            -- Institution Details
+            i.institution_id as institutionId,
+            i.name as institutionName,
+            i.address as institutionAddress,
+            i.postal_code as institutionPostalCode,
+            i.city as institutionCity,
+
+            -- Contact Details
+            c.contact_id as contactId,
+            c.first_name as contactFirstName,
+            c.last_name as contactLastName,
             c.phone as contactPhone,
-            i.phone as institutionPhone,
-            (c.first_name || ' ' || c.last_name) as contactName,          -- nazwa koordynatora (kontakt)
-            sy.year as year           -- np. rok szkolny
+            c.email as contactEmail
+
         FROM program_coordinators pc
-        JOIN programs p ON pc.program_id = p.program_id
-        JOIN institutions i ON pc.institution_id = i.institution_id
+        JOIN school_program_participation spp ON pc.participation_id = spp.participation_id
+        JOIN school_years sy ON spp.school_year_id = sy.school_year_id
+        JOIN schools s ON spp.school_id = s.school_id
+        JOIN institutions i ON s.institution_id = i.institution_id
+        JOIN programs p ON spp.program_id = p.program_id
         JOIN contacts c ON pc.contact_id = c.contact_id
-        JOIN school_years sy ON pc.school_year_id = sy.school_year_id;
 `
       );
       if (!stmt) {

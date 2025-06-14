@@ -16,18 +16,44 @@ class SchoolProgramParticipationRepository
   getAll = (): SchoolProgramParticipationType[] => {
     try {
       const stmt = this.dbService.getDb().prepare(
-        `SELECT *, institutions.name AS institutionName,
-                programs.name AS programName,
-                school_years.year AS schoolYear,
-                institutions.institution_id AS institutionId,
-                programs.program_id AS programId,
-                school_years.school_year_id AS schoolYearId,
-                participation_id AS participationId
-            FROM school_program_participation spp
-            JOIN schools ON spp.school_id = schools.school_id 
-            JOIN institutions ON institutions.institution_id = schools.institution_id
-            JOIN programs ON spp.program_id = programs.program_id
-            JOIN school_years ON spp.school_year_id = school_years.school_year_id`
+        `SELECT 
+        -- Program Coordinator Details
+         pc.coordinator_id as coordinatorId,
+         pc.participation_id as participationId,
+
+         
+         -- School Year Details
+         sy.school_year_id as schoolYearId,
+         sy.year as schoolYear,
+
+         -- Program Details
+         p.program_id as programId,
+         p.name as programName,
+         p.program_type as programType,
+
+         -- Institution Details
+         i.institution_id as institutionId,
+         i.name as institutionName,
+         i.address as institutionAddress,
+         i.postal_code as institutionPostalCode,
+         i.city as institutionCity,
+
+         -- Contact Details
+         c.contact_id as contactId,
+         c.first_name as contactFirstName,
+         c.last_name as contactLastName,
+         (c.last_name || ' ' || c.first_name) as contactName,
+         c.phone as contactPhone,
+         c.email as contactEmail
+
+        FROM program_coordinators pc
+        JOIN school_program_participation spp ON pc.participation_id = spp.participation_id
+        JOIN school_years sy ON spp.school_year_id = sy.school_year_id
+        JOIN schools s ON spp.school_id = s.school_id
+        JOIN institutions i ON s.institution_id = i.institution_id
+        JOIN programs p ON spp.program_id = p.program_id
+        JOIN contacts c ON pc.contact_id = c.contact_id
+`
       );
       if (!stmt) {
         console.error("Error preparing SQL statement");
@@ -88,6 +114,47 @@ class SchoolProgramParticipationRepository
         error instanceof Error ? error.message : String(error)
       );
       return null;
+    }
+  };
+
+  addSchoolProgramParticipationCoordinatorTransaction = (entity: schoolProgramParticipationCreateType) => {
+    const transaction = this.dbService.getDb().transaction((entity: schoolProgramParticipationCreateType) => {
+      const stmt = this.dbService
+        .getDb()
+        .prepare("INSERT INTO school_program_participation (school_id, program_id, school_year_id) VALUES (?, ?, ?)");
+      if (!stmt) {
+        throw new Error("Error preparing SQL statement");
+      }
+      const info = stmt.run(entity.schoolId, entity.programId, entity.schoolYearId);
+      if (!info || info.changes === undefined) {
+        throw new Error("Error executing SQL statement");
+      }
+      const participationId = info.lastInsertRowid as number;
+
+      const stmt2 = this.dbService
+        .getDb()
+        .prepare("INSERT INTO program_coordinators (participation_id, contact_id) VALUES (?, ?)");
+
+      if (!stmt2) {
+        throw new Error("Error preparing SQL statement for coordinators");
+      }
+
+      const info2 = stmt2.run(participationId, entity.contactId);
+
+      if (!info2 || info2.changes === undefined) {
+        throw new Error("Error executing SQL statement for coordinators");
+      }
+      return participationId;
+    });
+
+    try {
+      const result = transaction(entity);
+      return result;
+    } catch (error) {
+      console.error(
+        "Error adding school program participations in transaction:",
+        error instanceof Error ? error.message : String(error)
+      );
     }
   };
 }
