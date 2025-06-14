@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-const useSchoolProgramParticipationForm = () => {
+const useSchoolProgramParticipationForm = ({ refetch }: { refetch: () => void }) => {
   type FormValues = {
     schoolId: number | null;
     programId: number | null;
@@ -44,6 +44,7 @@ const useSchoolProgramParticipationForm = () => {
 
     const responseData = await postData.text();
     console.log("Uczestnictwo dodane pomyślnie:", responseData);
+    refetch(); // Refetch the data to update the table
   };
 
   return {

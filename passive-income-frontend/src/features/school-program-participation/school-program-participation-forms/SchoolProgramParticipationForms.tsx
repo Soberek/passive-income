@@ -7,16 +7,17 @@ import { useTheme } from "@mui/material/styles";
 
 import { useFetch } from "../../../hooks/useFetch";
 import { Box } from "@mui/material";
-import { useProgramCoordinatorForm } from "./useProgramCoordinatorForm";
+import { useProgramCoordinatorForm } from "../coordinator-form/useProgramCoordinatorForm";
 import SchoolProgramParticipationForm from "./SchoolProgramParticipationForm";
 import { FormValues } from "../types";
-import { ProgramCoordinatorForm } from "./ProgramCoordinatorForm";
+import { ProgramCoordinatorForm } from "../coordinator-form/ProgramCoordinatorForm";
 
 export const SchoolProgramParticipationForms = () => {
   const { refetch, handleFormSubmit } = useProgramCoordinatorForm();
 
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       institutionId: null,

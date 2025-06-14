@@ -8,7 +8,7 @@ export const useSchoolProgramParticipationFilterButtons = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { data: programCoordinators, refetch } = useFetch<SchoolProgramParticipationTableI[]>(
-    "http://localhost:3000/api/program-coordinators"
+    "http://localhost:3000/api/school-program-participation"
   );
 
   const handleParamsChange = (field: keyof FormValues, value: string | null) => {

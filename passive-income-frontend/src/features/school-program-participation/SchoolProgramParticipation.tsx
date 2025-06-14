@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-import { Contact, Institution, Program, School, SchoolYear } from "../../../../shared/types";
+import { Contact, Institution, Program, SchoolYear } from "../../../../shared/types";
 import { useFetch } from "../../hooks/useFetch";
 import { SchoolProgramParticipationForms } from "./school-program-participation-forms/SchoolProgramParticipationForms";
 import { SchoolProgramCoordinatorFilters } from "./school-program-participation-table/SchoolProgramCoordinatorFilterButtons";

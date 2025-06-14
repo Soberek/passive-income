@@ -12,6 +12,8 @@ export const SchoolProgramParticipationTable: React.FC<{ data: SchoolProgramPart
     throw new Error("Function not implemented.");
   }
 
+  console.log(data);
+
   return (
     <Table>
       <TableHead>

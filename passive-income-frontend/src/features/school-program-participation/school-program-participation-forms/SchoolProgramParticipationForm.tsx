@@ -34,7 +34,7 @@ const SchoolProgramParticipationForm = ({
   contactsError,
   refetch,
 }: SchoolProgramParticipationFormProps) => {
-  const { control, handleSubmit, onSubmit, errors } = useSchoolProgramParticipation();
+  const { control, handleSubmit, onSubmit, errors } = useSchoolProgramParticipation({ refetch });
 
   if (institutionsError) {
     return <Typography color="error">Błąd ładowania szkół: {institutionsError.message}</Typography>;
