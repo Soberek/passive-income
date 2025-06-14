@@ -4,6 +4,7 @@ import { Contact, Institution, Program, SchoolYear } from "../../../../shared/ty
 import { ProgramCoordinatorTable } from "./ProgramCoordinatorTable";
 import { ProgramCoordinatorFilters } from "./ProgramCoordinatorFilterButtons";
 import { ProgramCoordinatorForm } from "./ProgramCoordinatorForm";
+import { useSearchParams } from "react-router";
 
 export type FormValues = {
   institutionId: number | null;
@@ -36,9 +37,25 @@ export const ProgramCoordinator = () => {
   const { data: programs } = useFetch<Program[]>("http://localhost:3000/api/programs");
   const { data: schoolYears } = useFetch<SchoolYear[]>("http://localhost:3000/api/school-years");
 
-  const { data: programCoordinators } = useFetch<ProgramCoordinatorData[]>(
+  const { data: programCoordinators, refetch } = useFetch<ProgramCoordinatorData[]>(
     "http://localhost:3000/api/program-coordinators"
   );
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleParamsChange = (field: keyof FormValues, value: string | null) => {
+    if (value) {
+      searchParams.set(field, value);
+    } else {
+      searchParams.delete(field);
+    }
+    setSearchParams(searchParams);
+  };
+
+  const institutionIdParam = searchParams.get("institutionId");
+  const contactIdParam = searchParams.get("contactId");
+  const programIdParam = searchParams.get("programId");
+  const schoolYearIdParam = searchParams.get("schoolYearId");
 
   const handleFormSubmit = (data: FormValues) => {
     console.log("Form submitted with data:", data);
@@ -66,6 +83,7 @@ export const ProgramCoordinator = () => {
         })
         .then((result) => {
           console.log("Form submission successful:", result);
+          refetch(); // Refetch the data to update the table
         });
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -84,6 +102,11 @@ export const ProgramCoordinator = () => {
         control={control}
       />
       <ProgramCoordinatorFilters
+        handleParamsChange={handleParamsChange}
+        institutionIdParam={institutionIdParam}
+        contactIdParam={contactIdParam}
+        programIdParam={programIdParam}
+        schoolYearIdParam={schoolYearIdParam}
         institutions={institutions || []}
         programs={programs || []}
         schoolYears={schoolYears || []}

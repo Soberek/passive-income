@@ -1,14 +1,18 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { useSearchParams } from "react-router";
 
-import { FormValues } from "./ProgramCoordinator";
 import { Contact, Institution, Program, SchoolYear } from "../../../../shared/types";
+import { FormValues } from "./ProgramCoordinator";
 
 interface ProgramCoordinatorFiltersProps {
   institutions: Institution[];
   programs: Program[];
   schoolYears: SchoolYear[];
   contacts: Contact[];
+  institutionIdParam: string | null;
+  contactIdParam: string | null;
+  programIdParam: string | null;
+  schoolYearIdParam: string | null;
+  handleParamsChange: (field: keyof FormValues, value: string | null) => void;
 }
 
 export const ProgramCoordinatorFilters: React.FC<ProgramCoordinatorFiltersProps> = ({
@@ -16,23 +20,12 @@ export const ProgramCoordinatorFilters: React.FC<ProgramCoordinatorFiltersProps>
   programs,
   schoolYears,
   contacts,
+  institutionIdParam,
+  contactIdParam,
+  programIdParam,
+  schoolYearIdParam,
+  handleParamsChange,
 }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const handleParamsChange = (field: keyof FormValues, value: string | null) => {
-    if (value) {
-      searchParams.set(field, value);
-    } else {
-      searchParams.delete(field);
-    }
-    setSearchParams(searchParams);
-  };
-
-  const institutionId = searchParams.get("institutionId");
-  const contactId = searchParams.get("contactId");
-  const programId = searchParams.get("programId");
-  const schoolYearId = searchParams.get("schoolYearId");
-
   if (!institutions || institutions.length === 0) {
     console.error("No institutions available");
     return <div>Loading institutions...</div>;
@@ -56,16 +49,14 @@ export const ProgramCoordinatorFilters: React.FC<ProgramCoordinatorFiltersProps>
 
   return (
     <div style={{ display: "flex", gap: "16px", marginBottom: "16px" }}>
-      <FormControl>
-        <InputLabel>School Year</InputLabel>
+      <FormControl fullWidth>
+        <InputLabel id="school-year-label">Rok szkolny</InputLabel>
         <Select
-          value={schoolYearId || ""}
-          label="School Year"
+          labelId="school-year-label"
+          value={schoolYearIdParam ?? ""}
+          label="Rok szkolny"
           onChange={(e) => handleParamsChange("schoolYearId", e.target.value)}
         >
-          <MenuItem value="" disabled defaultValue={schoolYearId || ""}>
-            Wybierz rok szkolny
-          </MenuItem>
           <MenuItem value="">All</MenuItem>
           {schoolYears.map((schoolYear) => (
             <MenuItem key={schoolYear.schoolYearId} value={schoolYear.schoolYearId}>
@@ -74,15 +65,16 @@ export const ProgramCoordinatorFilters: React.FC<ProgramCoordinatorFiltersProps>
           ))}
         </Select>
       </FormControl>
-      <FormControl>
-        <InputLabel>Program</InputLabel>
+      <FormControl fullWidth>
+        <InputLabel id="program-label">Program</InputLabel>
         <Select
-          value={programId || ""}
+          labelId="program-label"
+          value={programIdParam || ""}
           label="Program"
-          defaultValue={programId || ""}
+          defaultValue={programIdParam || ""}
           onChange={(e) => handleParamsChange("programId", e.target.value)}
         >
-          <MenuItem value="" disabled defaultValue={programId || ""}>
+          <MenuItem value="" disabled defaultValue={programIdParam || ""}>
             Wybierz program
           </MenuItem>
           <MenuItem value="">All</MenuItem>
@@ -93,11 +85,11 @@ export const ProgramCoordinatorFilters: React.FC<ProgramCoordinatorFiltersProps>
           ))}
         </Select>
       </FormControl>
-      <FormControl>
-        <InputLabel>Instytucja</InputLabel>
+      <FormControl fullWidth>
+        <InputLabel id="institution-label">Instytucja</InputLabel>
         <Select
-          value={institutionId || ""}
-          label="Institution"
+          value={institutionIdParam || ""}
+          label="Instytucja"
           onChange={(e) => handleParamsChange("institutionId", e.target.value)}
         >
           {institutions.map((institution) => (
@@ -107,11 +99,11 @@ export const ProgramCoordinatorFilters: React.FC<ProgramCoordinatorFiltersProps>
           ))}
         </Select>
       </FormControl>
-      <FormControl>
-        <InputLabel>Kontakt</InputLabel>
+      <FormControl fullWidth>
+        <InputLabel id="contact-label">Kontakt</InputLabel>
         <Select
-          value={contactId || ""}
-          label="Contact"
+          value={contactIdParam || ""}
+          label="Kontakt"
           onChange={(e) => handleParamsChange("contactId", e.target.value)}
         >
           <MenuItem value="" disabled>
