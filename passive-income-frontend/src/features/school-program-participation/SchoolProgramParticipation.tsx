@@ -14,6 +14,7 @@ export const SchoolProgramParticipation = () => {
   const {
     data: participationData,
     loading,
+    error,
     refetch,
   } = useFetch<SchoolProgramParticipationTableI[]>("http://localhost:3000/api/school-program-participation");
 
@@ -37,23 +38,21 @@ export const SchoolProgramParticipation = () => {
         🎓 Dodaj uczestnictwo szkoły w programie 📚
       </Typography>
 
-      {participationData && participationData.length > 0 && (
-        <SchoolProgramParticipationForms
-          institutionsData={institutions}
-          institutionsLoading={!institutions}
-          institutionsError={null}
-          programsData={programs}
-          programsLoading={!programs}
-          programsError={null}
-          schoolYearsData={schoolYears}
-          schoolYearsLoading={!schoolYears}
-          schoolYearsError={null}
-          contactsData={contacts}
-          contactsLoading={!contacts}
-          contactsError={null}
-          refetch={refetch}
-        />
-      )}
+      <SchoolProgramParticipationForms
+        institutionsData={institutions}
+        institutionsLoading={!institutions}
+        institutionsError={null}
+        programsData={programs}
+        programsLoading={!programs}
+        programsError={null}
+        schoolYearsData={schoolYears}
+        schoolYearsLoading={!schoolYears}
+        schoolYearsError={null}
+        contactsData={contacts}
+        contactsLoading={!contacts}
+        contactsError={null}
+        refetch={refetch}
+      />
 
       <SchoolProgramCoordinatorFilters
         handleParamsChange={handleParamsChange}
@@ -68,6 +67,7 @@ export const SchoolProgramParticipation = () => {
       />
 
       {loading && <Typography>Ładowanie danych...</Typography>}
+      {error && <Typography color="error">Błąd ładowania danych: {error.message}</Typography>}
 
       {!loading && (!participationData || participationData.length === 0) && (
         <Typography>Brak danych o uczestnictwie szkół w programach.</Typography>
