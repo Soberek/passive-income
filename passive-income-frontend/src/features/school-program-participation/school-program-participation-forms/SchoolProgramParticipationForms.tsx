@@ -2,7 +2,6 @@ import type { Contact, Institution, Program, SchoolYear } from "../../../../../s
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import { useFetch } from "../../../hooks/useFetch";
 import { Box } from "@mui/material";
 import SchoolProgramParticipationForm from "../school-participation-form/SchoolProgramParticipationForm";
 import { ProgramCoordinatorForm } from "../coordinator-form/ProgramCoordinatorForm";

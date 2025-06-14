@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { useFetch } from "../../../hooks/useFetch";
 
 const useSchoolProgramParticipationForm = ({ refetch }: { refetch: () => void }) => {
   type FormValues = {

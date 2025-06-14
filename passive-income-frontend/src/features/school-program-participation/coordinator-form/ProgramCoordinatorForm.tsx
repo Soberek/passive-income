@@ -48,6 +48,7 @@ export const ProgramCoordinatorForm = ({
     console.log(contacts);
     return <div>Ładowanie kontaktów...</div>;
   }
+
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} style={{ width: "100%" }}>
       <Controller
