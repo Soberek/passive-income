@@ -1,59 +1,62 @@
 import { Box, Typography } from "@mui/material";
-import SchoolProgramParticipationForm from "./SchoolProgramParticipationForm";
-import { SchoolProgramParticipationTable } from "./SchoolProgramParticipationTable";
 
+import { Contact, Institution, Program, School, SchoolYear } from "../../../../shared/types";
 import { useFetch } from "../../hooks/useFetch";
+import { SchoolProgramParticipationForms } from "./school-program-participation-forms/SchoolProgramParticipationForms";
+import { SchoolProgramCoordinatorFilters } from "./school-program-participation-table/SchoolProgramCoordinatorFilterButtons";
 
-import { Institution, Program, School, SchoolYear } from "../../../../shared/types";
+import { useSchoolProgramParticipationFilterButtons } from "./school-program-participation-table/useSchoolProgramCoordinatorFilterButtons";
 
-export interface SchoolProgramParticipationTableI extends Institution, Program, SchoolYear, School {
-  participationId: number;
-  programId: number;
-  institutionName: string;
-  schoolId: number;
-}
+import { SchoolProgramParticipationTable } from "./school-program-participation-table/SchoolProgramParticipationTable";
+import { SchoolProgramParticipationTableI } from "./types";
 
 export const SchoolProgramParticipation = () => {
-  const { data, loading, refetch } = useFetch<SchoolProgramParticipationTableI[]>(
+  const { data: participationData, loading } = useFetch<SchoolProgramParticipationTableI[]>(
     "http://localhost:3000/api/school-program-participation"
   );
 
   const {
-    data: institutionsData,
-    loading: institutionsLoading,
-    error: institutionsError,
-  } = useFetch<Institution[]>("http://localhost:3000/api/institutions");
+    institutionIdParam,
+    contactIdParam,
+    programIdParam,
+    schoolYearIdParam,
+    handleParamsChange,
+    filteredProgramCoordinatorsData,
+  } = useSchoolProgramParticipationFilterButtons();
 
-  const {
-    data: programsData,
-    loading: programsLoading,
-    error: programsError,
-  } = useFetch<Program[]>("http://localhost:3000/api/programs");
-
-  const {
-    data: schoolYearsData,
-    loading: schoolYearsLoading,
-    error: schoolYearsError,
-  } = useFetch<SchoolYear[]>("http://localhost:3000/api/school-years");
+  const { data: institutions } = useFetch<Institution[]>("http://localhost:3000/api/institutions");
+  const { data: programs } = useFetch<Program[]>("http://localhost:3000/api/programs");
+  const { data: schoolYears } = useFetch<SchoolYear[]>("http://localhost:3000/api/school-years");
+  const { data: contacts } = useFetch<Contact[]>("http://localhost:3000/api/contacts");
 
   return (
     <Box sx={{ marginY: 2, marginX: 2 }}>
       <Typography variant="h5" gutterBottom>
         🎓 Dodaj uczestnictwo szkoły w programie 📚
       </Typography>
-      <SchoolProgramParticipationForm
-        institutionsData={institutionsData}
-        institutionsLoading={institutionsLoading}
-        institutionsError={institutionsError}
-        programsData={programsData}
-        programsLoading={programsLoading}
-        programsError={programsError}
-        schoolYearsData={schoolYearsData}
-        schoolYearsLoading={schoolYearsLoading}
-        schoolYearsError={schoolYearsError}
-        refetch={refetch}
+
+      {participationData && participationData.length > 0 && <SchoolProgramParticipationForms />}
+
+      <SchoolProgramCoordinatorFilters
+        handleParamsChange={handleParamsChange}
+        institutionIdParam={institutionIdParam}
+        contactIdParam={contactIdParam}
+        programIdParam={programIdParam}
+        schoolYearIdParam={schoolYearIdParam}
+        institutions={institutions || []}
+        programs={programs || []}
+        schoolYears={schoolYears || []}
+        contacts={contacts || []}
       />
-      {data && data.length > 0 && <SchoolProgramParticipationTable data={data} loading={loading} />}
+
+      {loading && <Typography>Ładowanie danych...</Typography>}
+
+      {!loading && (!participationData || participationData.length === 0) && (
+        <Typography>Brak danych o uczestnictwie szkół w programach.</Typography>
+      )}
+      {participationData && participationData.length > 0 && (
+        <SchoolProgramParticipationTable data={filteredProgramCoordinatorsData} />
+      )}
     </Box>
   );
 };

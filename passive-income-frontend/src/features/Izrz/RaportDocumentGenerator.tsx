@@ -21,7 +21,6 @@ const IzrzForm = () => {
     setFormData,
     isSubmitting,
     submitMessage,
-
     handleChange,
     handleFileChange,
     handleSubmit,

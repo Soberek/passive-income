@@ -2,9 +2,10 @@ import { useForm } from "react-hook-form";
 
 const useSchoolProgramParticipationForm = () => {
   type FormValues = {
-    school: number | null;
-    program: number | null;
-    schoolYear: number | null;
+    schoolId: number | null;
+    programId: number | null;
+    schoolYearId: number | null;
+    contactId?: number | null;
   };
 
   const {
@@ -15,7 +16,7 @@ const useSchoolProgramParticipationForm = () => {
 
   const onSubmit = async (data: FormValues) => {
     // Ensure all fields are selected (not null)
-    if (data.school === null || data.program === null || data.schoolYear === null) {
+    if (data.schoolId === null || data.programId === null || data.schoolYearId === null || data.contactId === null) {
       console.error("Wszystkie pola muszą być wybrane.");
       return;
     }
@@ -28,9 +29,10 @@ const useSchoolProgramParticipationForm = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        schoolId: data.school,
-        programId: data.program,
-        schoolYearId: data.schoolYear,
+        schoolId: data.schoolId,
+        programId: data.programId,
+        schoolYearId: data.schoolYearId,
+        contactId: data.contactId, // Optional field
       }),
     });
 

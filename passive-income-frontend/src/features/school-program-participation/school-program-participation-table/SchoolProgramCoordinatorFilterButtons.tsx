@@ -1,7 +1,7 @@
 import { FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 
-import { Contact, Institution, Program, SchoolYear } from "../../../../shared/types";
-import { FormValues } from "./ProgramCoordinator";
+import { Contact, Institution, Program, SchoolYear } from "../../../../../shared/types";
+import { FormValues } from "../types";
 
 interface ProgramCoordinatorFiltersProps {
   institutions: Institution[];
@@ -15,7 +15,7 @@ interface ProgramCoordinatorFiltersProps {
   handleParamsChange: (field: keyof FormValues, value: string | null) => void;
 }
 
-export const ProgramCoordinatorFilters: React.FC<ProgramCoordinatorFiltersProps> = ({
+export const SchoolProgramCoordinatorFilters: React.FC<ProgramCoordinatorFiltersProps> = ({
   institutions,
   programs,
   schoolYears,

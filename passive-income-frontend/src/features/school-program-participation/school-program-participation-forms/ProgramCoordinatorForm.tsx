@@ -1,7 +1,7 @@
 import { Autocomplete, Button, TextField } from "@mui/material";
-import { Contact, Institution, Program, SchoolYear } from "../../../../shared/types";
-import { FormValues } from "./ProgramCoordinator";
+import { Contact, Institution, Program, SchoolYear } from "../../../../../shared/types";
 import { Control, Controller, UseFormHandleSubmit } from "react-hook-form";
+import type { FormValues } from "../types";
 
 interface ProgramCoordinatorFormProps {
   institutions: Institution[];
@@ -43,10 +43,7 @@ export const ProgramCoordinatorForm = ({
     return <div>Ładowanie kontaktów...</div>;
   }
   return (
-    <form
-      onSubmit={handleSubmit(handleFormSubmit)}
-      style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "32px" }}
-    >
+    <form onSubmit={handleSubmit(handleFormSubmit)} style={{ width: "100%" }}>
       <Controller
         name="institutionId"
         control={control}

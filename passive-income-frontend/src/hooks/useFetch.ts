@@ -11,8 +11,6 @@ export const useFetch = <T>(url: string, options?: RequestInit) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const result = await response.json();
-
-    console.log("Fetched data:", result);
     return result.data;
   }
 
@@ -50,5 +48,5 @@ export const useFetch = <T>(url: string, options?: RequestInit) => {
     }
   };
 
-  return { data, error, loading, refetch };
+  return { data, error, loading, refetch, fetchData };
 };

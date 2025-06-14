@@ -1,8 +1,7 @@
 import { Table, TableBody, TableHead, TableRow, TableCell, Button } from "@mui/material";
+import { SchoolProgramParticipationTableI } from "../types";
 
-import { ProgramCoordinatorData } from "./ProgramCoordinator";
-
-export const ProgramCoordinatorTable: React.FC<{ data: ProgramCoordinatorData[] }> = ({ data }) => {
+export const SchoolProgramParticipationTable: React.FC<{ data: SchoolProgramParticipationTableI[] }> = ({ data }) => {
   function handleEdit(coordinatorId: number): void {
     console.log("Edit coordinator with ID:", coordinatorId);
     throw new Error("Function not implemented.");
@@ -32,7 +31,7 @@ export const ProgramCoordinatorTable: React.FC<{ data: ProgramCoordinatorData[] 
             <TableCell>{row.contactName}</TableCell>
             <TableCell>{row.institutionName}</TableCell>
             <TableCell>{row.programName}</TableCell>
-            <TableCell>{row.year}</TableCell>
+            <TableCell>{row.schoolYear}</TableCell>
             <TableCell style={{ display: "flex", gap: "8px" }}>
               <Button variant="outlined" color="primary" onClick={() => handleEdit(row.coordinatorId)}>
                 Edytuj
