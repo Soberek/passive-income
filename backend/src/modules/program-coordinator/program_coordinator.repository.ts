@@ -26,14 +26,12 @@ export class ProgramCoordinatorRepository
       const stmt = this.dbService.getDb().prepare(
         `SELECT 
             pc.coordinator_id as coordinatorId,
-            pc.program_id as programId,
-            pc.institution_id as institutionId,
-            pc.contact_id as contactId,
-            pc.school_year_id as schoolYearId,
-            p.program_name,          -- nazwa programu
-            i.institution_name,      -- nazwa instytucji (szkoły)
-            c.contact_name,          -- nazwa koordynatora (kontakt)
-            sy.year                  -- np. rok szkolny
+            p.name as programName,          -- nazwa programu
+            i.name as institutionName,      -- nazwa instytucji (szkoły)
+            c.phone as contactPhone,
+            i.phone as institutionPhone,
+            (c.first_name || ' ' || c.last_name) as contactName,          -- nazwa koordynatora (kontakt)
+            sy.year as year           -- np. rok szkolny
         FROM program_coordinators pc
         JOIN programs p ON pc.program_id = p.program_id
         JOIN institutions i ON pc.institution_id = i.institution_id
