@@ -24,23 +24,23 @@ export const ProgramCoordinatorForm = ({
 }: ProgramCoordinatorFormProps) => {
   if (!institutions || institutions.length === 0) {
     console.error("No institutions available");
-    return <div>Loading institutions...</div>;
+    return <div>Ładowanie instytucji...</div>;
   }
 
   if (!programs || programs.length === 0) {
     console.error("No programs available");
-    return <div>Loading programs...</div>;
+    return <div>Ładowanie programów...</div>;
   }
 
   if (!schoolYears || schoolYears.length === 0) {
     console.error("No school years available");
-    return <div>Loading school years...</div>;
+    return <div>Ładowanie lat szkolnych...</div>;
   }
 
   if (!contacts || contacts.length === 0) {
     console.error("No contacts available");
     console.log(contacts);
-    return <div>Loading contacts...</div>;
+    return <div>Ładowanie kontaktów...</div>;
   }
   return (
     <form
@@ -62,8 +62,8 @@ export const ProgramCoordinatorForm = ({
                 {...params}
                 variant="outlined"
                 error={!!formState.errors.institutionId}
-                helperText={formState.errors.institutionId ? "Institution is required" : ""}
-                label="Institution"
+                helperText={formState.errors.institutionId ? "Instytucja jest wymagana" : ""}
+                label="Instytucja"
               />
             )}
           />
@@ -86,9 +86,9 @@ export const ProgramCoordinatorForm = ({
               <TextField
                 {...params}
                 variant="outlined"
-                label="Contact Name"
+                label="Imię i nazwisko kontaktu"
                 error={!!formState.errors.contactId}
-                helperText={formState.errors.contactId ? "Contact name is required" : ""}
+                helperText={formState.errors.contactId ? "Imię i nazwisko kontaktu jest wymagane" : ""}
               />
             )}
           />
@@ -109,8 +109,8 @@ export const ProgramCoordinatorForm = ({
                 {...params}
                 variant="outlined"
                 error={!!formState.errors.programId}
-                helperText={formState.errors.programId ? "Program name is required" : ""}
-                label="Program Name"
+                helperText={formState.errors.programId ? "Nazwa programu jest wymagana" : ""}
+                label="Nazwa programu"
               />
             )}
           />
@@ -131,8 +131,8 @@ export const ProgramCoordinatorForm = ({
                 {...params}
                 variant="outlined"
                 error={!!formState.errors.schoolYearId}
-                helperText={formState.errors.schoolYearId ? "School year is required" : ""}
-                label="School Year"
+                helperText={formState.errors.schoolYearId ? "Rok szkolny jest wymagany" : ""}
+                label="Rok szkolny"
               />
             )}
           />

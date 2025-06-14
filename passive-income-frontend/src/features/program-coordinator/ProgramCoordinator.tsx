@@ -5,6 +5,7 @@ import { ProgramCoordinatorTable } from "./ProgramCoordinatorTable";
 import { ProgramCoordinatorFilters } from "./ProgramCoordinatorFilterButtons";
 import { ProgramCoordinatorForm } from "./ProgramCoordinatorForm";
 import { useSearchParams } from "react-router";
+import { useMemo } from "react";
 
 export type FormValues = {
   institutionId: number | null;
@@ -56,6 +57,23 @@ export const ProgramCoordinator = () => {
   const contactIdParam = searchParams.get("contactId");
   const programIdParam = searchParams.get("programId");
   const schoolYearIdParam = searchParams.get("schoolYearId");
+
+  const filterData = useMemo(() => {
+    return (data: ProgramCoordinatorData[]) => {
+      return data.filter((item) => {
+        return (
+          (!schoolYearIdParam || String(item.schoolYearId) === schoolYearIdParam) &&
+          (!institutionIdParam || String(item.institutionId) === institutionIdParam) &&
+          (!contactIdParam || String(item.contactId) === contactIdParam) &&
+          (!programIdParam || String(item.programId) === programIdParam)
+        );
+      });
+    };
+  }, [schoolYearIdParam, institutionIdParam, contactIdParam, programIdParam]);
+
+  const filteredProgramCoordinators = filterData(programCoordinators || []);
+
+  console.log("Filtered Program Coordinators:", filteredProgramCoordinators);
 
   const handleFormSubmit = (data: FormValues) => {
     console.log("Form submitted with data:", data);
@@ -112,7 +130,7 @@ export const ProgramCoordinator = () => {
         schoolYears={schoolYears || []}
         contacts={contacts || []}
       />
-      <ProgramCoordinatorTable data={programCoordinators || []} />
+      <ProgramCoordinatorTable data={filteredProgramCoordinators || []} />
     </>
   );
 };

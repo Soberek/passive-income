@@ -26,6 +26,10 @@ export class ProgramCoordinatorRepository
       const stmt = this.dbService.getDb().prepare(
         `SELECT 
             pc.coordinator_id as coordinatorId,
+            i.institution_id as institutionId,  -- id instytucji (szkoły)
+            c.contact_id as contactId,           -- id kontaktu (koordynatora)
+            p.program_id as programId,           -- id programu
+            pc.school_year_id as schoolYearId,   -- id roku szkolnego
             p.name as programName,          -- nazwa programu
             i.name as institutionName,      -- nazwa instytucji (szkoły)
             c.phone as contactPhone,
