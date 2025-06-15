@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { useInstitutions } from "../../hooks/useInstitutions";
 import { useFetch } from "../../hooks/useFetch";
 import { ActionType, Institution, Program } from "../../../../shared/types";
 interface FormData {
@@ -25,9 +24,19 @@ export const useRaportDocumentGenerator = () => {
     programName: "",
     taskType: "",
     address: "",
-    dateInput: new Date().toISOString().split("T")[0], // Default to today's date
+    dateInput: new Date().toLocaleString("pl-PL").split("T")[0], // format dd-mm-yyyy
     viewerCount: 0,
-    viewerCountDescription: "",
+    viewerCountDescription: `
+    Grupa I: 
+    Uczniowie szkoły podstawowej: 0
+    Opiekunowie: 0
+    Grupa II:
+    Uczniowie szkoły podstawowej: 0
+    Opiekunowie: 0
+    Grupa III:
+    Uczniowie szkoły podstawowej: 0
+    Opiekunowie: 0
+    `,
     taskDescription: "",
     additionalInfo: "",
     rozdzielnik: false,

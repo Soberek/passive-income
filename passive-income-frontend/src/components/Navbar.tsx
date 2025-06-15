@@ -46,9 +46,34 @@ const private_routes = [
     path: "/",
   },
   {
+    icon: <CheckCircleIcon color="success" />,
+    name: "Dodaj wykonane zadanie",
+    path: "/zadania",
+  },
+  {
+    icon: <TableChartIcon color="warning" />,
+    name: "Wygeneruj dokument izrz",
+    path: "/izrz",
+  },
+
+  {
     icon: <DescriptionIcon color="secondary" />,
     name: "Wygeneruj miernik budżetowy",
     path: "/excel-raport-generator",
+  },
+
+  {
+    icon: <AddTaskIcon color="error" />,
+    name: "Dodaj szkołę do programu",
+    path: "/uczestnictwo-szkół-w-programach",
+  },
+];
+
+const private_routes_with_auth = [
+  {
+    icon: <ContactPhoneIcon color="success" />,
+    name: "Dodaj kontakt",
+    path: "/contacts",
   },
   {
     icon: <SchoolIcon color="info" />,
@@ -56,29 +81,9 @@ const private_routes = [
     path: "/schools",
   },
   {
-    icon: <ContactPhoneIcon color="success" />,
-    name: "Dodaj kontakt",
-    path: "/contacts",
-  },
-  {
-    icon: <TableChartIcon color="warning" />,
-    name: "Wygeneruj dokument izrz",
-    path: "/izrz",
-  },
-  {
-    icon: <AddTaskIcon color="error" />,
-    name: "Dodaj szkołę do programu",
-    path: "/uczestnictwo-szkół-w-programach",
-  },
-  {
     icon: <EventNoteIcon color="secondary" />,
     name: "Dodaj typy szkoły",
     path: "/school-types",
-  },
-  {
-    icon: <CheckCircleIcon color="success" />,
-    name: "Dodaj wykonane zadanie",
-    path: "/zadania",
   },
 ];
 
@@ -166,6 +171,47 @@ export default function NavDrawer({
           ))}
         </List>
         <Divider sx={{ mt: 2 }} />
+        <Typography variant="h6" sx={{ px: 2, pt: 2, fontWeight: 600, color: "primary.main", textAlign: "center" }}>
+          Dodatkowe opcje
+        </Typography>
+        <List>
+          {isAuthenticated &&
+            private_routes_with_auth.map((route) => (
+              <ListItem key={route.path} disablePadding>
+                <NavLink
+                  to={route.path}
+                  style={({ isActive }) => ({
+                    textDecoration: "none",
+                    display: "flex",
+                    width: "100%",
+                    ...getActiveStyle({ isActive }),
+                  })}
+                >
+                  <ListItemButton
+                    sx={{
+                      my: 0.5,
+                      mx: 0.5,
+                      borderRadius: 2,
+                      flexGrow: 1,
+                      color: "text.primary",
+                      "&:hover": {
+                        backgroundColor: "#bbdefb",
+                      },
+                    }}
+                  >
+                    <ListItemIcon sx={{ minWidth: 40 }}>{route.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={route.name}
+                      primaryTypographyProps={{
+                        fontWeight: 500,
+                        fontSize: "1.05rem",
+                      }}
+                    />
+                  </ListItemButton>
+                </NavLink>
+              </ListItem>
+            ))}
+        </List>
         <Box mt={2} sx={{ textAlign: "center", color: "text.primary", fontSize: "0.9rem" }}>
           &copy; {new Date().getFullYear()} Soberek
         </Box>
