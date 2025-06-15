@@ -24,19 +24,9 @@ export const useRaportDocumentGenerator = () => {
     programName: "",
     taskType: "",
     address: "",
-    dateInput: new Date().toLocaleString("pl-PL").split("T")[0], // format dd-mm-yyyy
+    dateInput: new Date().toISOString().split("T")[0], // format dd-mm-yyyy
     viewerCount: 0,
-    viewerCountDescription: `
-    Grupa I: 
-    Uczniowie szkoły podstawowej: 0
-    Opiekunowie: 0
-    Grupa II:
-    Uczniowie szkoły podstawowej: 0
-    Opiekunowie: 0
-    Grupa III:
-    Uczniowie szkoły podstawowej: 0
-    Opiekunowie: 0
-    `,
+    viewerCountDescription: `Grupa I:\nUczniowie szkoły podstawowej: 0\nOpiekunowie: 1\nGrupa II:\nUczniowie szkoły podstawowej: 0\nOpiekunowie: 1\nGrupa III:\nUczniowie szkoły podstawowej: 0\nOpiekunowie: 1\n`,
     taskDescription: "",
     additionalInfo: "",
     rozdzielnik: false,
