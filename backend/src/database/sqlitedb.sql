@@ -58,10 +58,6 @@ CREATE TABLE schools (
     FOREIGN KEY (institution_id) REFERENCES institutions(institution_id) ON DELETE CASCADE
 );
 
-CREATE TABLE media_platforms (
-    media_platform_id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Renamed from 'id_media_platform'
-    name TEXT NOT NULL UNIQUE
-);
 
 CREATE TABLE school_program_participation (
     participation_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -75,14 +71,10 @@ CREATE TABLE school_program_participation (
 
 CREATE TABLE program_coordinators (
     coordinator_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    program_id INTEGER NOT NULL,
-    institution_id INTEGER NOT NULL,
+    participation_id INTEGER NOT NULL,
     contact_id INTEGER NOT NULL,
-    school_year_id INTEGER NOT NULL,
-    FOREIGN KEY (program_id) REFERENCES programs(program_id),
-    FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
-    FOREIGN KEY (contact_id) REFERENCES contacts(contact_id),
-    FOREIGN KEY (school_year_id) REFERENCES school_years(school_year_id)
+    FOREIGN KEY (participation_id) REFERENCES school_program_participation(participation_id) ON DELETE CASCADE,
+    FOREIGN KEY (contact_id) REFERENCES contacts(contact_id)
 );
 
 
@@ -95,16 +87,26 @@ CREATE TABLE task_materials (
   FOREIGN KEY (material_id) REFERENCES materials(material_id)
 );
 
+CREATE TABLE media_platforms (
+    media_platform_id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Renamed from 'id_media_platform'
+    name TEXT NOT NULL UNIQUE
+);
+
+
+-- na podstawie tego modelu można stworzyć zadania, które będą miały przypisane materiały
+-- np. zadanie "Przygotowanie ulotki" może mieć przypisane materiały "Ulotka informacyjna" i "Plakat promocyjny"
+-- Zadania mogą być przypisane do różnych instytucji, programów i typów działań
 CREATE TABLE tasks (
     task_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    reference_number TEXT NOT NULL UNIQUE,
-    task_number TEXT UNIQUE,
+    reference_number TEXT NOT NULL UNIQUE, -- OZiPZ.966.4.2.2025
+    task_number TEXT UNIQUE, -- 69/2025
     institution_id INTEGER NOT NULL,
     program_id INTEGER NOT NULL,
     action_type_id INTEGER NOT NULL,
     description TEXT,
     date DATE,
     actions_count INTEGER,
+    audience_description TEXT,
     audience_count INTEGER,
     media_platform_id INTEGER, -- will be used if the task is a media publication
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
