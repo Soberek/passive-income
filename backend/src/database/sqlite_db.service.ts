@@ -6,7 +6,7 @@ const DB_PATH = path.resolve(__dirname, "../../sqliteDb.db");
 
 import type { DatabaseI } from "../types/database.type";
 
-export class SqliteDbService implements DatabaseI {
+export class SqliteDbService implements DatabaseI<SqliteDatabase.Database> {
   private static instance: SqliteDbService | null = null;
   private db: SqliteDatabase.Database;
 
