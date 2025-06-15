@@ -86,7 +86,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
 
   return (
     <Container maxWidth="md">
-      <Paper elevation={3} sx={{ p: 2, mt: 2 }}>
+      <Paper elevation={2} sx={{ p: 2, mt: 2 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Dodaj Instytucję i Szkołę
         </Typography>
@@ -248,7 +248,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
             </CardContent>
           </Card>
 
-          <Divider sx={{ my: 3 }} />
+          <Divider sx={{ my: 1 }} />
 
           <Card>
             <CardContent>
@@ -282,7 +282,7 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
             </CardContent>
           </Card>
 
-          <Box sx={{ mt: 4, display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ mt: 1, display: "flex", justifyContent: "space-between" }}>
             <Button variant="outlined" onClick={() => reset()} disabled={isSubmitting}>
               Reset
             </Button>
