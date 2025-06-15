@@ -18,7 +18,7 @@ import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 import TableChartIcon from "@mui/icons-material/TableChart";
 import AddTaskIcon from "@mui/icons-material/AddTask";
 import EventNoteIcon from "@mui/icons-material/EventNote";
-import CoPresentIcon from "@mui/icons-material/CoPresent";
+
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const public_routes = [
