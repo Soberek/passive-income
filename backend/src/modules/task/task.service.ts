@@ -1,8 +1,7 @@
 import { TaskRepository } from "./task.repository";
 import type { CreatableServiceI, DeletableServiceI, UpdatableServiceI, ReadableServiceI } from "../../types/index.type";
-import { Task } from "../../../../shared/types";
-import { TaskSchema, TaskCreateSchema, TaskUpdateSchema } from "./task.schema";
-
+import { TaskSchema, TaskCreateSchema, TaskUpdateSchema, TaskCreateType } from "./task.schema";
+import { Task } from "./task.schema";
 export class TaskService
   implements
     CreatableServiceI<Task, "taskId">,
@@ -16,7 +15,7 @@ export class TaskService
     this.repository = repository;
   }
 
-  add = (entity: Partial<Task>): number | null => {
+  add = (entity: TaskCreateType): number | null => {
     const validation = TaskCreateSchema.safeParse(entity);
     if (!validation.success) {
       throw new Error("Invalid task data: " + JSON.stringify(validation.error.issues));
