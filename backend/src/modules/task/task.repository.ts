@@ -1,4 +1,3 @@
-import type { Task } from "../../../../shared/types";
 import type {
   CreatableIRepositoryI,
   ReadableRepositoryI,
@@ -7,6 +6,28 @@ import type {
 } from "../../types/index.type";
 import SqliteDbService from "../../database/sqlite_db.service";
 
+// CREATE TABLE tasks (
+//   task_id INTEGER PRIMARY KEY AUTOINCREMENT,
+//   reference_number TEXT NOT NULL UNIQUE,
+//   task_number TEXT UNIQUE,
+//   institution_id INTEGER NOT NULL,
+//   program_id INTEGER NOT NULL,
+//   action_type_id INTEGER NOT NULL,
+//   description TEXT,
+//   date DATE,
+//   actions_count INTEGER,
+//   audience_count INTEGER,
+//   media_platform_id INTEGER, -- will be used if the task is a media publication
+//   created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+//   FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
+//   FOREIGN KEY (program_id) REFERENCES programs(program_id),
+//   FOREIGN KEY (action_type_id) REFERENCES action_types(action_type_id),
+//   FOREIGN KEY (media_platform_id) REFERENCES media_platforms(media_platform_id)
+// );
+
+import type { Task, TaskCreateType, TaskUpdateSchema } from "./task.schema";
+import { DatabaseI } from "../../types/database.type";
+import sqlite from "better-sqlite3";
 export class TaskRepository
   implements
     CreatableIRepositoryI<Task, "taskId">,
@@ -14,11 +35,9 @@ export class TaskRepository
     UpdatableRepositoryI<Task, "taskId">,
     DeletableRepositoryI<Task, "taskId">
 {
-  constructor(private db: SqliteDbService) {
-    this.db = db;
-  }
+  constructor(private db: DatabaseI<sqlite.Database>) {}
 
-  add = (entity: Partial<Task>): number | null => {
+  add = (entity: TaskCreateType): number | null => {
     const {
       referenceNumber,
       taskNumber,
