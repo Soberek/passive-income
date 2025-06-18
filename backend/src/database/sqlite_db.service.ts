@@ -27,6 +27,9 @@ export class SqliteDbService implements DatabaseI<SqliteDatabase.Database> {
   close() {
     this.db.close();
   }
+  prepare(query: string) {
+    return this.db.prepare(query);
+  }
   transaction<T>(callback: () => Promise<T> | T): Promise<T> {
     const result = this.db.transaction(callback)();
     return Promise.resolve(result);
