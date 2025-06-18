@@ -1,4 +1,6 @@
-import { z } from "zod";
+import { z, ZodType } from "zod";
+
+import { Task as TaskI } from "../../../../shared/types";
 
 export const TaskSchema = z.object({
   taskId: z.number().min(1),
@@ -13,7 +15,7 @@ export const TaskSchema = z.object({
   audienceCount: z.number().min(0),
   mediaPlatformId: z.number().min(1).optional(),
   createdAt: z.date().optional(),
-});
+}) satisfies ZodType<TaskI>;
 
 export const TaskCreateSchema = TaskSchema.omit({ taskId: true, createdAt: true });
 export const TaskUpdateSchema = TaskCreateSchema.partial();
