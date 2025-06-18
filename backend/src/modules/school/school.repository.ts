@@ -1,5 +1,6 @@
-import SqliteDbService from "../../database/sqlite_db.service";
-import type { School, Institution } from "../../../../shared/types";
+import SqliteDatabase from "better-sqlite3";
+import type { School } from "../../../../shared/types";
+import type { Institution } from "../institution/institution.schema";
 import type {
   CreatableIRepositoryI,
   ReadableRepositoryI,
@@ -15,7 +16,7 @@ export class SchoolRepository
     UpdatableRepositoryI<School, "schoolId">,
     DeletableRepositoryI<School, "schoolId">
 {
-  constructor(private dbService: SqliteDbService) {}
+  constructor(private dbService: DatabaseI<SqliteDatabase.Database>) {}
 
   getAll = (): School[] | [] => {
     const stmt = this.dbService.getDb().prepare("SELECT school_id as schoolId, director FROM schools");

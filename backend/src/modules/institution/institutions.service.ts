@@ -1,4 +1,4 @@
-import { Institution } from "../../../../shared/types";
+import { Institution } from "./institution.schema";
 import { InstitutionRepository } from "./institution.repository";
 import { CreatableServiceI, ReadableServiceI, UpdatableServiceI, DeletableServiceI } from "../../types/index.type";
 

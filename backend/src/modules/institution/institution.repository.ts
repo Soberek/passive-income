@@ -1,5 +1,5 @@
 import SqliteDbService from "../../database/sqlite_db.service";
-import { Institution } from "../../../../shared/types";
+import { Institution } from "./institution.schema";
 
 import type {
   CreatableIRepositoryI,

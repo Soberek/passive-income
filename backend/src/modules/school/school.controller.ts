@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import SchoolService from "./school.service";
 import { AppError } from "../../handlers/error.handler";
 
-import type { Institution, School } from "../../../../shared/types";
+import type { School } from "../../../../shared/types";
+import type { Institution } from "../institution/institution.schema";
 
 export default class schoolController {
   constructor(private schoolService: SchoolService) {
