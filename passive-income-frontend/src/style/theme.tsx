@@ -24,9 +24,14 @@ const theme = createTheme({
       },
     },
     MuiPaper: {
+      defaultProps: {
+        elevation: 10, // Default elevation for paper components
+      },
       styleOverrides: {
         root: {
-          boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+          borderRadius: 8, // Rounded corners for paper components
+          backgroundColor: "#ffffff", // White background for paper components
+          padding: 16,
         },
       },
     },
