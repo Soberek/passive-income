@@ -1,14 +1,14 @@
 import { Button, TextField, Paper, Stack } from "@mui/material";
 import { Controller, UseFormHandleSubmit, SubmitHandler } from "react-hook-form";
 
-import { ContactFormFields } from "./useContactForm";
+import { ContactCreateDTO } from "../../../../shared/types";
 
 interface ContactFormProps {
-  handleSubmit: UseFormHandleSubmit<ContactFormFields, ContactFormFields>;
+  handleSubmit: UseFormHandleSubmit<ContactCreateDTO, ContactCreateDTO>;
   control: any;
   reset: () => void;
   formState: { errors: any };
-  onSubmit: SubmitHandler<ContactFormFields>;
+  onSubmit: SubmitHandler<ContactCreateDTO>;
 }
 export const ContactForm = ({ handleSubmit, control, reset, formState: { errors }, onSubmit }: ContactFormProps) => {
   return (

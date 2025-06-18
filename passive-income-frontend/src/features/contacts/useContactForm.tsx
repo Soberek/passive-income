@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
-import { Contact as Contacts } from "../../../../shared/types";
 
-export type ContactFormFields = Omit<Contacts, "contactId">;
+import type { ContactCreateDTO } from "../../../../shared/types";
 
 export const useContactForm = () => {
   const {
@@ -9,7 +8,7 @@ export const useContactForm = () => {
     control,
     reset,
     formState: { errors },
-  } = useForm<ContactFormFields>({
+  } = useForm<ContactCreateDTO>({
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -18,7 +17,7 @@ export const useContactForm = () => {
     },
   });
 
-  const onSubmit = async (data: ContactFormFields) => {
+  const onSubmit = async (data: ContactCreateDTO) => {
     if (!data.firstName || !data.lastName || !data.email) {
       console.error("First name, last name, and email are required.");
       return;
