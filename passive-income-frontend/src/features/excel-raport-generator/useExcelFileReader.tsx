@@ -10,6 +10,11 @@ const useFileReader = () => {
   const [raw_data, setRawData] = useState<ExcelRow[]>([]);
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      console.error("No file selected.");
+      return;
+    }
+
     const blob_xlsx_file = e.target.files?.[0];
 
     const isXlsx = blob_xlsx_file?.name.endsWith(".xlsx");
@@ -33,6 +38,10 @@ const useFileReader = () => {
 
     reader.onloadend = () => {
       console.log("Loading file end...");
+    };
+
+    reader.onerror = (error) => {
+      console.error("Error reading file:", error);
     };
 
     reader.onload = (evt: ProgressEvent<FileReader>) => {
