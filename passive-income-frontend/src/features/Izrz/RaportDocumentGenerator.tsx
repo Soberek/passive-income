@@ -10,7 +10,6 @@ import {
   Autocomplete,
   Checkbox,
   FormControlLabel,
-  Card,
   CardContent,
   Divider,
 } from "@mui/material";
@@ -42,49 +41,19 @@ const IzrzForm = () => {
 
   return (
     <Box
-      maxWidth={950}
       mx="auto"
       sx={{
-        mt: 4,
-        mb: 6,
-        px: { xs: 2, sm: 3 },
+        mt: 1,
+        mb: 2,
+        px: { sm: 3 },
         display: "flex",
         flexDirection: "column",
-        minHeight: "100vh",
-        pt: 4,
+        pt: 2,
       }}
     >
       {/* Header */}
-      <Paper
-        elevation={6}
-        sx={{
-          mb: 4,
-          p: 3,
-          textAlign: "center",
-          background: "linear-gradient(90deg, primary.secondary 0%, #43cea2 100%)",
-          color: "black",
-          borderRadius: 4,
-          boxShadow: "0 8px 32px 0 rgba(31,38,135,0.15)",
-        }}
-      >
-        <Typography
-          variant="h3"
-          sx={{
-            fontWeight: 800,
-            letterSpacing: "0.04em",
-            textShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            mb: 1,
-          }}
-        >
-          📊 IZRZ
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: 500,
-            fontStyle: "italic",
-          }}
-        >
+      <Paper sx={{ textAlign: "center", mb: 2 }}>
+        <Typography variant="h6" sx={{ fontWeight: 800, fontStyle: "italic" }}>
           Generator informacji z realizacji zadania
         </Typography>
       </Paper>
@@ -94,16 +63,12 @@ const IzrzForm = () => {
         <Paper
           elevation={3}
           sx={{
-            mb: 3,
-            p: 3,
             bgcolor: submitMessage.type === "success" ? "#d1fae5" : "#fee2e2",
             color: submitMessage.type === "success" ? "#065f46" : "#991b1b",
             border: "2px solid",
             borderColor: submitMessage.type === "success" ? "#65d6b5" : "#f87171",
             fontWeight: 600,
             textAlign: "center",
-            letterSpacing: "0.02em",
-            borderRadius: 3,
           }}
         >
           {submitMessage.text}
@@ -111,21 +76,17 @@ const IzrzForm = () => {
       )}
 
       {/* Main Form */}
-      <Card
-        elevation={8}
+      <Paper
         sx={{
-          borderRadius: 4,
-          background: "linear-gradient(120deg, #ffffff 0%, #f8fafc 100%)",
-          boxShadow: "0 12px 48px 0 rgba(31,38,135,0.12)",
           overflow: "hidden",
           display: "flex",
           flexDirection: "column",
         }}
       >
-        <CardContent sx={{ p: { xs: 3, sm: 5 } }}>
+        <CardContent>
           {/* Error Messages */}
           {(programsError || actionTypesError) && (
-            <Box sx={{ mb: 3 }}>
+            <Box sx={{ mb: 1 }}>
               {programsError && (
                 <Typography color="error" variant="body2" sx={{ mb: 1 }}>
                   ⚠️ Błąd podczas ładowania programów: {programsError.message}
@@ -143,7 +104,7 @@ const IzrzForm = () => {
           <Typography
             variant="body1"
             sx={{
-              mb: 4,
+              mb: 2,
               color: "text.secondary",
               fontWeight: 500,
               textAlign: "center",
@@ -154,10 +115,10 @@ const IzrzForm = () => {
             wypełnione.
           </Typography>
 
-          <form onSubmit={handleSubmit} style={{ margin: "0 auto" }}>
-            <Grid container spacing={2} sx={{ width: "100%" }}>
+          <form onSubmit={handleSubmit} style={{ margin: "0 auto", padding: "0" }}>
+            <Grid container spacing={1} sx={{ maxWidth: 600, mx: "auto" }}>
               {/* Numer sprawy i raportu */}
-              <Grid size={12}>
+              <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                 <TextField
                   label="Numer sprawy"
                   name="caseNumber"
@@ -175,7 +136,7 @@ const IzrzForm = () => {
                   }}
                 />
               </Grid>
-              <Grid size={12}>
+              <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                 <TextField
                   label="Numer raportu"
                   name="reportNumber"
@@ -292,7 +253,7 @@ const IzrzForm = () => {
               </Grid>
 
               {/* Data i liczba widzów */}
-              <Grid size={12}>
+              <Grid size={6} sx={{ pr: 1 }}>
                 <TextField
                   label="📅 Data"
                   type="date"
@@ -311,7 +272,7 @@ const IzrzForm = () => {
                   }}
                 />
               </Grid>
-              <Grid size={12}>
+              <Grid size={6}>
                 <TextField
                   label="👥 Liczba widzów"
                   type="number"
@@ -396,67 +357,67 @@ const IzrzForm = () => {
               </Grid>
 
               {/* Checkboxy */}
-              <Grid size={12}>
-                <Paper
-                  elevation={2}
-                  sx={{
-                    p: 3,
-                    bgcolor: "#f8fafc",
-                    borderRadius: 3,
-                  }}
-                >
-                  <Typography variant="h6" sx={{ mb: 2, color: "primary.main", fontWeight: 600 }}>
+              <Grid
+                size={12}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignContent: "flex-start",
+                  justifyContent: "flex-start",
+                  gap: 2,
+                  textAlign: "left",
+                }}
+              >
+                <Paper>
+                  <Typography variant="h6" sx={{ mb: 1, color: "primary.main", fontWeight: 600 }}>
                     Załączniki
                   </Typography>
-                  <Stack spacing={2}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={formData.attendanceList}
-                          name="attendanceList"
-                          color="primary"
-                          onChange={(e) => setFormData((prev) => ({ ...prev, attendanceList: e.target.checked }))}
-                        />
-                      }
-                      label={
-                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                          📋 Załącz listę obecności do raportu
-                        </Typography>
-                      }
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={formData.rozdzielnik}
-                          name="rozdzielnik"
-                          color="primary"
-                          onChange={(e) => setFormData((prev) => ({ ...prev, rozdzielnik: e.target.checked }))}
-                        />
-                      }
-                      label={
-                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                          📄 Dodaj rozdzielnik do raportu
-                        </Typography>
-                      }
-                    />
-                  </Stack>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={formData.attendanceList}
+                        name="attendanceList"
+                        color="primary"
+                        onChange={(e) => setFormData((prev) => ({ ...prev, attendanceList: e.target.checked }))}
+                      />
+                    }
+                    label={
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        📋 Załącz listę obecności do raportu
+                      </Typography>
+                    }
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={formData.rozdzielnik}
+                        name="rozdzielnik"
+                        color="primary"
+                        onChange={(e) => setFormData((prev) => ({ ...prev, rozdzielnik: e.target.checked }))}
+                      />
+                    }
+                    label={
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        📄 Dodaj rozdzielnik do raportu
+                      </Typography>
+                    }
+                  />
                 </Paper>
               </Grid>
 
               {/* Upload pliku */}
-              <Grid size={12}>
+              <Grid size={12} sx={{ display: "flex", justifyContent: "center" }}>
                 <Paper
                   elevation={2}
                   sx={{
                     p: 3,
-                    bgcolor: "#f8fafc",
-                    borderRadius: 3,
+                    width: "100%",
                   }}
                 >
                   <Typography variant="h6" sx={{ mb: 2, color: "primary.main", fontWeight: 600 }}>
                     Szablon dokumentu
                   </Typography>
-                  <Stack direction="row" alignItems="center" spacing={2}>
+                  <Stack direction="row" alignItems="center" spacing={2} mb={2}>
                     <Button
                       variant="contained"
                       component="label"
@@ -478,12 +439,12 @@ const IzrzForm = () => {
                         required={!formData.templateFile}
                       />
                     </Button>
-                    {formData.templateFile && (
-                      <Typography variant="body1" color="success.main" sx={{ fontWeight: 500 }}>
-                        ✅ {formData.templateFile.name}
-                      </Typography>
-                    )}
                   </Stack>
+                  {formData.templateFile && (
+                    <Typography variant="body1" color="success.main" sx={{ fontWeight: 500 }}>
+                      ✅ {formData.templateFile.name}
+                    </Typography>
+                  )}
                 </Paper>
               </Grid>
 
@@ -519,7 +480,7 @@ const IzrzForm = () => {
             </Grid>
           </form>
         </CardContent>
-      </Card>
+      </Paper>
     </Box>
   );
 };
