@@ -101,149 +101,147 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
                 Wprowadź dane instytucji
               </Typography>
 
-              <Grid container spacing={2}>
-                <Grid size={12}>
-                  <Controller
-                    name="isSchool"
-                    control={control}
-                    render={({ field }) => (
-                      <Checkbox
-                        {...field}
-                        color="primary"
-                        checked={field.value}
-                        onChange={(e) => field.onChange(e.target.checked)}
-                        sx={{ mb: 2 }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid size={12}>
-                  <Controller
-                    name="name"
-                    control={control}
-                    rules={{ required: "Institution name is required" }}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Institution Name"
-                        variant="outlined"
-                        fullWidth
-                        required
-                        error={!!errors.name}
-                        helperText={errors.name?.message}
-                      />
-                    )}
-                  />
-                </Grid>
+              <Grid size={12}>
+                <Controller
+                  name="isSchool"
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox
+                      {...field}
+                      color="primary"
+                      checked={field.value}
+                      onChange={(e) => field.onChange(e.target.checked)}
+                      sx={{ mb: 2 }}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid size={12}>
+                <Controller
+                  name="name"
+                  control={control}
+                  rules={{ required: "Institution name is required" }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Institution Name"
+                      variant="outlined"
+                      required
+                      error={!!errors.name}
+                      helperText={errors.name?.message}
+                    />
+                  )}
+                />
+              </Grid>
 
-                <Grid size={12}>
-                  <Controller
-                    name="address"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Address"
-                        variant="outlined"
-                        fullWidth
-                        error={!!errors.address}
-                        helperText={errors.address?.message}
-                      />
-                    )}
-                  />
-                </Grid>
+              <Grid size={12}>
+                <Controller
+                  name="address"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Address"
+                      size="small"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.address}
+                      helperText={errors.address?.message}
+                    />
+                  )}
+                />
+              </Grid>
 
-                <Grid size={12}>
-                  <Controller
-                    name="postalCode"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Postal Code"
-                        variant="outlined"
-                        fullWidth
-                        error={!!errors.postalCode}
-                        helperText={errors.postalCode?.message}
-                      />
-                    )}
-                  />
-                </Grid>
+              <Grid size={12}>
+                <Controller
+                  name="postalCode"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Postal Code"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.postalCode}
+                      helperText={errors.postalCode?.message}
+                    />
+                  )}
+                />
+              </Grid>
 
-                <Grid size={12}>
-                  <Controller
-                    name="city"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="City"
-                        variant="outlined"
-                        fullWidth
-                        error={!!errors.city}
-                        helperText={errors.city?.message}
-                      />
-                    )}
-                  />
-                </Grid>
+              <Grid size={12}>
+                <Controller
+                  name="city"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="City"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.city}
+                      helperText={errors.city?.message}
+                    />
+                  )}
+                />
+              </Grid>
 
-                <Grid size={12}>
-                  <Controller
-                    name="municipality"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Municipality"
-                        variant="outlined"
-                        fullWidth
-                        error={!!errors.municipality}
-                        helperText={errors.municipality?.message}
-                      />
-                    )}
-                  />
-                </Grid>
+              <Grid size={12}>
+                <Controller
+                  name="municipality"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Municipality"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.municipality}
+                      helperText={errors.municipality?.message}
+                    />
+                  )}
+                />
+              </Grid>
 
-                <Grid size={12}>
-                  <Controller
-                    name="email"
-                    control={control}
-                    rules={{
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                        message: "Invalid email address",
-                      },
-                    }}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Email"
-                        variant="outlined"
-                        fullWidth
-                        error={!!errors.email}
-                        helperText={errors.email?.message}
-                        type="email"
-                      />
-                    )}
-                  />
-                </Grid>
+              <Grid size={12}>
+                <Controller
+                  name="email"
+                  control={control}
+                  rules={{
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                      message: "Invalid email address",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Email"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.email}
+                      helperText={errors.email?.message}
+                      type="email"
+                    />
+                  )}
+                />
+              </Grid>
 
-                <Grid size={12}>
-                  <Controller
-                    name="phone"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Phone"
-                        variant="outlined"
-                        fullWidth
-                        error={!!errors.phone}
-                        helperText={errors.phone?.message}
-                      />
-                    )}
-                  />
-                </Grid>
+              <Grid size={12}>
+                <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Phone"
+                      variant="outlined"
+                      fullWidth
+                      error={!!errors.phone}
+                      helperText={errors.phone?.message}
+                    />
+                  )}
+                />
               </Grid>
             </CardContent>
           </Card>
