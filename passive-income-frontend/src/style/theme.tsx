@@ -23,6 +23,38 @@ const theme = createTheme({
         },
       },
     },
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          "&.MuiGrid-root": {
+            display: "flex", // Use flexbox for grid layout
+            flexWrap: "wrap", // Allow items to wrap
+            justifyContent: "space-between", // Space items evenly
+            alignItems: "center", // Center items vertically
+          },
+          "&.MuiGrid-container": {
+            defaultProps: {
+              spacing: 1,
+            },
+            padding: "16px", // Add padding to the grid container
+            borderRadius: 8, // Rounded corners for the grid container
+            spacing: 1,
+            direction: "row",
+            justifyContent: "center", // Center content in the grid
+            alignItems: "center", // Center items vertically
+            backgroundColor: "#f5f5f5", // Light background color for the grid
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        variant: "outlined", // Default variant for text fields
+        margin: "normal", // Normal margin for text fields
+        fullWidth: true, // Full width for text fields
+        size: "small", // Smaller size for text fields
+      },
+    },
     MuiPaper: {
       defaultProps: {
         elevation: 10, // Default elevation for paper components
