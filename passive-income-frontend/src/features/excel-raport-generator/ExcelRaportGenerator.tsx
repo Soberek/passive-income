@@ -21,7 +21,7 @@ const ExcelUploader: React.FC = () => {
     saveToExcelFile,
     miernik_summary,
     file_name,
-    agregated_data,
+    aggregated_data,
     error,
   } = useExcelUploader();
   return (
@@ -33,6 +33,7 @@ const ExcelUploader: React.FC = () => {
         file_name={file_name}
         handleFileUpload={handleFileUpload}
         saveToExcelFile={saveToExcelFile}
+        error={error}
       />
 
       <Box display="flex" gap={2} flexWrap="wrap" marginBottom={{ base: 2, md: 0 }} paddingBottom={1}>
@@ -40,8 +41,8 @@ const ExcelUploader: React.FC = () => {
         <Stat label="👨‍👩‍👧‍👦 Ogólna liczba odbiorców" value={miernik_summary.people} />
       </Box>
 
-      {Object.keys(agregated_data).length > 0 && !error ? (
-        <MemoizedExcelUploaderTable {...agregated_data} />
+      {Object.keys(aggregated_data).length > 0 && !error ? (
+        <MemoizedExcelUploaderTable {...aggregated_data} />
       ) : (
         <Typography>{error}</Typography>
       )}
