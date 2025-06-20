@@ -14,7 +14,7 @@ export interface ProgramsData {
 }
 
 export const useExcelUploader = () => {
-  const [agregated_data, setAgregatedData] = useState<ProgramsData>({});
+  const [aggregated_data, setAggregatedData] = useState<ProgramsData>({});
   const [miernik_summary, setMiernikSummary] = useState({
     actions: 0,
     people: 0,
@@ -30,27 +30,37 @@ export const useExcelUploader = () => {
   );
 
   const { raw_data, file_name, handleFileUpload } = useFileReader();
-  const { saveToExcelFile } = useFileSaver(agregated_data);
+  const { saveToExcelFile } = useFileSaver(aggregated_data);
 
   const handleMonthSelect = useCallback((selected_month: number) => {
+    if (error.length > 0) {
+      console.warn("Error exists, cannot change month selection.");
+      return;
+    }
     setMonths((prev_months) =>
       prev_months.map((month) => (month.month_num === selected_month ? { ...month, selected: !month.selected } : month))
     );
     setError("");
   }, []);
 
+  const selectedMonths = months.filter((month) => month.selected).map((month) => month.month_num);
+
   useEffect(() => {
     if (raw_data.length > 0) {
-      agregateData(raw_data, months);
+      console.log("Aggregating data...");
+      aggregateData(raw_data, months);
     }
-  }, [raw_data, months]);
+  }, [raw_data, selectedMonths, file_name]);
 
-  const agregateData = (data: ExcelRow[], months: Month[]) => {
+  const aggregateData = (data: ExcelRow[], months: Month[]) => {
     let all_people = 0;
     let all_actions = 0;
 
+    // Move selectedMonths calculation outside reduce
+    const selectedMonths = months.filter((month) => month.selected === true).map((month) => month.month_num);
+
     try {
-      const result = data.reduce((acc, item) => {
+      const aggregated = data.reduce((acc, item) => {
         const program_type = item["Typ programu"];
         const program_name = item["Nazwa programu"];
         const program_action = item["Działanie"];
@@ -58,19 +68,37 @@ export const useExcelUploader = () => {
         const action_count = Number(item["Liczba działań"]);
         const date = moment(item["Data"], "YYYY-MM-DD");
         const month = date.month() + 1; // moment months are 0-indexed
-        const selected_months = months.filter((month) => month.selected === true).map((month) => month.month_num);
-
-        // Check for selected months
-        if (selected_months.length > 0 && !selected_months.includes(month)) {
-          return acc;
+        if (!program_type) {
+          console.debug("Invalid row: missing program_type", { rowIndex: data.indexOf(item), keys: Object.keys(item) });
+          throw new Error("Brak wartości w kolumnie 'Typ programu'. Sprawdź swój plik excel.");
+        }
+        if (!program_name) {
+          console.debug("Invalid row: missing program_name", { rowIndex: data.indexOf(item), keys: Object.keys(item) });
+          throw new Error("Brak wartości w kolumnie 'Nazwa programu'. Sprawdź swój plik excel.");
+        }
+        if (!program_action) {
+          console.debug("Invalid row: missing program_action", {
+            rowIndex: data.indexOf(item),
+            keys: Object.keys(item),
+          });
+          throw new Error("Brak wartości w kolumnie 'Działanie'. Sprawdź swój plik excel.");
+        }
+        if (isNaN(people_count)) {
+          console.debug("Invalid row: people_count is NaN", { rowIndex: data.indexOf(item), keys: Object.keys(item) });
+          throw new Error(
+            `Napotkano na nieprawidłową liczbę w kolumnie 'Liczba ludzi': ${item["Liczba ludzi"]}. Sprawdź swój plik excel.`
+          );
+        }
+        if (isNaN(action_count)) {
+          console.debug("Invalid row: action_count is NaN", { rowIndex: data.indexOf(item), keys: Object.keys(item) });
+          throw new Error(
+            `Napotkano na nieprawidłową liczbę w kolumnie 'Liczba działań': ${item["Liczba działań"]}. Sprawdź swój plik excel.`
+          );
         }
 
-        // Check for NaN values
-        if (isNaN(people_count) || isNaN(action_count)) {
-          console.log(item);
-          throw new Error(
-            `Napotkano na nieprawidłową liczbę, sprawdź swój plik excel: people_count = ${people_count}, action_count = ${action_count}`
-          );
+        // Check for selected months
+        if (selectedMonths.length > 0 && !selectedMonths.includes(month)) {
+          return acc;
         }
 
         // Initialize nested objects if they don't exist
@@ -101,10 +129,9 @@ export const useExcelUploader = () => {
         people: all_people,
         actions: all_actions,
       });
-
-      setAgregatedData(result);
-    } catch (error) {
-      const errorMessage = (error as Error).message;
+      setAggregatedData(aggregated);
+    } catch (err) {
+      const errorMessage = (err as Error).message;
       setError(errorMessage);
     }
   };
@@ -114,7 +141,7 @@ export const useExcelUploader = () => {
     miernik_summary,
     handleMonthSelect,
     file_name,
-    agregated_data,
+    aggregated_data,
     error,
     saveToExcelFile,
     handleFileUpload,
