@@ -6,12 +6,14 @@ interface ExcelUploaderUploadButtonsProps {
   file_name: string;
   handleFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   saveToExcelFile: () => void;
+  error: string;
 }
 
 const ExcelUploaderUploadButtons: React.FC<ExcelUploaderUploadButtonsProps> = ({
   file_name,
   handleFileUpload,
   saveToExcelFile,
+  error,
 }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", flexWrap: "wrap", mb: 2, gap: 2 }}>
@@ -20,7 +22,13 @@ const ExcelUploaderUploadButtons: React.FC<ExcelUploaderUploadButtonsProps> = ({
           Wgraj plik excel
           <input type="file" accept=".xlsx, .xls" hidden onChange={handleFileUpload} />
         </Button>
-        <Button startIcon={<MdOutlineDownload />} disabled={!file_name} variant="contained" onClick={saveToExcelFile}>
+
+        <Button
+          startIcon={<MdOutlineDownload />}
+          disabled={!file_name || error.length > 0}
+          variant="contained"
+          onClick={saveToExcelFile}
+        >
           Zapisz miernik
         </Button>
       </Box>
