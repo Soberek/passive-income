@@ -7,11 +7,11 @@ import { createTheme } from "@mui/material/styles";
 // contrast: #FFFFFF
 // accent:   #FF7A59
 
-const primaryColor = "#E16349"; // Primary color for the theme
+const primaryColor = "#000"; // Primary color for the theme
 const lighterColor = "#F29B8A"; // Lighter shade for the theme
-const darkerColor = "#B94B36"; // Darker shade for the theme
-const contrastColor = "#FFFFFF"; // Contrast color for text and elements
-const accentColor = "#FF7A59"; // Accent color for highlights and buttons
+// const darkerColor = "#B94B36"; // Darker shade for the theme
+// const contrastColor = "#FFFFFF"; // Contrast color for text and elements
+// const accentColor = "#FF7A59"; // Accent color for highlights and buttons
 
 const theme = createTheme({
   components: {
@@ -61,7 +61,7 @@ const theme = createTheme({
       },
       styleOverrides: {
         root: {
-          borderRadius: 8, // Rounded corners for paper components
+          // borderRadius: 8, // Rounded corners for paper components
           backgroundColor: "#ffffff", // White background for paper components
           padding: 16,
         },
