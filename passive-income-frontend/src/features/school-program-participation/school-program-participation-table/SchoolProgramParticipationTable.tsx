@@ -5,11 +5,11 @@ import { SchoolProgramParticipationTableI } from "../types";
 
 interface Props {
   data: SchoolProgramParticipationTableI[];
-  rowsPerPage: number;
-  page: number;
-  totalCount: number;
-  onPageChange: (newPage: number) => void;
-  onRowsPerPageChange: (newRowsPerPage: number) => void;
+  // rowsPerPage: number;
+  // page: number;
+  // totalCount: number;
+  // onPageChange: (newPage: number) => void;
+  // onRowsPerPageChange: (newRowsPerPage: number) => void;
 }
 
 const columns: GridColDef[] = [
