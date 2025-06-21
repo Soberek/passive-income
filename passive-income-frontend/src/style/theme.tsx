@@ -42,7 +42,6 @@ const theme = createTheme({
             direction: "row",
             justifyContent: "center", // Center content in the grid
             alignItems: "center", // Center items vertically
-            backgroundColor: "#f5f5f5", // Light background color for the grid
           },
         },
       },
