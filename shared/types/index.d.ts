@@ -167,7 +167,7 @@ export interface SchoolYearUpdateDTO {
 /* Task */
 export interface Task {
   taskId: number;
-  referenceNumber: string;
+  referenceNumber?: string;
   taskNumber?: string;
   institutionId: number;
   programId: number;
