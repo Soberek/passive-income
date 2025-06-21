@@ -16,6 +16,8 @@ import {
 import { useRaportDocumentGenerator } from "./useRaportDocumentGenerator";
 import { useFetch } from "../../hooks/useFetch";
 import { Institution } from "../../../../shared/types";
+import SitesContainer from "../../components/SiteContainer";
+import SiteTitle from "../../components/SiteTitle";
 
 const IzrzForm = () => {
   const {
@@ -40,23 +42,9 @@ const IzrzForm = () => {
   );
 
   return (
-    <Box
-      mx="auto"
-      sx={{
-        mt: 1,
-        mb: 2,
-        px: { sm: 3 },
-        display: "flex",
-        flexDirection: "column",
-        pt: 2,
-      }}
-    >
+    <SitesContainer>
       {/* Header */}
-      <Paper sx={{ textAlign: "center", mb: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 800, fontStyle: "italic" }}>
-          Generator informacji z realizacji zadania
-        </Typography>
-      </Paper>
+      <SiteTitle>📄 Generowanie raportu IZRZ</SiteTitle>
 
       {/* Success/Error Messages */}
       {submitMessage.text && (
@@ -107,7 +95,7 @@ const IzrzForm = () => {
               mb: 2,
               color: "text.secondary",
               fontWeight: 500,
-              textAlign: "center",
+              textAlign: "left",
               fontSize: "1.1rem",
             }}
           >
@@ -116,11 +104,11 @@ const IzrzForm = () => {
           </Typography>
 
           <form onSubmit={handleSubmit} style={{ margin: "0 auto", padding: "0" }}>
-            <Grid container spacing={1} sx={{ maxWidth: 600, mx: "auto" }}>
+            <Grid container spacing={1} sx={{ maxWidth: 600 }}>
               {/* Numer sprawy i raportu */}
               <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                 <TextField
-                  label="Numer sprawy"
+                  label="💯 Numer sprawy"
                   name="caseNumber"
                   placeholder="np. OZiPZ.966.1.1.2025"
                   value={formData.caseNumber}
@@ -138,7 +126,7 @@ const IzrzForm = () => {
               </Grid>
               <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                 <TextField
-                  label="Numer raportu"
+                  label="📄 Numer raportu"
                   name="reportNumber"
                   placeholder="np. 45/2025"
                   value={formData.reportNumber}
@@ -481,7 +469,7 @@ const IzrzForm = () => {
           </form>
         </CardContent>
       </Paper>
-    </Box>
+    </SitesContainer>
   );
 };
 
