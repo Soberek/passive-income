@@ -119,7 +119,6 @@ export const TaskForm = () => {
 
         <Controller
           name="institutionId"
-          disabled={true}
           control={control}
           rules={{ required: true }}
           render={({ field, formState }) => (
@@ -152,13 +151,13 @@ export const TaskForm = () => {
               getOptionLabel={(option) => option.name}
               onChange={(_, value) => field.onChange(value?.programId || null)}
               value={programs?.find((p) => p.programId === field.value) || null}
+              disabled={programsLoading}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   variant="outlined"
                   error={!!formState.errors.programId}
                   helperText={formState.errors.programId ? "Nazwa programu jest wymagana" : ""}
-                  disabled={programsLoading}
                   label={programsLoading ? "Ładowanie programów..." : "Nazwa programu"}
                 />
               )}
@@ -176,13 +175,13 @@ export const TaskForm = () => {
               getOptionLabel={(option) => option.name}
               onChange={(_, value) => field.onChange(value?.actionTypeId || null)}
               value={actionTypes?.find((p) => p.actionTypeId === field.value) || null}
+              disabled={actionTypesLoading}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   variant="outlined"
                   error={!!formState.errors.actionTypeId}
                   helperText={formState.errors.actionTypeId ? "Typ akcji jest wymagany" : ""}
-                  disabled={actionTypesLoading}
                   label={actionTypesLoading ? "Ładowanie typów akcji..." : "Typ akcji"}
                 />
               )}
@@ -200,11 +199,11 @@ export const TaskForm = () => {
               getOptionLabel={(option) => option.name}
               onChange={(_, value) => field.onChange(value?.mediaPlatformId || null)}
               value={mediaPlatforms?.find((p) => p.mediaPlatformId === field.value) || null}
+              disabled={mediaPlatformsLoading}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   variant="outlined"
-                  disabled={mediaPlatformsLoading}
                   error={!!formState.errors.mediaPlatformId}
                   helperText={formState.errors.mediaPlatformId ? "Typ platformy medialnej jest wymagany" : ""}
                   label={mediaPlatformsLoading ? "Ładowanie platform medialnych..." : "Typ platformy medialnej"}
