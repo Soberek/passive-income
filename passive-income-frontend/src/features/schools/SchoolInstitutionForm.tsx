@@ -3,8 +3,6 @@ import { useForm, Controller } from "react-hook-form";
 import {
   Box,
   Button,
-  Card,
-  CardContent,
   CircularProgress,
   Container,
   Divider,
@@ -17,6 +15,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { Institution, School } from "../../../../shared/types";
+import SiteTitle from "../../components/SiteTitle";
 
 // Import your types (assuming they're in a separate file)
 
@@ -86,241 +85,224 @@ const SchoolInstitutionForm: React.FC<SchoolInstitutionFormProps> = ({ onSubmit,
 
   return (
     <Container maxWidth="md">
-      <Paper elevation={2} sx={{ p: 2, mt: 2 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Dodaj Instytucję i Szkołę
-        </Typography>
-
-        <form onSubmit={handleSubmit((data) => processSubmit({ ...data, isSchool: data.isSchool ?? false }))}>
-          <Card sx={{ mb: 3 }}>
-            <CardContent>
-              <Typography variant="h5" component="h2" color="primary" gutterBottom>
-                Informacje o instytucji
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Wprowadź dane instytucji
-              </Typography>
-
-              <Grid size={12}>
-                <Controller
-                  name="isSchool"
-                  control={control}
-                  render={({ field }) => (
-                    <Checkbox
-                      {...field}
-                      color="primary"
-                      checked={field.value}
-                      onChange={(e) => field.onChange(e.target.checked)}
-                      sx={{ mb: 2 }}
-                    />
-                  )}
+      <SiteTitle>Dodaj Instytucję i Szkołę</SiteTitle>
+      <Typography variant="h5" component="h2" color="primary" gutterBottom>
+        Informacje o instytucji
+      </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        Wprowadź dane instytucji
+      </Typography>
+      <form onSubmit={handleSubmit((data) => processSubmit({ ...data, isSchool: data.isSchool ?? false }))}>
+        <Grid container spacing={0}>
+          <Grid size={12}>
+            <Controller
+              name="isSchool"
+              control={control}
+              render={({ field }) => (
+                <Checkbox
+                  {...field}
+                  color="primary"
+                  checked={field.value}
+                  onChange={(e) => field.onChange(e.target.checked)}
+                  sx={{ mb: 2 }}
                 />
-              </Grid>
-              <Grid size={12}>
-                <Controller
-                  name="name"
-                  control={control}
-                  rules={{ required: "Institution name is required" }}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Institution Name"
-                      variant="outlined"
-                      required
-                      error={!!errors.name}
-                      helperText={errors.name?.message}
-                    />
-                  )}
+              )}
+            />
+          </Grid>
+          <Grid size={12}>
+            <Controller
+              name="name"
+              control={control}
+              rules={{ required: "Institution name is required" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Nazwa instytucji"
+                  variant="outlined"
+                  required
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
                 />
-              </Grid>
+              )}
+            />
+          </Grid>
 
-              <Grid size={12}>
-                <Controller
-                  name="address"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Address"
-                      size="small"
-                      variant="outlined"
-                      fullWidth
-                      error={!!errors.address}
-                      helperText={errors.address?.message}
-                    />
-                  )}
+          <Grid size={12}>
+            <Controller
+              name="address"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Adres"
+                  size="small"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.address}
+                  helperText={errors.address?.message}
                 />
-              </Grid>
+              )}
+            />
+          </Grid>
 
-              <Grid size={12}>
-                <Controller
-                  name="postalCode"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Postal Code"
-                      variant="outlined"
-                      fullWidth
-                      error={!!errors.postalCode}
-                      helperText={errors.postalCode?.message}
-                    />
-                  )}
+          <Grid size={12}>
+            <Controller
+              name="postalCode"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Kod pocztowy"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.postalCode}
+                  helperText={errors.postalCode?.message}
                 />
-              </Grid>
+              )}
+            />
+          </Grid>
 
-              <Grid size={12}>
-                <Controller
-                  name="city"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="City"
-                      variant="outlined"
-                      fullWidth
-                      error={!!errors.city}
-                      helperText={errors.city?.message}
-                    />
-                  )}
+          <Grid size={12}>
+            <Controller
+              name="city"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Miasto"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.city}
+                  helperText={errors.city?.message}
                 />
-              </Grid>
+              )}
+            />
+          </Grid>
 
-              <Grid size={12}>
-                <Controller
-                  name="municipality"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Municipality"
-                      variant="outlined"
-                      fullWidth
-                      error={!!errors.municipality}
-                      helperText={errors.municipality?.message}
-                    />
-                  )}
+          <Grid size={12}>
+            <Controller
+              name="municipality"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Gmina"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.municipality}
+                  helperText={errors.municipality?.message}
                 />
-              </Grid>
+              )}
+            />
+          </Grid>
 
-              <Grid size={12}>
-                <Controller
-                  name="email"
-                  control={control}
-                  rules={{
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                      message: "Invalid email address",
-                    },
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Email"
-                      variant="outlined"
-                      fullWidth
-                      error={!!errors.email}
-                      helperText={errors.email?.message}
-                      type="email"
-                    />
-                  )}
+          <Grid size={12}>
+            <Controller
+              name="email"
+              control={control}
+              rules={{
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                  message: "Invalid email address",
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Email"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                  type="email"
                 />
-              </Grid>
+              )}
+            />
+          </Grid>
 
-              <Grid size={12}>
-                <Controller
-                  name="phone"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Phone"
-                      variant="outlined"
-                      fullWidth
-                      error={!!errors.phone}
-                      helperText={errors.phone?.message}
-                    />
-                  )}
+          <Grid size={12}>
+            <Controller
+              name="phone"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Telefon"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.phone}
+                  helperText={errors.phone?.message}
                 />
-              </Grid>
-            </CardContent>
-          </Card>
+              )}
+            />
+          </Grid>
 
           <Divider sx={{ my: 1 }} />
 
-          <Card>
-            <CardContent>
-              <Typography variant="h5" component="h2" color="primary" gutterBottom>
-                School Information
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Enter the school specific details
-              </Typography>
+          <Typography variant="h5" component="h2" color="primary" gutterBottom>
+            Informacje o szkole
+          </Typography>
 
-              <Grid container spacing={2}>
-                <Grid size={12}>
-                  <Controller
-                    name="director"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        label="Director"
-                        variant="outlined"
-                        fullWidth
-                        error={!!errors.director}
-                        helperText={errors.director?.message}
-                      />
-                    )}
-                  />
-                </Grid>
+          <Grid size={12}>
+            <Controller
+              name="director"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Dyrektor"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.director}
+                  helperText={errors.director?.message}
+                />
+              )}
+            />
+          </Grid>
+        </Grid>
 
-                {/* You can add more school-specific fields here */}
-              </Grid>
-            </CardContent>
-          </Card>
+        {/* You can add more school-specific fields here */}
 
-          <Box sx={{ mt: 1, display: "flex", justifyContent: "space-between" }}>
-            <Button variant="outlined" onClick={() => reset()} disabled={isSubmitting}>
-              Reset
-            </Button>
+        <Box sx={{ mt: 1, display: "flex", justifyContent: "center", gap: 2 }}>
+          <Button variant="outlined" onClick={() => reset()} disabled={isSubmitting}>
+            Resetuj formularz
+          </Button>
 
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              disabled={isSubmitting}
-              startIcon={isSubmitting ? <CircularProgress size={20} /> : null}
-            >
-              {isSubmitting ? "Saving..." : "Save School & Institution"}
-            </Button>
-          </Box>
-        </form>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={isSubmitting}
+            startIcon={isSubmitting ? <CircularProgress size={20} /> : null}
+          >
+            {isSubmitting ? "Zapisuję..." : "Zapisz szkołę i instytucję"}
+          </Button>
+        </Box>
+      </form>
 
-        {/* Success message */}
-        <Snackbar
-          open={submitSuccess}
-          autoHideDuration={6000}
-          onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-          <Alert onClose={handleCloseSnackbar} severity="success">
-            School and institution created successfully!
-          </Alert>
-        </Snackbar>
+      {/* Success message */}
+      <Snackbar
+        open={submitSuccess}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="success">
+          Szkoła i instytucja zostały pomyślnie zapisane!
+        </Alert>
+      </Snackbar>
 
-        {/* Error message */}
-        <Snackbar
-          open={!!submitError}
-          autoHideDuration={6000}
-          onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-          <Alert onClose={handleCloseSnackbar} severity="error">
-            {submitError}
-          </Alert>
-        </Snackbar>
-      </Paper>
+      {/* Error message */}
+      <Snackbar
+        open={!!submitError}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="error">
+          {submitError}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
