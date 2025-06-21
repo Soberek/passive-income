@@ -39,8 +39,8 @@ export default function MenuAppBar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, width: "100vw", bgcolor: "primary.main", py: 2 }}>
-      <FormGroup sx={{ position: "fixed", top: "95%", left: 30, zIndex: 1201 }}>
+    <Box sx={{ bgcolor: "primary.main", mt: 16 }}>
+      <FormGroup sx={{ position: "fixed", top: "95%", left: "85%", zIndex: 1201 }}>
         <FormControlLabel
           control={
             <Switch
@@ -70,7 +70,7 @@ export default function MenuAppBar() {
         />
       </FormGroup>
 
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar
           sx={{
             minHeight: 90, // większy navbar
@@ -172,7 +172,6 @@ export default function MenuAppBar() {
                   "& .MuiPaper-root": {
                     minWidth: 180,
 
-                    color: "#1976d2",
                     boxShadow: "0 4px 16px 0 rgba(31,38,135,0.12)",
                   },
                 }}
