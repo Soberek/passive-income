@@ -46,8 +46,7 @@ export const useExcelUploader = () => {
   const selectedMonths = months.filter((month) => month.selected).map((month) => month.month_num);
 
   useEffect(() => {
-    if (raw_data.length > 0) {
-      console.log("Aggregating data...");
+    if (raw_data && raw_data.length > 0) {
       aggregateData(raw_data, months);
     }
   }, [raw_data, selectedMonths, file_name]);
