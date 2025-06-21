@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 const SiteTitle = ({ children }: { children: string }) => {
   return (
     <Typography
-      variant="h6"
+      variant="h5"
       marginBottom={2}
       display="flex"
       alignItems="center"
