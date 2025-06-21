@@ -103,7 +103,7 @@ const IzrzForm = () => {
             wypełnione.
           </Typography>
 
-          <form onSubmit={handleSubmit} style={{ margin: "0 auto", padding: "0" }}>
+          <form onSubmit={handleSubmit} style={{ margin: "0 auto" }}>
             <Grid container spacing={1} sx={{ maxWidth: 600 }}>
               {/* Numer sprawy i raportu */}
               <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
