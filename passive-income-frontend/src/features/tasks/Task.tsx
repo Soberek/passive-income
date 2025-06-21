@@ -5,8 +5,7 @@ import { TaskForm } from "./TaskForm";
 export const Tasks = () => {
   return (
     <SitesContainer>
-      <SiteTitle>Dodaj zadanie</SiteTitle>
-
+      <SiteTitle>✅ Dodaj zadanie</SiteTitle>
       <TaskForm />
     </SitesContainer>
   );
