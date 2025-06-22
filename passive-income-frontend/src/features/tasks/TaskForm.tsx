@@ -1,4 +1,4 @@
-import { Alert, Autocomplete, Button, IconButton, Snackbar, TextField } from "@mui/material";
+import { Alert, Autocomplete, Button, Snackbar, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { useFetch } from "../../hooks/useFetch";
 import { Institution, Program } from "../../../../shared/types";
@@ -7,8 +7,6 @@ import { Institution, Program } from "../../../../shared/types";
 import { Task } from "../../../../shared/types";
 import z from "zod";
 import { useState } from "react";
-import React from "react";
-import CloseIcon from "@mui/icons-material/Close";
 
 const URL = import.meta.env.VITE_API_URL;
 
