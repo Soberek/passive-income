@@ -1,4 +1,4 @@
-import { Autocomplete, Button, TextField } from "@mui/material";
+import { Alert, Autocomplete, Button, IconButton, Snackbar, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { useFetch } from "../../hooks/useFetch";
 import { Institution, Program } from "../../../../shared/types";
@@ -6,6 +6,9 @@ import { Institution, Program } from "../../../../shared/types";
 // Define Task type locally to match the Zod schema
 import { Task } from "../../../../shared/types";
 import z from "zod";
+import { useState } from "react";
+import React from "react";
+import CloseIcon from "@mui/icons-material/Close";
 
 const URL = import.meta.env.VITE_API_URL;
 
@@ -75,17 +78,59 @@ export const TaskForm = () => {
     { mediaPlatformId: number; name: string }[]
   >(`${URL}/media-platforms`);
 
-  const onSubmit = (data: TaskFormI) => {
+  const [success, setSuccess] = useState(false);
+
+  const onSubmit = async (data: TaskFormI) => {
     const formatDate = new Date(data.date);
-    const dataToSend = { ...data, date: formatDate };
-    console.log(dataToSend);
+    const dataToSend = {
+      ...data,
+      audienceCount: Number(data.audienceCount),
+      actionsCount: Number(data.actionsCount),
+      date: formatDate,
+    };
 
     const validatedData = TaskSchemaCreate.safeParse(dataToSend);
-    console.log("Validated Data:", validatedData.error);
+
+    if (!validatedData.success) {
+      console.error("Validation failed:", validatedData.error.issues);
+      return;
+    }
+
+    const post = await fetch(`${URL}/task`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(validatedData.data),
+    });
+
+    if (!post.ok) {
+      const errorData = await post.json();
+      console.error("Failed to create task:", errorData);
+      return;
+    }
+
+    const response = await post.json();
+    setSuccess(true);
+    console.log("Task created successfully:", response);
+  };
+
+  const handleClose = () => {
+    setSuccess(false);
   };
 
   return (
     <>
+      <Snackbar
+        open={success}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: "100%" }}>
+          Pomyślnie dodano zadanie!
+        </Alert>
+      </Snackbar>
       {Object.values(errors).length > 0 && <pre>{JSON.stringify(errors, null, 2)}</pre>}
       <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: "600px", paddingBottom: "2rem" }}>
         <Controller
