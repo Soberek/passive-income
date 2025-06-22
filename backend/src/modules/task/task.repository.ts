@@ -4,7 +4,6 @@ import type {
   UpdatableRepositoryI,
   DeletableRepositoryI,
 } from "../../types/index.type";
-import SqliteDbService from "../../database/sqlite_db.service";
 
 // CREATE TABLE tasks (
 //   task_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,12 +19,12 @@ import SqliteDbService from "../../database/sqlite_db.service";
 //   media_platform_id INTEGER, -- will be used if the task is a media publication
 //   created_at TEXT DEFAULT CURRENT_TIMESTAMP,
 //   FOREIGN KEY (institution_id) REFERENCES institutions(institution_id),
-//   FOREIGN KEY (program_id) REFERENCES programs(program_id),
+//   FOREIGN KEY (program_id) REFERENCES programss(program_id),
 //   FOREIGN KEY (action_type_id) REFERENCES action_types(action_type_id),
 //   FOREIGN KEY (media_platform_id) REFERENCES media_platforms(media_platform_id)
 // );
 
-import type { Task, TaskCreateType, TaskUpdateSchema } from "./task.schema";
+import { Task, TaskCreateType, TaskUpdateSchema, TaskUpdateType } from "./task.schema";
 import { DatabaseI } from "../../types/database.type";
 import sqlite from "better-sqlite3";
 export class TaskRepository
@@ -50,6 +49,20 @@ export class TaskRepository
       audienceCount,
       mediaPlatformId,
     } = entity;
+
+    console.log("Adding task with data:", {
+      referenceNumber,
+      taskNumber,
+      institutionId,
+      programId,
+
+      actionTypeId,
+      description,
+      date,
+      actionsCount,
+      audienceCount,
+      mediaPlatformId,
+    });
 
     const stmt = this.db.getDb().prepare(`
       INSERT INTO tasks (
@@ -118,7 +131,7 @@ export class TaskRepository
     return result.changes > 0;
   };
 
-  update = (id: Task["taskId"], entity: Partial<Task>): boolean => {
+  update = (id: Task["taskId"], entity: TaskUpdateType): boolean => {
     const values = [];
     const fieldsToUpdate = [];
 
