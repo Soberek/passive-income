@@ -19,6 +19,7 @@ import programCoordinatorRouter from "./modules/program-coordinator/program_coor
 
 // Error handling
 import ErrorHandler from "./handlers/error.handler";
+import taskRouter from "./modules/task/task.router";
 export default class ExpressApp {
   public app: Express;
   private PORT: number = 3000;
@@ -95,6 +96,8 @@ export default class ExpressApp {
     this.app.use("/api", programParticipationRouter);
 
     this.app.use("/api", programCoordinatorRouter);
+
+    this.app.use("/api", taskRouter);
   }
 
   // Initialize error handling
