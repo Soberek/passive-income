@@ -141,10 +141,10 @@ export default function MenuAppBar() {
                 sx={{
                   ml: 2,
                   borderRadius: 2,
-                  bgcolor: "rgba(255,255,255,0.10)",
+                  bgcolor: "rgb(255, 255, 255)",
                   boxShadow: 5,
                   fontSize: 28,
-                  "&:hover": { bgcolor: "rgba(255,255,255,0.20)" },
+                  "&:hover": { bgcolor: "rgba(255, 255, 255, 0.52)" },
                   height: 56,
                   width: 56,
                   display: "flex",
