@@ -32,7 +32,8 @@ export class TaskService
   getById = (id: number): Task | null => {
     const validation = TaskSchema.shape.taskId.safeParse(id);
     if (!validation.success) {
-      throw new Error("Invalid task ID: " + JSON.stringify(validation.error.issues));
+      console.error("Validation failed:", validation.error.issues);
+      throw new Error("Invalid task ID");
     }
     return this.repository.getById(id);
   };
@@ -41,7 +42,8 @@ export class TaskService
     const idValidation = TaskSchema.shape.taskId.safeParse(id);
     const entityValidation = TaskUpdateSchema.safeParse(entity);
     if (!entityValidation.success) {
-      throw new Error("Invalid task data: " + JSON.stringify(entityValidation.error.issues));
+      console.error("Validation failed:", entityValidation.error.issues);
+      throw new Error("Failed to update task");
     }
     if (!idValidation.success) {
       throw new Error("Invalid task ID: " + JSON.stringify(idValidation.error.issues));

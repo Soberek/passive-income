@@ -27,7 +27,7 @@ class TaskController {
       const tasks = this.taskService.getAll();
       res.status(200).json({ data: tasks });
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : "Internal server error" });
+      res.status(400).json({ error: error instanceof Error ? error.message : "Internal server error" });
     }
   };
 
@@ -41,35 +41,35 @@ class TaskController {
         res.status(404).json({ error: "Task not found" });
       }
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : "Internal server error" });
+      res.status(400).json({ error: error instanceof Error ? error.message : "Internal server error" });
     }
   };
 
   updateTask = (req: Request, res: Response): void => {
     try {
       const taskId = parseInt(req.params.id, 10);
-      const updated = this.taskService.update(taskId, req.body);
-      if (updated) {
+      const result = this.taskService.update(taskId, req.body);
+      if (result) {
         res.status(200).json({ message: "Task updated successfully" });
       } else {
         res.status(400).json({ error: "Failed to update task" });
       }
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : "Internal server error" });
+      res.status(400).json({ error: error instanceof Error ? error.message : "Internal server error" });
     }
   };
 
   deleteTask = (req: Request, res: Response): void => {
     try {
       const taskId = parseInt(req.params.id, 10);
-      const deleted = this.taskService.delete(taskId);
-      if (deleted) {
+      const result = this.taskService.delete(taskId);
+      if (result) {
         res.status(200).json({ message: "Task deleted successfully" });
       } else {
         res.status(400).json({ error: "Failed to delete task" });
       }
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : "Internal server error" });
+      res.status(400).json({ error: error instanceof Error ? error.message : "Internal server error" });
     }
   };
 }
