@@ -10,14 +10,15 @@ class TaskController {
 
   addTask = (req: Request, res: Response): void => {
     try {
-      const taskId = this.taskService.add(req.body);
-      if (taskId) {
-        res.status(201).json({ data: taskId });
+      const entity = req.body;
+      const result = this.taskService.add(entity);
+      if (result) {
+        res.status(201).json({ data: result });
       } else {
         res.status(400).json({ error: "Failed to create task" });
       }
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : "Internal server error" });
+      res.status(400).json({ error: error instanceof Error ? error.message : "Internal server error" });
     }
   };
 
