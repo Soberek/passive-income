@@ -83,4 +83,20 @@ describe("Task Module Tests", () => {
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty("error", "Failed to create task");
   });
+
+  it("should return 400 for invalid task update", async () => {
+    const response = await request("http://localhost:3000").put(`/api/task/${taskId}`).send({
+      description: "", // Invalid description
+    });
+    console.log(response.body); // Log the response body for debugging
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("error", "Failed to update task");
+  });
+
+  it("should return 400 for invalid task ID", async () => {
+    const response = await request("http://localhost:3000").get("/api/task/invalid-id");
+    console.log(response.body); // Log the response body for debugging
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("error", "Invalid task ID");
+  });
 });
