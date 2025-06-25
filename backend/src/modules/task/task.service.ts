@@ -16,8 +16,7 @@ export class TaskService
   }
 
   add = (entity: TaskCreateType): number | null => {
-    const parsedData = { ...entity, date: new Date(entity.date) };
-    const validation = TaskCreateSchema.safeParse(parsedData);
+    const validation = TaskCreateSchema.safeParse(entity);
     if (!validation.success) {
       console.error("Validation failed:", validation.error.issues);
       throw new Error("Failed to create task");

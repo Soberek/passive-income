@@ -11,6 +11,7 @@ class TaskController {
   addTask = (req: Request, res: Response): void => {
     try {
       const entity = req.body;
+      console.log("Received task entity:", entity);
       const result = this.taskService.add(entity);
       if (result) {
         res.status(201).json({ data: result });
