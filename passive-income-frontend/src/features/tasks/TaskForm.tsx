@@ -18,7 +18,7 @@ const TaskSchema = z.object({
   programId: z.number().min(1, "Program ID is required"),
   actionTypeId: z.number().min(1, "Action Type ID is required"),
   description: z.string().optional(),
-  date: z.date(),
+  date: z.string(),
   actionsCount: z.number().min(0, "Actions count must be at least 0"),
   audienceCount: z.number().min(0, "Audience count must be at least 0"),
   mediaPlatformId: z.number().optional(),
@@ -26,6 +26,13 @@ const TaskSchema = z.object({
 
 const TaskSchemaCreate = TaskSchema.omit({
   taskId: true, // Omit taskId for creation
+});
+
+const TaskSchemaPublicationCreate = TaskSchemaCreate.omit({
+  referenceNumber: true, // Omit referenceNumber for publication
+  taskNumber: true, // Omit taskNumber for publication
+  description: true, // Omit description for publication
+  institutionId: true, // Omit institutionId for publication
 });
 
 // export interface Task {
@@ -56,14 +63,14 @@ export const TaskForm = () => {
     defaultValues: {
       referenceNumber: "",
       taskNumber: "",
-      institutionId: 0,
-      programId: 0,
-      actionTypeId: 0,
+      institutionId: undefined,
+      programId: undefined,
+      actionTypeId: undefined,
       description: "",
-      date: new Date(),
+      date: new Date().toISOString().split("T")[0], // Set default date to today
       actionsCount: 0,
       audienceCount: 0,
-      mediaPlatformId: 0,
+      mediaPlatformId: undefined,
     },
   });
 
@@ -79,19 +86,23 @@ export const TaskForm = () => {
   const [success, setSuccess] = useState(false);
 
   const onSubmit = async (data: TaskFormI) => {
-    const formatDate = new Date(data.date);
-    const dataToSend = {
-      ...data,
-      audienceCount: Number(data.audienceCount),
-      actionsCount: Number(data.actionsCount),
-      date: formatDate,
-    };
+    let validatedData;
 
-    const validatedData = TaskSchemaCreate.safeParse(dataToSend);
+    if (data.mediaPlatformId) {
+      // If mediaPlatformId is provided, include it in the data to send
+      console.log("Media Platform ID provided:", data.mediaPlatformId);
 
-    if (!validatedData.success) {
-      console.error("Validation failed:", validatedData.error.issues);
-      return;
+      validatedData = TaskSchemaPublicationCreate.safeParse(data);
+      if (!validatedData.success) {
+        console.error("Validation failed:", validatedData.error.issues);
+        return;
+      }
+    } else {
+      validatedData = TaskSchemaCreate.safeParse(data);
+      if (!validatedData.success) {
+        console.error("Validation failed:", validatedData.error.issues);
+        return;
+      }
     }
 
     const post = await fetch(`${URL}/task`, {
@@ -150,20 +161,14 @@ export const TaskForm = () => {
           control={control}
           defaultValue=""
           render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              error={!!fieldState.error?.message}
-              required
-              label="Numer zadania (69/2025)"
-              fullWidth
-            />
+            <TextField {...field} error={!!fieldState.error?.message} label="Numer zadania (69/2025)" fullWidth />
           )}
         />
 
         <Controller
           name="institutionId"
           control={control}
-          rules={{ required: true }}
+          // rules={{ required: true }}
           render={({ field, formState }) => (
             <Autocomplete
               options={institutions || []}
@@ -235,7 +240,6 @@ export const TaskForm = () => {
         <Controller
           name="mediaPlatformId"
           control={control}
-          rules={{ required: true }}
           render={({ field, formState }) => (
             <Autocomplete
               options={mediaPlatforms || []}
@@ -248,7 +252,6 @@ export const TaskForm = () => {
                   {...params}
                   variant="outlined"
                   error={!!formState.errors.mediaPlatformId}
-                  helperText={formState.errors.mediaPlatformId ? "Typ platformy medialnej jest wymagany" : ""}
                   label={mediaPlatformsLoading ? "Ładowanie platform medialnych..." : "Typ platformy medialnej"}
                 />
               )}
@@ -259,7 +262,7 @@ export const TaskForm = () => {
         <Controller
           name="date"
           control={control}
-          defaultValue={new Date()}
+          defaultValue={new Date().toISOString().split("T")[0]} // Default to today's date
           render={({ field, fieldState }) => (
             <TextField
               {...field}
@@ -318,7 +321,6 @@ export const TaskForm = () => {
               {...field}
               error={!!fieldState.error?.message}
               label="Description"
-              required
               fullWidth
               multiline
               rows={4}

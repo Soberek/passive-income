@@ -173,7 +173,7 @@ export interface Task {
   programId: number;
   actionTypeId: number;
   description?: string;
-  date: Date;
+  date: string;
   actionsCount: number;
   audienceCount: number;
   mediaPlatformId?: number;

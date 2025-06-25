@@ -10,7 +10,7 @@ export const TaskSchema = z.object({
   programId: z.number().min(1),
   actionTypeId: z.number().min(1),
   description: z.string().min(5).max(500).optional(),
-  date: z.date(),
+  date: z.string().min(10).max(10), // YYYY-MM-DD
   actionsCount: z.number().min(0),
   audienceCount: z.number().min(0),
   mediaPlatformId: z.number().min(1).optional(),
