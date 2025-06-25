@@ -4,36 +4,11 @@ import { useFetch } from "../../hooks/useFetch";
 import { Institution, Program } from "../../../../shared/types";
 
 // Define Task type locally to match the Zod schema
-import { Task } from "../../../../shared/types";
-import z from "zod";
 import { useState } from "react";
 
 const URL = import.meta.env.VITE_API_URL;
 
-const TaskSchema = z.object({
-  taskId: z.number(),
-  referenceNumber: z.string().min(1, "Reference number is required").optional(),
-  taskNumber: z.string().optional(),
-  institutionId: z.number().min(1, "Institution ID is required"),
-  programId: z.number().min(1, "Program ID is required"),
-  actionTypeId: z.number().min(1, "Action Type ID is required"),
-  description: z.string().optional(),
-  date: z.string(),
-  actionsCount: z.number().min(0, "Actions count must be at least 0"),
-  audienceCount: z.number().min(0, "Audience count must be at least 0"),
-  mediaPlatformId: z.number().optional(),
-}) satisfies z.ZodType<Task>;
-
-const TaskSchemaCreate = TaskSchema.omit({
-  taskId: true, // Omit taskId for creation
-});
-
-const TaskSchemaPublicationCreate = TaskSchemaCreate.omit({
-  referenceNumber: true, // Omit referenceNumber for publication
-  taskNumber: true, // Omit taskNumber for publication
-  description: true, // Omit description for publication
-  institutionId: true, // Omit institutionId for publication
-});
+import { TaskSchemaCreate, type TaskCreateType } from "./task.schema";
 
 // export interface Task {
 //     taskId: number;
@@ -50,16 +25,12 @@ const TaskSchemaPublicationCreate = TaskSchemaCreate.omit({
 //     createdAt?: Date;
 //   }
 
-interface TaskFormI extends Task {
-  materials?: string[];
-}
-
-export const TaskForm = () => {
+export const AddTaskForm = () => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<TaskFormI>({
+  } = useForm<TaskCreateType>({
     defaultValues: {
       referenceNumber: "",
       taskNumber: "",
@@ -70,7 +41,6 @@ export const TaskForm = () => {
       date: new Date().toISOString().split("T")[0], // Set default date to today
       actionsCount: 0,
       audienceCount: 0,
-      mediaPlatformId: undefined,
     },
   });
 
@@ -79,30 +49,19 @@ export const TaskForm = () => {
   const { data: actionTypes, loading: actionTypesLoading } = useFetch<{ actionTypeId: number; name: string }[]>(
     `${URL}/action-types`
   );
-  const { data: mediaPlatforms, loading: mediaPlatformsLoading } = useFetch<
-    { mediaPlatformId: number; name: string }[]
-  >(`${URL}/media-platforms`);
 
   const [success, setSuccess] = useState(false);
 
-  const onSubmit = async (data: TaskFormI) => {
-    let validatedData;
-
-    if (data.mediaPlatformId) {
-      // If mediaPlatformId is provided, include it in the data to send
-      console.log("Media Platform ID provided:", data.mediaPlatformId);
-
-      validatedData = TaskSchemaPublicationCreate.safeParse(data);
-      if (!validatedData.success) {
-        console.error("Validation failed:", validatedData.error.issues);
-        return;
-      }
-    } else {
-      validatedData = TaskSchemaCreate.safeParse(data);
-      if (!validatedData.success) {
-        console.error("Validation failed:", validatedData.error.issues);
-        return;
-      }
+  const onSubmit = async (data: TaskCreateType) => {
+    const dataToSend = {
+      ...data,
+      actionsCount: Number(data.actionsCount),
+      audienceCount: Number(data.audienceCount),
+    };
+    const validatedData = TaskSchemaCreate.safeParse(dataToSend);
+    if (!validatedData.success) {
+      console.error("Validation failed:", validatedData.error.issues);
+      return;
     }
 
     const post = await fetch(`${URL}/task`, {
@@ -238,28 +197,6 @@ export const TaskForm = () => {
         />
 
         <Controller
-          name="mediaPlatformId"
-          control={control}
-          render={({ field, formState }) => (
-            <Autocomplete
-              options={mediaPlatforms || []}
-              getOptionLabel={(option) => option.name}
-              onChange={(_, value) => field.onChange(value?.mediaPlatformId || null)}
-              value={mediaPlatforms?.find((p) => p.mediaPlatformId === field.value) || null}
-              disabled={mediaPlatformsLoading}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  error={!!formState.errors.mediaPlatformId}
-                  label={mediaPlatformsLoading ? "Ładowanie platform medialnych..." : "Typ platformy medialnej"}
-                />
-              )}
-            />
-          )}
-        />
-
-        <Controller
           name="date"
           control={control}
           defaultValue={new Date().toISOString().split("T")[0]} // Default to today's date
@@ -320,7 +257,7 @@ export const TaskForm = () => {
             <TextField
               {...field}
               error={!!fieldState.error?.message}
-              label="Description"
+              label="Opis zadania"
               fullWidth
               multiline
               rows={4}
@@ -329,7 +266,7 @@ export const TaskForm = () => {
         />
 
         <Button variant="contained" color="primary" type="submit" sx={{ marginTop: "0.5rem" }}>
-          Add Task
+          Dodaj zadanie
         </Button>
       </form>
     </>
