@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
-import SqliteDbService from "./sqlite_db.service";
+import { DatabaseI } from "../types/database.type";
+import bettersqlite from "better-sqlite3";
 
 // import sqlitedb.sql
 const sqlFilePath = path.join(__dirname, "sqlitedb.sql");
@@ -12,15 +13,18 @@ if (!fs.existsSync(sqlFilePath)) {
   process.exit(1);
 }
 
-const dbService = SqliteDbService.getInstance();
-
-try {
-  dbService.transaction(() => {
-    dbService.getDb().exec(sqlScript);
-  });
-  console.log("Database migration completed successfully.");
-  process.exit(0);
-} catch (error) {
-  console.error("Error executing SQL script:", error instanceof Error ? error.message : String(error));
-  process.exit(1);
+class Migration {
+  public async migrate(db: DatabaseI<bettersqlite.Database>) {
+    console.log("Starting database migration...");
+    try {
+      db.transaction(() => {
+        db.getDb().exec(sqlScript);
+      });
+      console.log("Database migration completed successfully.");
+    } catch (error) {
+      console.error("Error executing SQL script:", error instanceof Error ? error.message : String(error));
+    }
+  }
 }
+
+export default Migration;
