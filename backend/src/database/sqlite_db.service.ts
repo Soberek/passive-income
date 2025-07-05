@@ -10,7 +10,7 @@ export class SqliteDbService implements DatabaseI<SqliteDatabase.Database> {
   private static instance: SqliteDbService | null = null;
   private db: SqliteDatabase.Database;
 
-  private constructor(dbPath: string) {
+  constructor(dbPath: string) {
     this.db = new SqliteDatabase(dbPath);
   }
 
