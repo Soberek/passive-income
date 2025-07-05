@@ -195,4 +195,63 @@ describe.only("Testowanie repozytoriów", () => {
 
     expect(task?.taskId).toBe(1);
   });
+
+  it("should delete a task", async () => {
+    // First, create a task to ensure we have a task to delete
+    taskRepository.add(taskData);
+    const result = taskRepository.delete(1);
+    expect(result).toBe(true);
+  });
+
+  it("should update a task", async () => {
+    // First, create a task to ensure we have a task to update
+    taskRepository.add(taskData);
+    const updatedTask = {
+      ...taskData,
+      description: "Updated Test Task",
+    };
+    const result = taskRepository.update(1, updatedTask);
+    expect(result).toBe(true);
+
+    // Verify the update
+    const task = taskRepository.getById(1);
+    expect(task).toHaveProperty("description", "Updated Test Task");
+  });
+
+  it("should return null for non-existing task", async () => {
+    const task = taskRepository.getById(999); // Assuming this ID does not exist
+    expect(task).toBeNull();
+  });
+
+  it("should return false for delete non-existing task", async () => {
+    const result = taskRepository.delete(999); // Assuming this ID does not exist
+    expect(result).toBe(false);
+  });
+
+  it("should return false for update non-existing task", async () => {
+    const result = taskRepository.update(999, { description: "Updated Test Task" }); // Assuming this ID does not exist
+    expect(result).toBe(false);
+  });
+
+  it("should return false for invalid task ID", async () => {
+    const task = taskRepository.getById("invalid-id" as any); // Invalid ID type
+    expect(task).toBeNull();
+  });
+
+  it("should return false for invalid task data", async () => {
+    expect(() => {
+      taskRepository.add({
+        referenceNumber: "InvalidTask",
+        taskNumber: "InvalidTask",
+        institutionId: -1, // Assuming this ID does not exist
+        programId: -1, // Assuming this ID does not exist
+        actionTypeId: -1, // Assuming this ID does not exist
+        description: "Invalid Task",
+        date: "2023-10-01",
+        actionsCount: -1, // Invalid count
+        audienceCount: -1, // Invalid count
+        mediaPlatformId: -1, // Assuming this ID does not exist
+      });
+    }).toThrow();
+  });
 });
