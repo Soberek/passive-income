@@ -1,7 +1,6 @@
 import request from "supertest";
 import ExpressApp from "../src/app";
 import { describe, it, expect, beforeEach, beforeAll } from "@jest/globals";
-import sqliteDbService from "../src/services/sqlite_db.service";
 const expressAppInstance = new ExpressApp();
 const app = expressAppInstance.app;
 expressAppInstance.initMiddlewares();
@@ -19,7 +18,7 @@ Cheatsheet:
     expect(res.body).toHaveProperty("id");
 */
 
-describe.only("Contact API", () => {
+describe("Contact API", () => {
   let contactId: number;
 
   it("should create a new contact", async () => {
