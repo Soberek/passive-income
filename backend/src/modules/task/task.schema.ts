@@ -15,6 +15,7 @@ export const TaskSchema = z.object({
   audienceCount: z.number().min(0),
   mediaPlatformId: z.number().min(1).optional(),
   createdAt: z.date().optional(),
+  audienceDescription: z.string().min(5).max(500).optional(),
 }) satisfies ZodType<TaskI>;
 
 export const TaskCreateSchema = TaskSchema.omit({ taskId: true, createdAt: true });
