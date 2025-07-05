@@ -48,6 +48,7 @@ export class TaskRepository
       actionsCount,
       audienceCount,
       mediaPlatformId,
+      audienceDescription,
     } = entity;
 
     console.log("Adding task with data:", {
@@ -55,20 +56,20 @@ export class TaskRepository
       taskNumber,
       institutionId,
       programId,
-
       actionTypeId,
       description,
       date,
       actionsCount,
       audienceCount,
       mediaPlatformId,
+      audienceDescription,
     });
 
     const stmt = this.db.getDb().prepare(`
       INSERT INTO tasks (
-        reference_number, task_number, institution_id, program_id, action_type_id, description, date, actions_count, audience_count, media_platform_id
+        reference_number, task_number, institution_id, program_id, action_type_id, description, date, actions_count, audience_count, media_platform_id, audience_description
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const result = stmt.run(
@@ -81,7 +82,8 @@ export class TaskRepository
       date,
       actionsCount,
       audienceCount,
-      mediaPlatformId
+      mediaPlatformId,
+      audienceDescription
     );
 
     if (result.changes > 0) {
@@ -111,11 +113,12 @@ export class TaskRepository
 
   getById = (id: Task["taskId"]): Task | null => {
     const stmt = this.db.getDb().prepare(`
-      SELECT task_id as taskId, reference_number as referenceNumber, task_number as taskNumber, institution_id as institutionId, program_id as programId, action_type_id as actionTypeId, description, date, actions_count as actionsCount, audience_count as audienceCount, media_platform_id as mediaPlatformId
+      SELECT task_id as taskId, reference_number as referenceNumber, task_number as taskNumber, institution_id as institutionId, program_id as programId, action_type_id as actionTypeId, description, date, actions_count as actionsCount, audience_count as audienceCount, media_platform_id as mediaPlatformId, audience_description as audienceDescription
       FROM tasks
       WHERE task_id = ?
     `);
     const result = stmt.get(id) as Task | null;
+
     if (!result) {
       console.error(`Failed to execute query or no results found for id: ${id}`);
       return null;
