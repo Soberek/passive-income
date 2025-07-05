@@ -178,6 +178,7 @@ export interface Task {
   audienceCount: number;
   mediaPlatformId?: number;
   createdAt?: Date;
+  audienceDescription?: string;
 }
 
 export interface TaskCreateDTO {
