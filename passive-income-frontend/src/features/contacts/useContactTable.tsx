@@ -27,3 +27,5 @@ function temporaryForm() {
     </form>
   );
 }
+
+export default temporaryForm;
