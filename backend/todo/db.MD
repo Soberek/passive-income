@@ -11,8 +11,8 @@
 
 ### Funkcjonalności:
 
-- [ ] Dodawanie (szkoły, organizacje)
-  - [ ] Usuwanie instytucji
+- [x] Dodawanie (szkoły, organizacje)
+  - [x] Usuwanie instytucji
   - [ ] Edytowanie instytucji
 - [ ] Dodawanie kontaktów (koordynatorów programów)
   - [ ] Edytowanie kontaktów
